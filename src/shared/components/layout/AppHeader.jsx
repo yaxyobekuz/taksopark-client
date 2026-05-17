@@ -23,7 +23,7 @@ const AppHeader = () => {
           className="size-6"
           alt="System logo svg"
         />
-        <span className="font-medium">App Name</span>
+        <span className="font-medium">Taksopark</span>
       </div>
     </header>
   );

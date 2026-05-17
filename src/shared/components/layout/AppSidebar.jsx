@@ -50,14 +50,10 @@ import { ROLES } from "@/shared/constants/roles";
 
 // Rol-spec sidebar konfiguratsiyalari
 import { ownerSidebar } from "@/owner";
-import { teacherSidebar } from "@/teacher";
-import { studentSidebar } from "@/student";
 import { logoIcon } from "@/shared/assets/icons";
 
 const ROLE_SIDEBAR = {
   [ROLES.OWNER]: ownerSidebar,
-  [ROLES.TEACHER]: teacherSidebar,
-  [ROLES.STUDENT]: studentSidebar,
 };
 
 const AppSidebar = ({ ...props }) => {
@@ -92,7 +88,7 @@ const Header = () => {
             />
 
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-semibold">App Name</span>
+              <span className="truncate font-semibold">Taksopark</span>
             </div>
             <ArrowLeftToLine className="ml-auto" size={24} strokeWidth={1.5} />
           </SidebarMenuButton>

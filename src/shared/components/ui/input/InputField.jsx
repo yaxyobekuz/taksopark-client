@@ -4,6 +4,7 @@ import InputPwd from "./InputPwd";
 import InputOtp from "./InputOtp";
 import InputTel from "./InputTel";
 import InputSearch from "./InputSearch";
+import InputPrice from "./InputPrice";
 import {
   Field,
   FieldLabel,
@@ -15,6 +16,7 @@ const InputComponent = ({ ...props }) => {
   if (props.type === "otp") return <InputOtp {...props} />;
   if (props.type === "tel") return <InputTel {...props} />;
   if (props.type === "search") return <InputSearch {...props} />;
+  if (props.type === "price") return <InputPrice {...props} />;
   return <Input {...props} />;
 };
 
