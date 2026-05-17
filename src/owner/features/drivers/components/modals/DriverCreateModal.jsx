@@ -19,7 +19,7 @@ const DriverCreateModal = ({ close }) => {
   const { data: carsData } = useCarsQuery({ limit: 500, isActive: "true" });
   const carOptions = (carsData?.data || []).map((c) => ({
     value: c._id,
-    label: `${c.plateNumber || "—"} - ${c.model}`,
+    label: `${c.plateNumber || "-"} - ${c.model}`,
     disabled: !!c.currentDriver,
   }));
 

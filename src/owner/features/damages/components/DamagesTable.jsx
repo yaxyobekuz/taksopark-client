@@ -6,7 +6,25 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PAYMENT_STATUS } from "@/shared/constants/payments";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import PaymentStatusBadge from "@/shared/components/ui/badge/PaymentStatusBadge";
+import Tooltip from "@/shared/components/ui/tooltip/Tooltip";
 import AttachmentPreview from "@/owner/features/fines/components/AttachmentPreview";
+
+const CarCell = ({ car }) => {
+  if (!car) return "-";
+  const name = car.model || car.plateNumber || "-";
+  const tooltip = (
+    <div className="space-y-0.5 text-xs">
+      {car.model && <div><span className="text-muted-foreground">Nomi:</span> {car.model}</div>}
+      {car.plateNumber && <div><span className="text-muted-foreground">Raqami:</span> {car.plateNumber}</div>}
+      {car.notes && <div><span className="text-muted-foreground">Izoh:</span> {car.notes}</div>}
+    </div>
+  );
+  return (
+    <Tooltip content={tooltip}>
+      <span className="cursor-help underline decoration-dotted underline-offset-4">{name}</span>
+    </Tooltip>
+  );
+};
 
 const DamagesTable = ({ items = [] }) => {
   const { openModal } = useModal();
@@ -33,7 +51,7 @@ const DamagesTable = ({ items = [] }) => {
             <tr key={d._id} className="border-t align-top">
               <td className="p-3">{new Date(d.incidentDate).toLocaleDateString("uz-UZ")}</td>
               <td className="p-3">{d.driver ? `${d.driver.firstName} ${d.driver.lastName}` : "-"}</td>
-              <td className="p-3">{d.car?.plateNumber || "-"}</td>
+              <td className="p-3"><CarCell car={d.car} /></td>
               <td className="p-3 text-right font-medium">{formatMoney(d.amount)}</td>
               <td className="p-3">
                 <PaymentStatusBadge status={d.paymentStatus} paidAmount={d.paidAmount} amount={d.amount} />

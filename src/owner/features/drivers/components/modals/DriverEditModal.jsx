@@ -30,7 +30,7 @@ const DriverEditModal = ({ close, driver }) => {
   const { data: carsData } = useCarsQuery({ limit: 500, isActive: "true" });
   const carOptions = (carsData?.data || []).map((c) => ({
     value: c._id,
-    label: `${c.plateNumber || "—"} - ${c.model}`,
+    label: `${c.plateNumber || "-"} - ${c.model}`,
   }));
 
   const { mutate, isPending } = useDriverUpdate();

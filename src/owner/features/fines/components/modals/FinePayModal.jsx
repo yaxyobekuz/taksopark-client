@@ -106,13 +106,6 @@ const FinePayModal = ({ close, fine }) => {
             onChange={(e) => setField("paidAt", e.target.value)}
             disabled={isPending}
           />
-          <InputField
-            label="Izoh"
-            type="textarea"
-            value={note}
-            onChange={(e) => setField("note", e.target.value)}
-            disabled={isPending}
-          />
           <div className="flex gap-2">
             <Button type="button" variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>
               Yopish
