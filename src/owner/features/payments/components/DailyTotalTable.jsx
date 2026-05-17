@@ -8,7 +8,9 @@ const DailyTotalTable = ({ data }) => {
       <div className="grid grid-cols-2 gap-3 rounded-lg border p-4 bg-white">
         <div>
           <p className="text-xs text-muted-foreground">Jami yig'ilgan</p>
-          <p className="text-xl font-semibold text-primary">{formatMoney(totalAmount)}</p>
+          <p className="text-xl font-semibold text-primary">
+            {formatMoney(totalAmount)}
+          </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground">Jami kutilgan reja</p>
@@ -21,8 +23,7 @@ const DailyTotalTable = ({ data }) => {
           <thead>
             <tr>
               <th className="text-left p-3">Mashina</th>
-              <th className="text-left p-3">Model</th>
-              <th className="text-right p-3">To'lov soni</th>
+              <th className="text-left p-3">Haydovchi</th>
               <th className="text-right p-3">Kutilgan</th>
               <th className="text-right p-3">To'plangan</th>
               <th className="text-right p-3">Qolgan</th>
@@ -31,7 +32,10 @@ const DailyTotalTable = ({ data }) => {
           <tbody>
             {!perCar.length && (
               <tr>
-                <td colSpan={6} className="p-4 text-sm text-muted-foreground text-center">
+                <td
+                  colSpan={5}
+                  className="p-4 text-sm text-muted-foreground text-center"
+                >
                   Bu kun uchun to'lov yo'q
                 </td>
               </tr>
@@ -40,14 +44,19 @@ const DailyTotalTable = ({ data }) => {
               const deficit = Math.max(0, row.expected - row.amount);
               return (
                 <tr key={row.carId} className="border-t">
-                  <td className="p-3 font-medium">{row.plateNumber || "-"}</td>
-                  <td className="p-3">{row.model || "-"}</td>
-                  <td className="p-3 text-right">{row.count}</td>
+                  <td className="p-3">
+                    {row.model || "-"} - {row.plateNumber || "-"}
+                  </td>
+                  <td className="p-3">{row.driverName || "-"}</td>
                   <td className="p-3 text-right text-muted-foreground">
                     {formatMoney(row.expected)}
                   </td>
-                  <td className="p-3 text-right font-medium">{formatMoney(row.amount)}</td>
-                  <td className={`p-3 text-right ${deficit > 0 ? "text-red-600" : ""}`}>
+                  <td className="p-3 text-right font-medium">
+                    {formatMoney(row.amount)}
+                  </td>
+                  <td
+                    className={`p-3 text-right ${deficit > 0 ? "text-red-600" : ""}`}
+                  >
                     {deficit > 0 ? formatMoney(deficit) : "-"}
                   </td>
                 </tr>

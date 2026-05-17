@@ -7,15 +7,14 @@ const PaymentsLayout = () => {
   const { has } = usePermissions();
   const { driverId } = useParams();
 
-  const tabs = [
-    { to: "/owner/payments", label: "Asosiy", exact: true },
-  ];
+  const tabs = [{ to: "/owner/payments", label: "Asosiy", exact: true }];
 
   if (has(PERMISSIONS.REPORTS_READ)) {
     tabs.push(
       { to: "/owner/payments/reports/daily-plan", label: "Kunlik reja" },
-      { to: "/owner/payments/reports/finance", label: "Moliyaviy" },
+      { to: "/owner/payments/reports/finance", label: "Statistika" },
     );
+
     if (driverId) {
       tabs.push({
         to: `/owner/payments/reports/statement/${driverId}`,
