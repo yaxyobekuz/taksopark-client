@@ -51,6 +51,7 @@ export const qk = Object.freeze({
     dailyPlanTotal: (date) => ["reports", "dailyPlanTotal", date],
     finance: (params) => ["reports", "finance", params],
     driverStatement: (driverId, range) => ["reports", "driverStatement", driverId, range],
+    minYear: () => ["reports", "minYear"],
   },
   finePayments: {
     all: () => ["finePayments"],
