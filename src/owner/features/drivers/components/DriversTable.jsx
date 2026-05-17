@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Pencil, Ban, Trash2, ShieldCheck } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
@@ -10,7 +10,6 @@ import WarningBadge from "./WarningBadge";
 
 const STATUS_LABEL = {
   active: { text: "Faol", className: "text-green-600" },
-  blocked: { text: "Bloklangan", className: "text-red-600" },
   archived: { text: "Arxivlangan", className: "text-muted-foreground" },
 };
 
@@ -79,26 +78,6 @@ const DriversTable = ({ items = [] }) => {
                         title="Tahrirlash"
                       >
                         <Pencil size={16} />
-                      </button>
-                    )}
-                    {has(PERMISSIONS.DRIVERS_BLOCK) && d.status === "active" && (
-                      <button
-                        type="button"
-                        onClick={() => openModal(MODAL.DRIVER_BLOCK, { driver: d })}
-                        className="text-muted-foreground hover:text-red-600"
-                        title="Bloklash"
-                      >
-                        <Ban size={16} />
-                      </button>
-                    )}
-                    {has(PERMISSIONS.DRIVERS_BLOCK) && d.status === "blocked" && (
-                      <button
-                        type="button"
-                        onClick={() => openModal(MODAL.DRIVER_UNBLOCK, { driver: d })}
-                        className="text-muted-foreground hover:text-green-600"
-                        title="Blokdan chiqarish"
-                      >
-                        <ShieldCheck size={16} />
                       </button>
                     )}
                     {has(PERMISSIONS.DRIVERS_DELETE) && (

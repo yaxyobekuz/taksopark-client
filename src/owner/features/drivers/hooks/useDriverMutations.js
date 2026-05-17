@@ -36,30 +36,6 @@ export const useDriverUpdate = () => {
   });
 };
 
-export const useDriverBlock = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, reason }) => driversAPI.block(id, reason).then((r) => r.data.data),
-    onSuccess: () => {
-      invalidateAll(qc);
-      toast.success("Haydovchi bloklandi");
-    },
-    onError,
-  });
-};
-
-export const useDriverUnblock = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id) => driversAPI.unblock(id).then((r) => r.data.data),
-    onSuccess: () => {
-      invalidateAll(qc);
-      toast.success("Haydovchi blokdan chiqarildi");
-    },
-    onError,
-  });
-};
-
 export const useDriverRecompute = () => {
   const qc = useQueryClient();
   return useMutation({

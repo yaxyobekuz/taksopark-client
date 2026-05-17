@@ -14,14 +14,11 @@ import { useDriversQuery } from "../hooks/useDriversQuery";
 import DriversTable from "../components/DriversTable";
 import DriverCreateModal from "../components/modals/DriverCreateModal";
 import DriverEditModal from "../components/modals/DriverEditModal";
-import DriverBlockModal from "../components/modals/DriverBlockModal";
-import DriverUnblockModal from "../components/modals/DriverUnblockModal";
 import DriverDeleteModal from "../components/modals/DriverDeleteModal";
 
 const STATUS_OPTIONS = [
   { value: "", label: "Barchasi" },
   { value: "active", label: "Faol" },
-  { value: "blocked", label: "Bloklangan" },
   { value: "archived", label: "Arxivlangan" },
 ];
 
@@ -94,12 +91,6 @@ const DriversListPage = () => {
       </ModalWrapper>
       <ModalWrapper name={MODAL.DRIVER_EDIT} title="Haydovchini tahrirlash" className="max-w-xl">
         <DriverEditModal />
-      </ModalWrapper>
-      <ModalWrapper name={MODAL.DRIVER_BLOCK} title="Haydovchini bloklash">
-        <DriverBlockModal />
-      </ModalWrapper>
-      <ModalWrapper name={MODAL.DRIVER_UNBLOCK} title="Blokdan chiqarish">
-        <DriverUnblockModal />
       </ModalWrapper>
       <ModalWrapper name={MODAL.DRIVER_DELETE} title="Haydovchini arxivlash">
         <DriverDeleteModal />

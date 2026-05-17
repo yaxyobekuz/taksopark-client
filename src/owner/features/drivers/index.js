@@ -9,8 +9,6 @@ export {
 export {
   useDriverCreate,
   useDriverUpdate,
-  useDriverBlock,
-  useDriverUnblock,
   useDriverRecompute,
   useDriverDelete,
 } from "./hooks/useDriverMutations";
