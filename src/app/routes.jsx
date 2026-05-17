@@ -21,8 +21,6 @@ import { LoginPage } from "@/features/auth";
 
 // Role panels
 import { OwnerRoutes } from "@/owner";
-import { TeacherRoutes } from "@/teacher";
-import { StudentRoutes } from "@/student";
 
 const RoleHomeRedirect = () => {
   const { role } = useAuth();
@@ -44,24 +42,6 @@ const Routes = () => (
           element={
             <RoleGuard roles={ROLES.OWNER}>
               <OwnerRoutes />
-            </RoleGuard>
-          }
-        />
-
-        <Route
-          path="/teacher/*"
-          element={
-            <RoleGuard roles={ROLES.TEACHER}>
-              <TeacherRoutes />
-            </RoleGuard>
-          }
-        />
-
-        <Route
-          path="/student/*"
-          element={
-            <RoleGuard roles={ROLES.STUDENT}>
-              <StudentRoutes />
             </RoleGuard>
           }
         />
