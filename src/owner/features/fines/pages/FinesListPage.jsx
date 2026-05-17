@@ -19,10 +19,9 @@ const FinesListPage = () => {
   const [searchParams] = useSearchParams();
   const driverIdParam = searchParams.get("driverId") || "";
 
-  const { page, fromDate, toDate, setField } = useObjectState({
+  const { page, date, setField } = useObjectState({
     page: 1,
-    fromDate: "",
-    toDate: "",
+    date: "",
   });
   const { openModal } = useModal();
   const { has } = usePermissions();
@@ -31,8 +30,8 @@ const FinesListPage = () => {
     page,
     limit: 20,
     driverId: driverIdParam || undefined,
-    fromDate: fromDate || undefined,
-    toDate: toDate || undefined,
+    fromDate: date || undefined,
+    toDate: date || undefined,
   });
   const items = data?.data || [];
   const meta = data?.meta || { pages: 1 };
@@ -48,9 +47,8 @@ const FinesListPage = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <InputField label="Dan" type="date" value={fromDate} onChange={(e) => setField("fromDate", e.target.value)} />
-        <InputField label="Gacha" type="date" value={toDate} onChange={(e) => setField("toDate", e.target.value)} />
+      <div className="max-w-xs">
+        <InputField label="Sana" type="date" value={date} onChange={(e) => setField("date", e.target.value)} />
       </div>
 
       {isLoading ? <p className="text-sm text-muted-foreground">Yuklanmoqda...</p> : <FinesTable items={items} />}

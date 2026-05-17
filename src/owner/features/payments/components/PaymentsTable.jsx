@@ -18,7 +18,6 @@ const PaymentsTable = ({ items = [] }) => {
           <tr>
             <th className="text-left p-3">Sana</th>
             <th className="text-left p-3">Haydovchi</th>
-            <th className="text-left p-3">Mashina</th>
             <th className="text-right p-3">Kutilgan</th>
             <th className="text-right p-3">To'langan</th>
             <th className="text-right p-3">Qolgan</th>
@@ -35,7 +34,6 @@ const PaymentsTable = ({ items = [] }) => {
                 <td className="p-3">
                   {p.driver ? `${p.driver.firstName} ${p.driver.lastName}` : "-"}
                 </td>
-                <td className="p-3">{p.car?.plateNumber || "-"}</td>
                 <td className="p-3 text-right text-muted-foreground">{formatMoney(p.expectedPlan)}</td>
                 <td className="p-3 text-right font-medium">{formatMoney(p.amount)}</td>
                 <td className={`p-3 text-right ${deficit > 0 ? "text-red-600" : ""}`}>
