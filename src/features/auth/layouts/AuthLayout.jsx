@@ -25,7 +25,7 @@ const AuthLayout = () => (
 
         {/* Description */}
         <p className="text-sm text-muted-foreground">
-          App Name tizimiga kirish
+          Taksopark tizimiga kirish
         </p>
       </div>
 
