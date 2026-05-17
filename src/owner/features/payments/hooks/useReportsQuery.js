@@ -21,3 +21,10 @@ export const useDriverStatementQuery = (driverId, range) =>
     queryFn: () => reportsAPI.driverStatement(driverId, range).then((r) => r.data.data),
     enabled: !!driverId,
   });
+
+export const useReportsMinYearQuery = () =>
+  useQuery({
+    queryKey: qk.reports.minYear(),
+    queryFn: () => reportsAPI.minYear().then((r) => r.data.data),
+    staleTime: 1000 * 60 * 60,
+  });

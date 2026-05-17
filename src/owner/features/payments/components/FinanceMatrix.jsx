@@ -58,7 +58,7 @@ const FinanceMatrix = ({ data }) => {
             )}
             {rows.map((row) => (
               <tr key={row.carId} className="border-t">
-                <td className="p-3 font-medium">{row.plateNumber}</td>
+                <td className="p-3 font-medium">{row.model || "-"} - {row.plateNumber || "-"}</td>
                 <td className="p-3">{row.driver || "-"}</td>
                 <td className="p-3 text-right">{formatMoney(row.revenue)}</td>
                 <td className="p-3 text-right">{formatMoney(row.fines)}</td>

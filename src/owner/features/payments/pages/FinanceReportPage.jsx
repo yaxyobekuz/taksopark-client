@@ -1,46 +1,100 @@
+import { useMemo } from "react";
 import useObjectState from "@/shared/hooks/useObjectState";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import { useCarsQuery } from "@/owner/features/cars";
-import { useFinanceReportQuery } from "../hooks/useReportsQuery";
-import DateRangePicker from "../components/DateRangePicker";
+import {
+  useFinanceReportQuery,
+  useReportsMinYearQuery,
+} from "../hooks/useReportsQuery";
 import FinanceMatrix from "../components/FinanceMatrix";
 
-const monthAgo = () => {
-  const d = new Date();
-  d.setMonth(d.getMonth() - 1);
-  return d.toISOString().slice(0, 10);
-};
+const MONTHS = [
+  { value: 1, label: "Yanvar" },
+  { value: 2, label: "Fevral" },
+  { value: 3, label: "Mart" },
+  { value: 4, label: "Aprel" },
+  { value: 5, label: "May" },
+  { value: 6, label: "Iyun" },
+  { value: 7, label: "Iyul" },
+  { value: 8, label: "Avgust" },
+  { value: 9, label: "Sentabr" },
+  { value: 10, label: "Oktabr" },
+  { value: 11, label: "Noyabr" },
+  { value: 12, label: "Dekabr" },
+];
+
+const pad = (n) => String(n).padStart(2, "0");
 
 const FinanceReportPage = () => {
-  const { fromDate, toDate, carId, setField } = useObjectState({
-    fromDate: monthAgo(),
-    toDate: new Date().toISOString().slice(0, 10),
+  const now = new Date();
+  const { month, year, carId, setField } = useObjectState({
+    month: now.getMonth() + 1,
+    year: now.getFullYear(),
     carId: "",
   });
+
   const { data: carsData } = useCarsQuery({ limit: 500 });
+  const { data: minYearData } = useReportsMinYearQuery();
+
   const carOptions = [
     { value: "", label: "Barcha mashinalar" },
-    ...(carsData?.data || []).map((c) => ({ value: c._id, label: `${c.plateNumber} - ${c.model}` })),
+    ...(carsData?.data || []).map((c) => ({
+      value: c._id,
+      label: `${c.plateNumber} - ${c.model}`,
+    })),
   ];
-  const { data, isLoading } = useFinanceReportQuery({ fromDate, toDate, carId: carId || undefined });
+
+  const yearOptions = useMemo(() => {
+    const min = minYearData?.year || now.getFullYear();
+    const max = now.getFullYear();
+    const list = [];
+    for (let y = max; y >= min; y--) list.push({ value: y, label: String(y) });
+    return list;
+  }, [minYearData?.year]);
+
+  const fromDate = `${year}-${pad(month)}-01`;
+  const lastDay = new Date(year, month, 0).getDate();
+  const toDate = `${year}-${pad(month)}-${pad(lastDay)}`;
+
+  const { data, isLoading } = useFinanceReportQuery({
+    fromDate,
+    toDate,
+    carId: carId || undefined,
+  });
 
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        Tanlangan davr uchun har bir mashina bo'yicha daromad, jarima, zarar, oylik va sof foyda.
+        Tanlangan oy uchun har bir mashina bo'yicha daromad, jarima, zarar,
+        oylik va sof foyda.
       </p>
 
-      <DateRangePicker
-        fromDate={fromDate}
-        toDate={toDate}
-        onChangeFrom={(v) => setField("fromDate", v)}
-        onChangeTo={(v) => setField("toDate", v)}
-      />
-      <div className="max-w-md">
-        <SelectField label="Mashina" value={carId} onChange={(v) => setField("carId", v)} options={carOptions} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <SelectField
+          label="Mashina"
+          value={carId}
+          onChange={(v) => setField("carId", v)}
+          options={carOptions}
+        />
+        <SelectField
+          label="Oy"
+          value={month}
+          onChange={(v) => setField("month", Number(v))}
+          options={MONTHS}
+        />
+        <SelectField
+          label="Yil"
+          value={year}
+          onChange={(v) => setField("year", Number(v))}
+          options={yearOptions}
+        />
       </div>
 
-      {isLoading ? <p className="text-sm text-muted-foreground">Yuklanmoqda...</p> : <FinanceMatrix data={data} />}
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>
+      ) : (
+        <FinanceMatrix data={data} />
+      )}
     </div>
   );
 };

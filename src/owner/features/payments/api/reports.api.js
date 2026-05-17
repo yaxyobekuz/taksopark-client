@@ -6,4 +6,5 @@ export const reportsAPI = {
   finance: (params) => http.get(ENDPOINTS.reports.finance, { params }),
   driverStatement: (driverId, params) =>
     http.get(ENDPOINTS.reports.driverStatement(driverId), { params }),
+  minYear: () => http.get(ENDPOINTS.reports.minYear),
 };
