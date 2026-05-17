@@ -54,10 +54,32 @@ export { useUsersQuery } from "./hooks/useUsersQuery";
 ├─ components/              # list, table, card, modals
 │  └─ modals/               # modals using ModalWrapper
 ├─ pages/                   # page files bound to routes
+├─ layouts/                 # (if needed) shared shell with <Outlet/> for nested routes
 ├─ store/                   # (if needed) redux slice
 ├─ utils/                   # feature-specific helpers
 └─ index.js                 # public API
 ```
+
+## Layout rules (strict)
+
+A **layout** is a route component that renders a shared shell (header, tabs, breadcrumbs, ...) and an `<Outlet />` for nested route content. **Never put layouts in `pages/`** — they live in `layouts/`.
+
+Trigger to create a layout:
+- A route has nested children rendered via `<Outlet />`.
+- Multiple sibling pages share tabs, a title bar, or any chrome.
+
+Rules:
+- File name: `<Feature>Layout.jsx` (e.g. `PaymentsLayout.jsx`, `PenaltiesLayout.jsx`) — never `*HubPage.jsx`, never `*ContainerPage.jsx`.
+- Folder: `<feature>/layouts/`.
+- Export: from `<feature>/index.js` as `{ default as <Feature>Layout }`.
+- Use as the parent `element` in `routes/index.jsx`:
+  ```jsx
+  <Route path="payments" element={<PaymentsLayout />}>
+    <Route index element={<PaymentsListPage />} />
+    <Route path="reports/finance" element={<FinanceReportPage />} />
+  </Route>
+  ```
+- Pages rendered inside a layout must NOT repeat the shared chrome (no duplicate `<h1>`, no duplicate tabs).
 
 ## Roles and protection
 
