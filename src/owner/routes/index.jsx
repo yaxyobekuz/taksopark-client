@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useParams } from "react-router-dom";
 
 import PermissionGuard from "@/shared/components/guards/PermissionGuard";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -6,16 +6,25 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import DashboardPage from "@/owner/pages/DashboardPage";
 import { CarsListPage } from "@/owner/features/cars";
 import { DriversListPage, DriverDetailPage } from "@/owner/features/drivers";
-import { PaymentsListPage } from "@/owner/features/payments";
-import { FinesListPage } from "@/owner/features/fines";
-import { DamagesListPage } from "@/owner/features/damages";
-import { CyclesListPage } from "@/owner/features/cycles";
-import { TransactionsListPage } from "@/owner/features/transactions";
 import {
+  PaymentsLayout,
+  PaymentsListPage,
   DailyPlanReportPage,
   FinanceReportPage,
   DriverStatementPage,
-} from "@/owner/features/reports";
+} from "@/owner/features/payments";
+import {
+  PenaltiesLayout,
+  FinesListPage,
+  DamagesListPage,
+} from "@/owner/features/penalties";
+import { CyclesListPage } from "@/owner/features/cycles";
+import { TransactionsListPage } from "@/owner/features/transactions";
+
+const NavigateStatement = () => {
+  const { driverId } = useParams();
+  return <Navigate to={`/owner/payments/reports/statement/${driverId}`} replace />;
+};
 
 const OwnerRoutes = () => (
   <Routes>
@@ -52,28 +61,47 @@ const OwnerRoutes = () => (
       path="payments"
       element={
         <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
-          <PaymentsListPage />
+          <PaymentsLayout />
         </PermissionGuard>
       }
-    />
+    >
+      <Route index element={<PaymentsListPage />} />
+      <Route
+        path="reports"
+        element={
+          <PermissionGuard required={PERMISSIONS.REPORTS_READ}>
+            <Outlet />
+          </PermissionGuard>
+        }
+      >
+        <Route index element={<Navigate to="daily-plan" replace />} />
+        <Route path="daily-plan" element={<DailyPlanReportPage />} />
+        <Route path="finance" element={<FinanceReportPage />} />
+        <Route path="statement/:driverId" element={<DriverStatementPage />} />
+      </Route>
+    </Route>
 
     <Route
-      path="fines"
+      path="penalties"
       element={
         <PermissionGuard required={PERMISSIONS.FINES_READ}>
-          <FinesListPage />
+          <PenaltiesLayout />
         </PermissionGuard>
       }
-    />
+    >
+      <Route index element={<FinesListPage />} />
+      <Route
+        path="damages"
+        element={
+          <PermissionGuard required={PERMISSIONS.DAMAGES_READ}>
+            <DamagesListPage />
+          </PermissionGuard>
+        }
+      />
+    </Route>
 
-    <Route
-      path="damages"
-      element={
-        <PermissionGuard required={PERMISSIONS.DAMAGES_READ}>
-          <DamagesListPage />
-        </PermissionGuard>
-      }
-    />
+    <Route path="fines" element={<Navigate to="/owner/penalties" replace />} />
+    <Route path="damages" element={<Navigate to="/owner/penalties/damages" replace />} />
 
     <Route
       path="cycles"
@@ -93,19 +121,10 @@ const OwnerRoutes = () => (
       }
     />
 
-    <Route
-      path="reports"
-      element={
-        <PermissionGuard required={PERMISSIONS.REPORTS_READ}>
-          <Outlet />
-        </PermissionGuard>
-      }
-    >
-      <Route index element={<Navigate to="daily-plan" replace />} />
-      <Route path="daily-plan" element={<DailyPlanReportPage />} />
-      <Route path="finance" element={<FinanceReportPage />} />
-      <Route path="statement/:driverId" element={<DriverStatementPage />} />
-    </Route>
+    <Route path="reports" element={<Navigate to="/owner/payments/reports" replace />} />
+    <Route path="reports/daily-plan" element={<Navigate to="/owner/payments/reports/daily-plan" replace />} />
+    <Route path="reports/finance" element={<Navigate to="/owner/payments/reports/finance" replace />} />
+    <Route path="reports/statement/:driverId" element={<NavigateStatement />} />
 
     <Route path="*" element={<Navigate to="dashboard" replace />} />
   </Routes>
