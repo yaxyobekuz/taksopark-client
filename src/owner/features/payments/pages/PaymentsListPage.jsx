@@ -38,16 +38,15 @@ const PaymentsListPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-end gap-4">
+      <div className="flex items-end justify-between gap-4">
+        <div className="max-w-xs flex-1">
+          <InputField label="Sana" type="date" value={date} onChange={(e) => setField("date", e.target.value)} />
+        </div>
         {has(PERMISSIONS.PAYMENTS_CREATE) && (
           <Button onClick={() => openModal(MODAL.PAYMENT_CREATE, { presetDriverId: driverIdParam })}>
             <Plus size={16} className="mr-2" /> Yangi to'lov
           </Button>
         )}
-      </div>
-
-      <div className="max-w-xs">
-        <InputField label="Sana" type="date" value={date} onChange={(e) => setField("date", e.target.value)} />
       </div>
 
       {isLoading ? <p className="text-sm text-muted-foreground">Yuklanmoqda...</p> : <PaymentsTable items={items} />}
