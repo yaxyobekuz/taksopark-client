@@ -1,21 +1,33 @@
+import { Wallet, Target, AlertCircle } from "lucide-react";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import StatCard from "@/shared/components/ui/card/StatCard";
 
 const DailyTotalTable = ({ data }) => {
   if (!data) return null;
   const { perCar = [], totalAmount, totalExpected } = data;
+  const totalRemaining = Math.max(0, totalExpected - totalAmount);
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-2 gap-3 rounded-lg border p-4 bg-white">
-        <div>
-          <p className="text-xs text-muted-foreground">Jami yig'ilgan</p>
-          <p className="text-xl font-semibold text-primary">
-            {formatMoney(totalAmount)}
-          </p>
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">Jami kutilgan reja</p>
-          <p className="text-xl font-semibold">{formatMoney(totalExpected)}</p>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <StatCard
+          label="Jami yig'ilgan"
+          value={totalAmount}
+          icon={Wallet}
+          isMoney
+        />
+        <StatCard
+          label="Jami kutilgan reja"
+          value={totalExpected}
+          icon={Target}
+          isMoney
+        />
+        <StatCard
+          label="Jami qolgan"
+          value={totalRemaining}
+          icon={AlertCircle}
+          tone={totalRemaining > 0 ? "warn" : "default"}
+          isMoney
+        />
       </div>
 
       <div className="overflow-x-auto rounded-lg border">
@@ -25,7 +37,7 @@ const DailyTotalTable = ({ data }) => {
               <th className="text-left p-3">Mashina</th>
               <th className="text-left p-3">Haydovchi</th>
               <th className="text-right p-3">Kutilgan</th>
-              <th className="text-right p-3">To'plangan</th>
+              <th className="text-right p-3">Yig'ilgan</th>
               <th className="text-right p-3">Qolgan</th>
             </tr>
           </thead>
