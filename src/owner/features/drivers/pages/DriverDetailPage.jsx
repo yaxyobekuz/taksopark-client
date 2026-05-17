@@ -78,7 +78,7 @@ const DriverDetailPage = () => {
         <Link to={`/owner/cycles?driverId=${driver._id}`} className="text-primary hover:underline">
           Tsikllar
         </Link>
-        <Link to={`/owner/reports/statement/${driver._id}`} className="text-primary hover:underline">
+        <Link to={`/owner/payments/reports/statement/${driver._id}`} className="text-primary hover:underline">
           Hisobot
         </Link>
       </div>
