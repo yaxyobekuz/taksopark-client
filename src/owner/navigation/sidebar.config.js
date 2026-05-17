@@ -5,9 +5,7 @@ import {
   Users,
   BadgeDollarSign,
   AlertTriangle,
-  ShieldAlert,
   CalendarRange,
-  BarChart3,
   ArrowLeftRight,
 } from "lucide-react";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -31,6 +29,12 @@ const ownerSidebar = [
         permission: PERMISSIONS.CARS_READ,
         icon: Car,
       },
+      {
+        title: "Jarima & Zarar",
+        url: "/owner/penalties",
+        permission: PERMISSIONS.FINES_READ,
+        icon: AlertTriangle,
+      },
     ],
   },
   {
@@ -39,7 +43,7 @@ const ownerSidebar = [
     isActive: true,
     items: [
       {
-        title: "Kunlik to'lovlar",
+        title: "To'lovlar",
         url: "/owner/payments",
         permission: PERMISSIONS.PAYMENTS_READ,
         icon: BadgeDollarSign,
@@ -55,31 +59,6 @@ const ownerSidebar = [
         url: "/owner/transactions",
         permission: PERMISSIONS.TRANSACTIONS_READ,
         icon: ArrowLeftRight,
-      },
-      {
-        title: "Hisobotlar",
-        url: "/owner/reports",
-        permission: PERMISSIONS.REPORTS_READ,
-        icon: BarChart3,
-      },
-    ],
-  },
-  {
-    title: "Jarima & Zarar",
-    icon: Wallet,
-    isActive: true,
-    items: [
-      {
-        title: "Jarimalar",
-        url: "/owner/fines",
-        permission: PERMISSIONS.FINES_READ,
-        icon: AlertTriangle,
-      },
-      {
-        title: "Zararlar",
-        url: "/owner/damages",
-        permission: PERMISSIONS.DAMAGES_READ,
-        icon: ShieldAlert,
       },
     ],
   },
