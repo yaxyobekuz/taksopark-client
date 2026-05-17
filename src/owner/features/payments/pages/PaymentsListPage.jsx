@@ -38,8 +38,7 @@ const PaymentsListPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Kunlik to'lovlar</h1>
+      <div className="flex items-center justify-end gap-4">
         {has(PERMISSIONS.PAYMENTS_CREATE) && (
           <Button onClick={() => openModal(MODAL.PAYMENT_CREATE, { presetDriverId: driverIdParam })}>
             <Plus size={16} className="mr-2" /> Yangi to'lov
