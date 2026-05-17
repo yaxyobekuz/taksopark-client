@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Wallet, Users, Ban, AlertTriangle, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+import { Wallet, Users, AlertTriangle, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { usePaymentTodayTotalQuery } from "@/owner/features/payments";
@@ -11,12 +11,10 @@ const today = new Date().toISOString().slice(0, 10);
 const DashboardPage = () => {
   const { data: todayTotal } = usePaymentTodayTotalQuery(today);
   const { data: activeDriversData } = useDriversQuery({ status: "active", limit: 1 });
-  const { data: blockedDriversData } = useDriversQuery({ status: "blocked", limit: 1 });
   const { data: warnings } = useDriverWarningsQuery();
   const { data: todaySummary } = useTransactionsSummaryQuery({ fromDate: today, toDate: today });
 
   const activeCount = activeDriversData?.meta?.total ?? 0;
-  const blockedCount = blockedDriversData?.meta?.total ?? 0;
 
   const depositLow = warnings?.depositLow || [];
   const depositEmpty = warnings?.depositEmpty || [];
@@ -29,7 +27,7 @@ const DashboardPage = () => {
         <p className="text-sm text-muted-foreground">Bugun: {new Date().toLocaleDateString("uz-UZ")}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <StatCard
           label="Bugungi to'plangan"
           value={todayTotal?.totalAmount || 0}
@@ -45,12 +43,6 @@ const DashboardPage = () => {
           icon={Wallet}
         />
         <StatCard label="Faol haydovchilar" value={activeCount} tone="default" icon={Users} />
-        <StatCard
-          label="Bloklangan haydovchilar"
-          value={blockedCount}
-          tone={blockedCount > 0 ? "warn" : "default"}
-          icon={Ban}
-        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
