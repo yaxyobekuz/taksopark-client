@@ -7,7 +7,6 @@ export const PERMISSIONS = Object.freeze({
   DRIVERS_CREATE: "drivers.create",
   DRIVERS_UPDATE: "drivers.update",
   DRIVERS_DELETE: "drivers.delete",
-  DRIVERS_BLOCK: "drivers.block",
 
   CARS_READ: "cars.read",
   CARS_CREATE: "cars.create",

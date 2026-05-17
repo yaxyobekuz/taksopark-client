@@ -23,8 +23,6 @@ export const ENDPOINTS = Object.freeze({
     base: "/drivers",
     byId: (id) => `/drivers/${id}`,
     balance: (id) => `/drivers/${id}/balance`,
-    block: (id) => `/drivers/${id}/block`,
-    unblock: (id) => `/drivers/${id}/unblock`,
     recompute: (id) => `/drivers/${id}/recompute`,
     warnings: "/drivers/warnings",
   },
