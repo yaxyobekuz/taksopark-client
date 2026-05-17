@@ -15,4 +15,56 @@ export const ENDPOINTS = Object.freeze({
     byId: (id) => `/activity-logs/${id}`,
     stats: "/activity-logs/stats",
   },
+  cars: {
+    base: "/cars",
+    byId: (id) => `/cars/${id}`,
+  },
+  drivers: {
+    base: "/drivers",
+    byId: (id) => `/drivers/${id}`,
+    balance: (id) => `/drivers/${id}/balance`,
+    block: (id) => `/drivers/${id}/block`,
+    unblock: (id) => `/drivers/${id}/unblock`,
+    recompute: (id) => `/drivers/${id}/recompute`,
+    warnings: "/drivers/warnings",
+  },
+  payments: {
+    base: "/payments",
+    byId: (id) => `/payments/${id}`,
+    todayTotal: "/payments/today-total",
+  },
+  fines: {
+    base: "/fines",
+    byId: (id) => `/fines/${id}`,
+  },
+  damages: {
+    base: "/damages",
+    byId: (id) => `/damages/${id}`,
+  },
+  cycles: {
+    base: "/cycles",
+    byId: (id) => `/cycles/${id}`,
+    currentForDriver: (driverId) => `/cycles/driver/${driverId}/current`,
+    settle: (id) => `/cycles/${id}/settle`,
+  },
+  reports: {
+    dailyPlanTotal: "/reports/daily-plan-total",
+    finance: "/reports/finance",
+    driverStatement: (driverId) => `/reports/driver-statement/${driverId}`,
+  },
+  finePayments: {
+    base: "/fine-payments",
+    byId: (id) => `/fine-payments/${id}`,
+    byFine: (fineId) => `/fine-payments/by-fine/${fineId}`,
+  },
+  damagePayments: {
+    base: "/damage-payments",
+    byId: (id) => `/damage-payments/${id}`,
+    byDamage: (damageId) => `/damage-payments/by-damage/${damageId}`,
+  },
+  transactions: {
+    base: "/transactions",
+    byId: (id) => `/transactions/${id}`,
+    summary: "/transactions/summary",
+  },
 });
