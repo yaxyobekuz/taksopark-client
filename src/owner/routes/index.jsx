@@ -1,17 +1,24 @@
-import { Routes, Route, Navigate, Outlet, useParams } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import PermissionGuard from "@/shared/components/guards/PermissionGuard";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
 import DashboardPage from "@/owner/pages/DashboardPage";
 import { CarsListPage, CarDetailPage } from "@/owner/features/cars";
-import { DriversListPage, DriverDetailPage } from "@/owner/features/drivers";
+import {
+  DriversListPage,
+  DriverDetailLayout,
+  DriverOverviewPage,
+  DriverPaymentsPage,
+  DriverFinesPage,
+  DriverDamagesPage,
+  DriverCyclesPage,
+} from "@/owner/features/drivers";
 import {
   PaymentsLayout,
   PaymentsListPage,
   DailyPlanReportPage,
   FinanceReportPage,
-  DriverStatementPage,
 } from "@/owner/features/payments";
 import {
   PenaltiesLayout,
@@ -20,11 +27,6 @@ import {
 } from "@/owner/features/penalties";
 import { CyclesListPage } from "@/owner/features/cycles";
 import { TransactionsListPage } from "@/owner/features/transactions";
-
-const NavigateStatement = () => {
-  const { driverId } = useParams();
-  return <Navigate to={`/owner/payments/reports/statement/${driverId}`} replace />;
-};
 
 const OwnerRoutes = () => (
   <Routes>
@@ -60,10 +62,44 @@ const OwnerRoutes = () => (
       path="drivers/:id"
       element={
         <PermissionGuard required={PERMISSIONS.DRIVERS_READ}>
-          <DriverDetailPage />
+          <DriverDetailLayout />
         </PermissionGuard>
       }
-    />
+    >
+      <Route index element={<DriverOverviewPage />} />
+      <Route
+        path="payments"
+        element={
+          <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
+            <DriverPaymentsPage />
+          </PermissionGuard>
+        }
+      />
+      <Route
+        path="fines"
+        element={
+          <PermissionGuard required={PERMISSIONS.FINES_READ}>
+            <DriverFinesPage />
+          </PermissionGuard>
+        }
+      />
+      <Route
+        path="damages"
+        element={
+          <PermissionGuard required={PERMISSIONS.DAMAGES_READ}>
+            <DriverDamagesPage />
+          </PermissionGuard>
+        }
+      />
+      <Route
+        path="cycles"
+        element={
+          <PermissionGuard required={PERMISSIONS.CYCLES_READ}>
+            <DriverCyclesPage />
+          </PermissionGuard>
+        }
+      />
+    </Route>
 
     <Route
       path="payments"
@@ -85,7 +121,6 @@ const OwnerRoutes = () => (
         <Route index element={<Navigate to="daily-plan" replace />} />
         <Route path="daily-plan" element={<DailyPlanReportPage />} />
         <Route path="finance" element={<FinanceReportPage />} />
-        <Route path="statement/:driverId" element={<DriverStatementPage />} />
       </Route>
     </Route>
 
@@ -132,7 +167,6 @@ const OwnerRoutes = () => (
     <Route path="reports" element={<Navigate to="/owner/payments/reports" replace />} />
     <Route path="reports/daily-plan" element={<Navigate to="/owner/payments/reports/daily-plan" replace />} />
     <Route path="reports/finance" element={<Navigate to="/owner/payments/reports/finance" replace />} />
-    <Route path="reports/statement/:driverId" element={<NavigateStatement />} />
 
     <Route path="*" element={<Navigate to="dashboard" replace />} />
   </Routes>
