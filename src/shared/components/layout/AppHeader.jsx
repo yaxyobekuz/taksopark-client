@@ -10,7 +10,7 @@ import { logoIcon } from "@/shared/assets/icons";
 const AppHeader = () => {
   const { toggleSidebar } = useSidebar();
   return (
-    <header className="flex items-center justify-between h-12 container sticky top-0 z-30 bg-background shadow-sm md:hidden">
+    <header className="flex items-center justify-between h-12 container sticky top-0 z-30 bg-white shadow-sm md:hidden">
       <button onClick={toggleSidebar} className="size-7">
         <TextAlignJustify strokeWidth={1.5} className="size-5" />
       </button>
