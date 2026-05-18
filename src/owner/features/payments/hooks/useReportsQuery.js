@@ -15,13 +15,6 @@ export const useFinanceReportQuery = (params, enabled = true) =>
     enabled: enabled && !!params.fromDate && !!params.toDate,
   });
 
-export const useDriverStatementQuery = (driverId, range) =>
-  useQuery({
-    queryKey: qk.reports.driverStatement(driverId, range),
-    queryFn: () => reportsAPI.driverStatement(driverId, range).then((r) => r.data.data),
-    enabled: !!driverId,
-  });
-
 export const useReportsMinYearQuery = () =>
   useQuery({
     queryKey: qk.reports.minYear(),

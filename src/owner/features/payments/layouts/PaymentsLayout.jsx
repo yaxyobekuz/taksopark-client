@@ -1,11 +1,10 @@
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import usePermissions from "@/shared/hooks/usePermissions";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
 const PaymentsLayout = () => {
   const { has } = usePermissions();
-  const { driverId } = useParams();
 
   const tabs = [{ to: "/owner/payments", label: "Asosiy", exact: true }];
 
@@ -14,13 +13,6 @@ const PaymentsLayout = () => {
       { to: "/owner/payments/reports/daily-plan", label: "Kunlik reja" },
       { to: "/owner/payments/reports/finance", label: "Statistika" },
     );
-
-    if (driverId) {
-      tabs.push({
-        to: `/owner/payments/reports/statement/${driverId}`,
-        label: "Haydovchi hisoboti",
-      });
-    }
   }
 
   return (
