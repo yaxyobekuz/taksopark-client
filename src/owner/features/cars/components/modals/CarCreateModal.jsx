@@ -4,10 +4,21 @@ import Button from "@/shared/components/ui/button/Button";
 import { useCarCreate } from "../../hooks/useCarMutations";
 
 const CarCreateModal = ({ close }) => {
-  const { plateNumber, model, notes, setField, state, resetState } = useObjectState({
+  const {
+    plateNumber,
+    model,
+    notes,
+    licenseExpiryDate,
+    powerOfAttorneyExpiryDate,
+    setField,
+    state,
+    resetState,
+  } = useObjectState({
     plateNumber: "",
     model: "",
     notes: "",
+    licenseExpiryDate: "",
+    powerOfAttorneyExpiryDate: "",
   });
   const { mutate, isPending } = useCarCreate();
 
@@ -39,6 +50,22 @@ const CarCreateModal = ({ close }) => {
         placeholder="01A001AA  "
         disabled={isPending}
       />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <InputField
+          label="Litsenziya muddati"
+          type="date"
+          value={licenseExpiryDate}
+          onChange={(e) => setField("licenseExpiryDate", e.target.value)}
+          disabled={isPending}
+        />
+        <InputField
+          label="Dovernost muddati"
+          type="date"
+          value={powerOfAttorneyExpiryDate}
+          onChange={(e) => setField("powerOfAttorneyExpiryDate", e.target.value)}
+          disabled={isPending}
+        />
+      </div>
       <InputField
         label="Izoh"
         type="textarea"

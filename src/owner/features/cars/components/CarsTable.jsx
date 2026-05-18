@@ -1,8 +1,23 @@
+import { Link } from "react-router-dom";
 import { Pencil, Trash2 } from "lucide-react";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { formatDateUZ } from "@/shared/utils/date.utils";
+import { getExpiryStatus } from "../utils/expiryStatus";
+
+const ExpiryCell = ({ date }) => {
+  const status = getExpiryStatus(date);
+  if (status === "unset") return <span className="text-muted-foreground">-</span>;
+  const cls =
+    status === "expired"
+      ? "text-red-600 font-medium"
+      : status === "expiring_soon"
+        ? "text-amber-600 font-medium"
+        : "text-foreground";
+  return <span className={cls}>{formatDateUZ(date)}</span>;
+};
 
 const CarsTable = ({ items = [] }) => {
   const { openModal } = useModal();
@@ -19,7 +34,8 @@ const CarsTable = ({ items = [] }) => {
           <tr>
             <th className="text-left p-3">Davlat raqami</th>
             <th className="text-left p-3">Model</th>
-            <th className="text-left p-3">Izoh</th>
+            <th className="text-left p-3">Litsenziya</th>
+            <th className="text-left p-3">Dovernost</th>
             <th className="text-left p-3">Haydovchi</th>
             <th className="text-left p-3">Holat</th>
             <th className="text-right p-3">Amallar</th>
@@ -28,9 +44,18 @@ const CarsTable = ({ items = [] }) => {
         <tbody>
           {items.map((car) => (
             <tr key={car._id} className="border-t">
-              <td className="p-3 font-medium">{car.plateNumber || "-"}</td>
-              <td className="p-3">{car.model}</td>
-              <td className="p-3 text-muted-foreground">{car.notes || "-"}</td>
+              <td className="p-3 font-medium">
+                <Link to={`/owner/cars/${car._id}`} className="hover:text-primary">
+                  {car.plateNumber || "-"}
+                </Link>
+              </td>
+              <td className="p-3">
+                <Link to={`/owner/cars/${car._id}`} className="hover:text-primary">
+                  {car.model}
+                </Link>
+              </td>
+              <td className="p-3"><ExpiryCell date={car.licenseExpiryDate} /></td>
+              <td className="p-3"><ExpiryCell date={car.powerOfAttorneyExpiryDate} /></td>
               <td className="p-3">
                 {car.currentDriver
                   ? `${car.currentDriver.firstName} ${car.currentDriver.lastName}`

@@ -4,11 +4,25 @@ import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
 import { useCarUpdate } from "../../hooks/useCarMutations";
 
+const toDateInput = (date) =>
+  date ? new Date(date).toISOString().slice(0, 10) : "";
+
 const CarEditModal = ({ close, car }) => {
-  const { plateNumber, model, notes, setField, setFields, state } = useObjectState({
+  const {
+    plateNumber,
+    model,
+    notes,
+    licenseExpiryDate,
+    powerOfAttorneyExpiryDate,
+    setField,
+    setFields,
+    state,
+  } = useObjectState({
     plateNumber: car?.plateNumber || "",
     model: car?.model || "",
     notes: car?.notes || "",
+    licenseExpiryDate: toDateInput(car?.licenseExpiryDate),
+    powerOfAttorneyExpiryDate: toDateInput(car?.powerOfAttorneyExpiryDate),
   });
 
   useEffect(() => {
@@ -17,6 +31,8 @@ const CarEditModal = ({ close, car }) => {
       plateNumber: car.plateNumber || "",
       model: car.model || "",
       notes: car.notes || "",
+      licenseExpiryDate: toDateInput(car.licenseExpiryDate),
+      powerOfAttorneyExpiryDate: toDateInput(car.powerOfAttorneyExpiryDate),
     });
   }, [car]);
 
@@ -45,6 +61,22 @@ const CarEditModal = ({ close, car }) => {
         placeholder="01A001AA  "
         disabled={isPending}
       />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <InputField
+          label="Litsenziya muddati"
+          type="date"
+          value={licenseExpiryDate}
+          onChange={(e) => setField("licenseExpiryDate", e.target.value)}
+          disabled={isPending}
+        />
+        <InputField
+          label="Dovernost muddati"
+          type="date"
+          value={powerOfAttorneyExpiryDate}
+          onChange={(e) => setField("powerOfAttorneyExpiryDate", e.target.value)}
+          disabled={isPending}
+        />
+      </div>
       <InputField
         label="Izoh"
         type="textarea"
