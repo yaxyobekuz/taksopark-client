@@ -1,24 +1,33 @@
+import Card from "@/shared/components/ui/card/Card";
 import { formatMoney } from "@/shared/utils/formatMoney";
-import { TARIFFS, TARIFF_LABELS } from "@/shared/constants/tariffs";
+import {
+  TARIFFS,
+  TARIFF_LABELS,
+  TARIFF_TEXT_CLASS,
+} from "@/shared/constants/tariffs";
 import WarningBadge from "./WarningBadge";
 
 const DriverBalancePanel = ({ balance, isLoading }) => {
-  if (isLoading) return <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>;
+  if (isLoading)
+    return <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>;
   if (!balance) return null;
 
   const { tariff, phase, deposit, cycle, warnings = [] } = balance;
 
   return (
-    <div className="rounded-lg border p-4 space-y-3 bg-white">
+    <Card className="space-y-3" title="Balans va Tarif">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-muted-foreground">Tarif</p>
-          <p className="font-semibold">{TARIFF_LABELS[tariff] || tariff}</p>
+          <p className={`font-semibold ${TARIFF_TEXT_CLASS[tariff] || ""}`}>
+            {TARIFF_LABELS[tariff] || tariff}
+          </p>
         </div>
         {phase?.phase && (
           <span className="text-xs px-2 py-1 rounded bg-muted">
             {phase.phase === "deposit" && "Depozit"}
-            {phase.phase === "trial" && `Sinov (${phase.trialDaysLeft} kun qoldi)`}
+            {phase.phase === "trial" &&
+              `Sinov (${phase.trialDaysLeft} kun qoldi)`}
             {phase.phase === "salary" && "Oylik"}
           </span>
         )}
@@ -27,12 +36,16 @@ const DriverBalancePanel = ({ balance, isLoading }) => {
       {tariff === TARIFFS.DEPOSIT && deposit && (
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <p className="text-xs text-muted-foreground">Boshlang'ich depozit</p>
+            <p className="text-xs text-muted-foreground">
+              Boshlang'ich depozit
+            </p>
             <p className="font-semibold">{formatMoney(deposit.initial)}</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground">Qolgan depozit</p>
-            <p className="font-semibold text-primary">{formatMoney(deposit.remaining)}</p>
+            <p className="font-semibold text-primary">
+              {formatMoney(deposit.remaining)}
+            </p>
           </div>
         </div>
       )}
@@ -66,7 +79,9 @@ const DriverBalancePanel = ({ balance, isLoading }) => {
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Beriladigan oylik</p>
-              <p className="font-semibold text-primary">{formatMoney(cycle.payout)}</p>
+              <p className="font-semibold text-primary">
+                {formatMoney(cycle.payout)}
+              </p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Qarz</p>
@@ -85,7 +100,7 @@ const DriverBalancePanel = ({ balance, isLoading }) => {
           ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

@@ -10,6 +10,11 @@ export const TARIFF_LABELS = Object.freeze({
   [TARIFFS.NO_DEPOSIT]: "Depozitsiz",
 });
 
+export const TARIFF_TEXT_CLASS = Object.freeze({
+  [TARIFFS.DEPOSIT]: "text-blue-600 font-medium",
+  [TARIFFS.NO_DEPOSIT]: "text-amber-600 font-medium",
+});
+
 export const TARIFF_CONFIG = Object.freeze({
   [TARIFFS.DEPOSIT]: {
     depositInitial: 2_500_000,
