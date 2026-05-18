@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
-import { Wallet, Users, AlertTriangle, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+import { Wallet, Users, AlertTriangle, ArrowDownCircle, ArrowUpCircle, CalendarClock } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import { usePaymentTodayTotalQuery } from "@/owner/features/payments";
 import { useDriversQuery, useDriverWarningsQuery } from "@/owner/features/drivers";
 import { useTransactionsSummaryQuery } from "@/owner/features/transactions";
+import { useCarsExpiringQuery } from "@/owner/features/cars";
+import { getDaysLeft } from "@/owner/features/cars/utils/expiryStatus";
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -13,6 +16,7 @@ const DashboardPage = () => {
   const { data: activeDriversData } = useDriversQuery({ status: "active", limit: 1 });
   const { data: warnings } = useDriverWarningsQuery();
   const { data: todaySummary } = useTransactionsSummaryQuery({ fromDate: today, toDate: today });
+  const { data: expiringCars = [] } = useCarsExpiringQuery({ limit: 5, days: 30 });
 
   const activeCount = activeDriversData?.meta?.total ?? 0;
 
@@ -132,6 +136,42 @@ const DashboardPage = () => {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {expiringCars.length > 0 && (
+        <div className="rounded-lg border-l-4 border-red-400 bg-red-50 p-4 space-y-2">
+          <div className="flex items-center gap-2 font-semibold text-red-800">
+            <CalendarClock size={18} />
+            Muddati tugayotgan mashinalar
+          </div>
+          <div className="text-sm space-y-1">
+            {expiringCars.map((car) => {
+              const candidates = [
+                car.licenseExpiryDate && { label: "Litsenziya", date: car.licenseExpiryDate },
+                car.powerOfAttorneyExpiryDate && { label: "Dovernost", date: car.powerOfAttorneyExpiryDate },
+              ].filter(Boolean);
+              const soonest = candidates.sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+              const days = getDaysLeft(soonest.date);
+              const expired = days < 0;
+              return (
+                <Link
+                  key={car._id}
+                  to={`/owner/cars/${car._id}`}
+                  className="block text-muted-foreground hover:text-primary"
+                >
+                  <span className="font-medium text-foreground">{car.model}</span>
+                  {" - "}
+                  {car.plateNumber || "-"}
+                  {" - "}
+                  {soonest.label}: {formatDateUZ(soonest.date)}{" "}
+                  <span className={expired ? "text-red-600 font-medium" : "text-amber-700"}>
+                    ({expired ? `${-days} kun o'tgan` : `${days} kun qoldi`})
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

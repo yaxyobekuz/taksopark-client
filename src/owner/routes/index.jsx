@@ -4,7 +4,7 @@ import PermissionGuard from "@/shared/components/guards/PermissionGuard";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
 import DashboardPage from "@/owner/pages/DashboardPage";
-import { CarsListPage } from "@/owner/features/cars";
+import { CarsListPage, CarDetailPage } from "@/owner/features/cars";
 import { DriversListPage, DriverDetailPage } from "@/owner/features/drivers";
 import {
   PaymentsLayout,
@@ -36,6 +36,14 @@ const OwnerRoutes = () => (
       element={
         <PermissionGuard required={PERMISSIONS.CARS_READ}>
           <CarsListPage />
+        </PermissionGuard>
+      }
+    />
+    <Route
+      path="cars/:id"
+      element={
+        <PermissionGuard required={PERMISSIONS.CARS_READ}>
+          <CarDetailPage />
         </PermissionGuard>
       }
     />
