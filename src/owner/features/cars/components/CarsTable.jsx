@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2 } from "lucide-react";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
@@ -19,7 +19,10 @@ const ExpiryCell = ({ date }) => {
   return <span className={cls}>{formatDateUZ(date)}</span>;
 };
 
+const stop = (e) => e.stopPropagation();
+
 const CarsTable = ({ items = [] }) => {
+  const navigate = useNavigate();
   const { openModal } = useModal();
   const { has } = usePermissions();
 
@@ -37,23 +40,18 @@ const CarsTable = ({ items = [] }) => {
             <th className="text-left p-3">Litsenziya</th>
             <th className="text-left p-3">Dovernost</th>
             <th className="text-left p-3">Haydovchi</th>
-            <th className="text-left p-3">Holat</th>
             <th className="text-right p-3">Amallar</th>
           </tr>
         </thead>
         <tbody>
           {items.map((car) => (
-            <tr key={car._id} className="border-t">
-              <td className="p-3 font-medium">
-                <Link to={`/owner/cars/${car._id}`} className="hover:text-primary">
-                  {car.plateNumber || "-"}
-                </Link>
-              </td>
-              <td className="p-3">
-                <Link to={`/owner/cars/${car._id}`} className="hover:text-primary">
-                  {car.model}
-                </Link>
-              </td>
+            <tr
+              key={car._id}
+              onClick={() => navigate(`/owner/cars/${car._id}`)}
+              className="border-t cursor-pointer hover:bg-muted/50"
+            >
+              <td className="p-3 font-medium">{car.plateNumber || "-"}</td>
+              <td className="p-3">{car.model}</td>
               <td className="p-3"><ExpiryCell date={car.licenseExpiryDate} /></td>
               <td className="p-3"><ExpiryCell date={car.powerOfAttorneyExpiryDate} /></td>
               <td className="p-3">
@@ -61,18 +59,7 @@ const CarsTable = ({ items = [] }) => {
                   ? `${car.currentDriver.firstName} ${car.currentDriver.lastName}`
                   : "-"}
               </td>
-              <td className="p-3">
-                <span
-                  className={
-                    car.isActive
-                      ? "text-green-600"
-                      : "text-muted-foreground"
-                  }
-                >
-                  {car.isActive ? "Faol" : "Faol emas"}
-                </span>
-              </td>
-              <td className="p-3">
+              <td className="p-3" onClick={stop}>
                 <div className="flex justify-end gap-2">
                   {has(PERMISSIONS.CARS_UPDATE) && (
                     <button
