@@ -28,7 +28,9 @@ http.interceptors.response.use(
   (response) => response,
   async (error) => {
     const original = error.config || {};
-    const isAuthRequest = original.url?.includes("/auth/");
+    const url = original.url || "";
+    const skipRefreshFor = ["/auth/refresh", "/auth/login", "/auth/logout"];
+    const isAuthRequest = skipRefreshFor.some((p) => url.includes(p));
 
     if (error.response?.status !== 401 || original._retry || isAuthRequest) {
       return Promise.reject(error);
@@ -59,7 +61,9 @@ http.interceptors.response.use(
     } catch (e) {
       flushWaiters(null);
       localStorage.removeItem("authToken");
-      if (typeof window !== "undefined") window.location.href = "/login";
+      if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
+        window.location.href = "/login";
+      }
       return Promise.reject(e);
     } finally {
       isRefreshing = false;
