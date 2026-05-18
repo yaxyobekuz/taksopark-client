@@ -62,14 +62,14 @@ export { useUsersQuery } from "./hooks/useUsersQuery";
 
 ## Layout rules (strict)
 
-A **layout** is a route component that renders a shared shell (header, tabs, breadcrumbs, ...) and an `<Outlet />` for nested route content. **Never put layouts in `pages/`** — they live in `layouts/`.
+A **layout** is a route component that renders a shared shell (header, tabs, breadcrumbs, ...) and an `<Outlet />` for nested route content. **Never put layouts in `pages/`** - they live in `layouts/`.
 
 Trigger to create a layout:
 - A route has nested children rendered via `<Outlet />`.
 - Multiple sibling pages share tabs, a title bar, or any chrome.
 
 Rules:
-- File name: `<Feature>Layout.jsx` (e.g. `PaymentsLayout.jsx`, `PenaltiesLayout.jsx`) — never `*HubPage.jsx`, never `*ContainerPage.jsx`.
+- File name: `<Feature>Layout.jsx` (e.g. `PaymentsLayout.jsx`, `PenaltiesLayout.jsx`) - never `*HubPage.jsx`, never `*ContainerPage.jsx`.
 - Folder: `<feature>/layouts/`.
 - Export: from `<feature>/index.js` as `{ default as <Feature>Layout }`.
 - Use as the parent `element` in `routes/index.jsx`:
