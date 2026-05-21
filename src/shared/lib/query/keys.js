@@ -42,11 +42,12 @@ export const qk = Object.freeze({
     list: (params) => ["damages", "list", params],
     one: (id) => ["damages", "detail", id],
   },
-  cycles: {
-    all: () => ["cycles"],
-    list: (params) => ["cycles", "list", params],
-    one: (id) => ["cycles", "detail", id],
-    currentForDriver: (driverId) => ["cycles", "currentForDriver", driverId],
+  oyliklar: {
+    all: () => ["oyliklar"],
+    list: (params) => ["oyliklar", "list", params],
+    one: (id) => ["oyliklar", "detail", id],
+    currentForDriver: (driverId) => ["oyliklar", "currentForDriver", driverId],
+    statement: (driverId) => ["oyliklar", "statement", driverId],
   },
   reports: {
     dailyPlanTotal: (date) => ["reports", "dailyPlanTotal", date],

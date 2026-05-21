@@ -25,6 +25,7 @@ export const ENDPOINTS = Object.freeze({
     byId: (id) => `/drivers/${id}`,
     balance: (id) => `/drivers/${id}/balance`,
     recompute: (id) => `/drivers/${id}/recompute`,
+    endTrial: (id) => `/drivers/${id}/end-trial`,
     warnings: "/drivers/warnings",
   },
   payments: {
@@ -40,11 +41,14 @@ export const ENDPOINTS = Object.freeze({
     base: "/damages",
     byId: (id) => `/damages/${id}`,
   },
-  cycles: {
-    base: "/cycles",
-    byId: (id) => `/cycles/${id}`,
-    currentForDriver: (driverId) => `/cycles/driver/${driverId}/current`,
-    settle: (id) => `/cycles/${id}/settle`,
+  oyliklar: {
+    base: "/oyliklar",
+    byId: (id) => `/oyliklar/${id}`,
+    currentForDriver: (driverId) => `/oyliklar/driver/${driverId}/current`,
+    statementForDriver: (driverId) => `/oyliklar/driver/${driverId}/statement`,
+    close: (id) => `/oyliklar/${id}/close`,
+    payouts: (id) => `/oyliklar/${id}/payouts`,
+    payoutById: (id, payoutId) => `/oyliklar/${id}/payouts/${payoutId}`,
   },
   reports: {
     dailyPlanTotal: "/reports/daily-plan-total",

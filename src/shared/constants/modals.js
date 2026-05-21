@@ -12,6 +12,7 @@ export const MODAL = Object.freeze({
   DRIVER_CREATE: "driver:create",
   DRIVER_EDIT: "driver:edit",
   DRIVER_DELETE: "driver:delete",
+  DRIVER_END_TRIAL: "driver:endTrial",
 
   PAYMENT_CREATE: "payment:create",
   PAYMENT_EDIT: "payment:edit",
@@ -25,7 +26,9 @@ export const MODAL = Object.freeze({
   DAMAGE_DELETE: "damage:delete",
   DAMAGE_PAY: "damage:pay",
 
-  CYCLE_SETTLE: "cycle:settle",
+  OYLIK_CLOSE: "oylik:close",
+  OYLIK_PAYOUT: "oylik:payout",
+  OYLIK_PAYOUT_DELETE: "oylik:payoutDelete",
 
   TRANSACTION_CREATE: "transaction:create",
 });

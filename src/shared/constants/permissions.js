@@ -7,6 +7,7 @@ export const PERMISSIONS = Object.freeze({
   DRIVERS_CREATE: "drivers.create",
   DRIVERS_UPDATE: "drivers.update",
   DRIVERS_DELETE: "drivers.delete",
+  DRIVERS_END_TRIAL: "drivers.end_trial",
 
   CARS_READ: "cars.read",
   CARS_CREATE: "cars.create",
@@ -28,8 +29,9 @@ export const PERMISSIONS = Object.freeze({
   DAMAGES_UPDATE: "damages.update",
   DAMAGES_DELETE: "damages.delete",
 
-  CYCLES_READ: "cycles.read",
-  CYCLES_SETTLE: "cycles.settle",
+  OYLIKLAR_READ: "oyliklar.read",
+  OYLIKLAR_CLOSE: "oyliklar.close",
+  OYLIKLAR_PAYOUT: "oyliklar.payout",
 
   FINES_PAY: "fines.pay",
   DAMAGES_PAY: "damages.pay",
