@@ -1,5 +1,6 @@
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import Card from "@/shared/components/ui/card/Card";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import { useDriverBalanceQuery } from "../hooks/useDriversQuery";
 import DriverBalancePanel from "../components/DriverBalancePanel";
 
@@ -22,7 +23,7 @@ const DriverOverviewPage = () => {
           </p>
           <p className="text-sm">
             <span className="text-muted-foreground">Ish boshlagan:</span>{" "}
-            {new Date(driver.startDate).toLocaleDateString("uz-UZ")}
+            {formatDateUZ(driver.startDate)}
           </p>
           {driver.notes && (
             <p className="text-sm whitespace-pre-wrap">

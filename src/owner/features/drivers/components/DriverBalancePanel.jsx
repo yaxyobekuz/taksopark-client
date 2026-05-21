@@ -1,5 +1,6 @@
 import Card from "@/shared/components/ui/card/Card";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import {
   TARIFFS,
   TARIFF_LABELS,
@@ -26,7 +27,7 @@ const DriverBalancePanel = ({ balance, isLoading }) => {
           {driver?.trialEndedAt && (
             <p className="text-xs text-muted-foreground">
               Sinov tugagan:{" "}
-              {new Date(driver.trialEndedAt).toLocaleDateString("uz-UZ")}
+              {formatDateUZ(driver.trialEndedAt)}
             </p>
           )}
         </div>
