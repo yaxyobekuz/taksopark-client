@@ -52,6 +52,7 @@ export const ENDPOINTS = Object.freeze({
     dailyPlanTotal: "/reports/daily-plan-total",
     finance: "/reports/finance",
     minYear: "/reports/min-year",
+    monthlyIncomeExpense: "/reports/monthly-income-expense",
   },
   finePayments: {
     base: "/fine-payments",
