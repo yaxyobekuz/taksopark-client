@@ -1,5 +1,7 @@
 export const formatDateUZ = (date, options = {}) => {
+  if (!date) return "-";
   const dateObj = new Date(date);
+  if (Number.isNaN(dateObj.getTime())) return "-";
 
   const months = [
     "yanvar",

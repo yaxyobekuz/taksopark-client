@@ -1,12 +1,7 @@
-// Sana formati: "12.05.2026"
-export const formatDateUz = (dateLike) => {
-  if (!dateLike) return "-";
-  const d = new Date(dateLike);
-  if (Number.isNaN(d.getTime())) return "-";
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  return `${dd}.${mm}.${d.getFullYear()}`;
-};
+import { formatDateUZ } from "./date.utils";
+
+// Sana formati: "21-may, 2026" (yagona standart - date.utils.js)
+export const formatDateUz = (dateLike) => formatDateUZ(dateLike);
 
 // HTML <input type="date"> uchun YYYY-MM-DD
 export const toDateInput = (dateLike) => {
