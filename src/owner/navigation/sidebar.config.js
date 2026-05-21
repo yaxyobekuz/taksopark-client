@@ -49,9 +49,9 @@ const ownerSidebar = [
         icon: BadgeDollarSign,
       },
       {
-        title: "Oylik tsikllar",
-        url: "/owner/cycles",
-        permission: PERMISSIONS.CYCLES_READ,
+        title: "Oyliklar",
+        url: "/owner/oyliklar",
+        permission: PERMISSIONS.OYLIKLAR_READ,
         icon: CalendarRange,
       },
       {

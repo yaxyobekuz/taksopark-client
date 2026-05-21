@@ -12,7 +12,7 @@ import {
   DriverPaymentsPage,
   DriverFinesPage,
   DriverDamagesPage,
-  DriverCyclesPage,
+  DriverOyliklarPage,
 } from "@/owner/features/drivers";
 import {
   PaymentsLayout,
@@ -25,7 +25,7 @@ import {
   FinesListPage,
   DamagesListPage,
 } from "@/owner/features/penalties";
-import { CyclesListPage } from "@/owner/features/cycles";
+import { OyliklarListPage } from "@/owner/features/oyliklar";
 import { TransactionsListPage } from "@/owner/features/transactions";
 
 const OwnerRoutes = () => (
@@ -92,13 +92,14 @@ const OwnerRoutes = () => (
         }
       />
       <Route
-        path="cycles"
+        path="oyliklar"
         element={
-          <PermissionGuard required={PERMISSIONS.CYCLES_READ}>
-            <DriverCyclesPage />
+          <PermissionGuard required={PERMISSIONS.OYLIKLAR_READ}>
+            <DriverOyliklarPage />
           </PermissionGuard>
         }
       />
+      <Route path="cycles" element={<Navigate to="../oyliklar" replace />} />
     </Route>
 
     <Route
@@ -147,13 +148,14 @@ const OwnerRoutes = () => (
     <Route path="damages" element={<Navigate to="/owner/penalties/damages" replace />} />
 
     <Route
-      path="cycles"
+      path="oyliklar"
       element={
-        <PermissionGuard required={PERMISSIONS.CYCLES_READ}>
-          <CyclesListPage />
+        <PermissionGuard required={PERMISSIONS.OYLIKLAR_READ}>
+          <OyliklarListPage />
         </PermissionGuard>
       }
     />
+    <Route path="cycles" element={<Navigate to="/owner/oyliklar" replace />} />
 
     <Route
       path="transactions"
