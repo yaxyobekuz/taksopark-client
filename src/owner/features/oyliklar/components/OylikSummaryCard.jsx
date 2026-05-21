@@ -1,4 +1,5 @@
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 
 const OylikSummaryCard = ({ oylik }) => {
   if (!oylik) return null;
@@ -16,13 +17,12 @@ const OylikSummaryCard = ({ oylik }) => {
         <p className="text-sm text-muted-foreground">
           Davr:{" "}
           <span className="font-medium text-foreground">
-            {new Date(oylik.startDate).toLocaleDateString("uz-UZ")} -{" "}
-            {new Date(oylik.endDate).toLocaleDateString("uz-UZ")}
+            {formatDateUZ(oylik.startDate)} - {formatDateUZ(oylik.endDate)}
           </span>
         </p>
         <div className="flex gap-2 items-center">
           <span className="text-xs text-muted-foreground">
-            Muddat: {new Date(oylik.dueDate).toLocaleDateString("uz-UZ")}
+            Muddat: {formatDateUZ(oylik.dueDate)}
           </span>
           {isLate && (
             <span className="text-xs px-2 py-1 rounded bg-red-50 text-red-700 font-semibold">

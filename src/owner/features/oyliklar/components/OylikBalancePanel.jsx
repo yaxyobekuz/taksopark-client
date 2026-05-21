@@ -1,4 +1,5 @@
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 
 const OylikBalancePanel = ({ oylik }) => {
   if (!oylik) return <p className="text-sm text-muted-foreground">Joriy oylik yo'q</p>;
@@ -6,11 +7,10 @@ const OylikBalancePanel = ({ oylik }) => {
     <div className="space-y-2">
       <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span>
-          Davr: {new Date(oylik.startDate).toLocaleDateString("uz-UZ")} -{" "}
-          {new Date(oylik.endDate).toLocaleDateString("uz-UZ")}
+          Davr: {formatDateUZ(oylik.startDate)} - {formatDateUZ(oylik.endDate)}
         </span>
         <span>
-          Muddat: {new Date(oylik.dueDate).toLocaleDateString("uz-UZ")}
+          Muddat: {formatDateUZ(oylik.dueDate)}
           {oylik.isLate && (
             <span className="ml-2 px-1.5 py-0.5 rounded bg-red-50 text-red-700 font-semibold">
               {oylik.lateDays} kun kechikkan

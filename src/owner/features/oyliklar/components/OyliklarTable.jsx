@@ -5,6 +5,7 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 
 const computeRow = (o) => {
   const planDeficit = Math.max(0, o.expectedPlanTotal - o.paidTotal);
@@ -50,11 +51,10 @@ const OyliklarTable = ({ items = [], variant = "default" }) => {
                   </td>
                 )}
                 <td className="p-3 whitespace-nowrap">
-                  {new Date(o.startDate).toLocaleDateString("uz-UZ")} -{" "}
-                  {new Date(o.endDate).toLocaleDateString("uz-UZ")}
+                  {formatDateUZ(o.startDate)} - {formatDateUZ(o.endDate)}
                 </td>
                 <td className="p-3 whitespace-nowrap">
-                  {new Date(o.dueDate).toLocaleDateString("uz-UZ")}
+                  {formatDateUZ(o.dueDate)}
                   {isLate && (
                     <span className="ml-2 text-xs px-1.5 py-0.5 rounded bg-red-50 text-red-700">
                       kechikkan

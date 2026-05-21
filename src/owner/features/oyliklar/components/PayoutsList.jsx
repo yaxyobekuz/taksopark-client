@@ -4,6 +4,7 @@ import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import { useOylikPayoutDelete } from "../hooks/useOylikPayoutMutations";
 
 const PayoutsList = ({ oylikId, payouts = [], canManage = true }) => {
@@ -27,7 +28,7 @@ const PayoutsList = ({ oylikId, payouts = [], canManage = true }) => {
           <div className="flex flex-col">
             <span className="font-medium">{formatMoney(p.amount)}</span>
             <span className="text-xs text-muted-foreground">
-              {new Date(p.paidAt).toLocaleDateString("uz-UZ")}
+              {formatDateUZ(p.paidAt)}
               {p.note ? ` - ${p.note}` : ""}
             </span>
           </div>
