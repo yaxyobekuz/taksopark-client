@@ -47,15 +47,6 @@ const OylikBalancePanel = ({ oylik }) => {
           <p className="text-xs text-muted-foreground">Zarar</p>
           <p>{formatMoney(oylik.damagesTotal)}</p>
         </div>
-        {oylik.carryIn !== 0 && (
-          <div>
-            <p className="text-xs text-muted-foreground">Avvalgi qoldiq</p>
-            <p className={oylik.carryIn < 0 ? "text-red-600 font-semibold" : "text-green-700 font-semibold"}>
-              {oylik.carryIn > 0 ? "+" : ""}
-              {formatMoney(oylik.carryIn)}
-            </p>
-          </div>
-        )}
         <div>
           <p className="text-xs text-muted-foreground">Hisoblangan haq</p>
           <p className="font-semibold text-primary">{formatMoney(oylik.earnedPayout)}</p>

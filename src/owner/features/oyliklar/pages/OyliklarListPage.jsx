@@ -1,30 +1,22 @@
 import { useSearchParams } from "react-router-dom";
 import useObjectState from "@/shared/hooks/useObjectState";
-import SelectField from "@/shared/components/ui/select/SelectField";
 import Pagination from "@/shared/components/ui/pagination/Pagination";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import { MODAL } from "@/shared/constants/modals";
 import { useOyliklarQuery } from "../hooks/useOyliklarQuery";
 import OyliklarTable from "../components/OyliklarTable";
-import OylikCloseModal from "../components/modals/OylikCloseModal";
 import OylikPayoutModal from "../components/modals/OylikPayoutModal";
-
-const STATUS_OPTIONS = [
-  { value: "", label: "Barchasi" },
-  { value: "active", label: "Faol" },
-  { value: "closed", label: "Yopilgan" },
-];
+import OylikPayoutEditModal from "../components/modals/OylikPayoutEditModal";
 
 const OyliklarListPage = () => {
   const [searchParams] = useSearchParams();
   const driverIdParam = searchParams.get("driverId") || "";
-  const { page, status, setField } = useObjectState({ page: 1, status: "" });
+  const { page, setField } = useObjectState({ page: 1 });
 
   const { data, isLoading } = useOyliklarQuery({
     page,
     limit: 20,
     driverId: driverIdParam || undefined,
-    status: status || undefined,
   });
   const items = data?.data || [];
   const meta = data?.meta || { pages: 1 };
@@ -33,14 +25,6 @@ const OyliklarListPage = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Oyliklar</h1>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <SelectField
-          value={status}
-          onChange={(v) => setField("status", v)}
-          options={STATUS_OPTIONS}
-        />
       </div>
 
       {isLoading ? (
@@ -58,18 +42,18 @@ const OyliklarListPage = () => {
       />
 
       <ModalWrapper
-        name={MODAL.OYLIK_CLOSE}
-        title="Oylikni yopish"
-        className="max-w-2xl"
-      >
-        <OylikCloseModal />
-      </ModalWrapper>
-      <ModalWrapper
         name={MODAL.OYLIK_PAYOUT}
         title="Oylik haqini berish"
         className="max-w-xl"
       >
         <OylikPayoutModal />
+      </ModalWrapper>
+      <ModalWrapper
+        name={MODAL.OYLIK_PAYOUT_EDIT}
+        title="To'lovni tahrirlash"
+        className="max-w-lg"
+      >
+        <OylikPayoutEditModal />
       </ModalWrapper>
     </div>
   );

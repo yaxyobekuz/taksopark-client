@@ -9,7 +9,7 @@ const computeRemaining = (oylik) => {
   if (!oylik) return 0;
   const planDeficit = Math.max(0, oylik.expectedPlanTotal - oylik.paidTotal);
   const deductions = planDeficit + oylik.finesTotal + oylik.damagesTotal;
-  const earned = Math.max(0, oylik.salary + (oylik.carryIn || 0) - deductions);
+  const earned = Math.max(0, oylik.salary - deductions);
   return Math.max(0, earned - (oylik.paidOut || 0));
 };
 

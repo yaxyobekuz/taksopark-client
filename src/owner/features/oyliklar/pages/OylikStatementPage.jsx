@@ -11,8 +11,8 @@ import { useOylikStatementQuery } from "../hooks/useOylikStatementQuery";
 import OyliklarTable from "../components/OyliklarTable";
 import OylikSummaryCard from "../components/OylikSummaryCard";
 import PayoutsList from "../components/PayoutsList";
-import OylikCloseModal from "../components/modals/OylikCloseModal";
 import OylikPayoutModal from "../components/modals/OylikPayoutModal";
+import OylikPayoutEditModal from "../components/modals/OylikPayoutEditModal";
 
 const OylikStatementPage = () => {
   const { id } = useParams();
@@ -25,8 +25,9 @@ const OylikStatementPage = () => {
   if (!data) return <p className="text-sm text-muted-foreground">Ma'lumot yo'q</p>;
 
   const { totals, rows, currentBalance } = data;
-  const currentOylik = rows.find((r) => r.status === "active");
-  const closedOyliklar = rows.filter((r) => r.status === "closed");
+  // Eng oxirgi oylik - joriy oylik, qolganlari - oldingilar
+  const currentOylik = rows.length ? rows[rows.length - 1] : null;
+  const previousOyliklar = rows.slice(0, -1);
 
   return (
     <div className="space-y-4">
@@ -80,7 +81,6 @@ const OylikStatementPage = () => {
           <div className="flex gap-2 mt-4">
             {has(PERMISSIONS.OYLIKLAR_PAYOUT) && currentOylik.remainingPayout > 0 && (
               <Button
-                variant="outline"
                 onClick={() =>
                   openModal(MODAL.OYLIK_PAYOUT, {
                     oylik: { ...currentOylik, driver: data.driver },
@@ -90,32 +90,21 @@ const OylikStatementPage = () => {
                 To'lov berish
               </Button>
             )}
-            {has(PERMISSIONS.OYLIKLAR_CLOSE) && (
-              <Button
-                onClick={() =>
-                  openModal(MODAL.OYLIK_CLOSE, {
-                    oylik: { ...currentOylik, driver: data.driver },
-                  })
-                }
-              >
-                Oylikni yopish
-              </Button>
-            )}
           </div>
         </Card>
       )}
 
-      {closedOyliklar.length > 0 && (
+      {previousOyliklar.length > 0 && (
         <Card title="Oldingi oyliklar">
-          <OyliklarTable items={closedOyliklar} variant="statement" />
+          <OyliklarTable items={previousOyliklar} variant="statement" />
         </Card>
       )}
 
-      <ModalWrapper name={MODAL.OYLIK_CLOSE} title="Oylikni yopish" className="max-w-2xl">
-        <OylikCloseModal />
-      </ModalWrapper>
       <ModalWrapper name={MODAL.OYLIK_PAYOUT} title="Oylik haqini berish" className="max-w-xl">
         <OylikPayoutModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.OYLIK_PAYOUT_EDIT} title="To'lovni tahrirlash" className="max-w-lg">
+        <OylikPayoutEditModal />
       </ModalWrapper>
     </div>
   );

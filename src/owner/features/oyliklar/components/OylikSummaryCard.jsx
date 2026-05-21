@@ -4,7 +4,7 @@ const OylikSummaryCard = ({ oylik }) => {
   if (!oylik) return null;
   const planDeficit = Math.max(0, oylik.expectedPlanTotal - oylik.paidTotal);
   const deductions = planDeficit + oylik.finesTotal + oylik.damagesTotal;
-  const earnedPayout = Math.max(0, oylik.salary + (oylik.carryIn || 0) - deductions);
+  const earnedPayout = Math.max(0, oylik.salary - deductions);
   const remainingPayout = Math.max(0, earnedPayout - (oylik.paidOut || 0));
   // Server-computed virtuals from Oylik schema
   const isLate = oylik.isLate || false;
@@ -29,13 +29,6 @@ const OylikSummaryCard = ({ oylik }) => {
               Kechikkan ({lateDays} kun)
             </span>
           )}
-          <span
-            className={`text-xs px-2 py-1 rounded ${
-              oylik.status === "active" ? "bg-amber-50 text-amber-700" : "bg-green-50 text-green-700"
-            }`}
-          >
-            {oylik.status === "active" ? "Faol" : "Yopilgan"}
-          </span>
         </div>
       </div>
 
@@ -67,12 +60,6 @@ const OylikSummaryCard = ({ oylik }) => {
         <div>
           <p className="text-xs text-muted-foreground">Zarar</p>
           <p>{formatMoney(oylik.damagesTotal)}</p>
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">Avvalgi qoldiq</p>
-          <p className={oylik.carryIn < 0 ? "text-red-600" : oylik.carryIn > 0 ? "text-green-600" : ""}>
-            {formatMoney(oylik.carryIn || 0)}
-          </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground">Hisoblangan haq</p>

@@ -6,7 +6,7 @@ export const oyliklarAPI = {
   getById: (id) => http.get(ENDPOINTS.oyliklar.byId(id)),
   currentForDriver: (driverId) => http.get(ENDPOINTS.oyliklar.currentForDriver(driverId)),
   statementForDriver: (driverId) => http.get(ENDPOINTS.oyliklar.statementForDriver(driverId)),
-  close: (id) => http.post(ENDPOINTS.oyliklar.close(id)),
   createPayout: (id, body) => http.post(ENDPOINTS.oyliklar.payouts(id), body),
+  updatePayout: (id, payoutId, body) => http.patch(ENDPOINTS.oyliklar.payoutById(id, payoutId), body),
   deletePayout: (id, payoutId) => http.delete(ENDPOINTS.oyliklar.payoutById(id, payoutId)),
 };

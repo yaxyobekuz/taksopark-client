@@ -18,6 +18,22 @@ export const useOylikPayoutCreate = () => {
   });
 };
 
+export const useOylikPayoutUpdate = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, payoutId, body }) =>
+      oyliklarAPI.updatePayout(id, payoutId, body).then((r) => r.data.data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
+      qc.invalidateQueries({ queryKey: qk.drivers.all() });
+      qc.invalidateQueries({ queryKey: qk.transactions.all() });
+      qc.invalidateQueries({ queryKey: ["reports"] });
+      toast.success("To'lov yangilandi");
+    },
+    onError: (err) => toast.error(err?.response?.data?.message || "Xatolik yuz berdi"),
+  });
+};
+
 export const useOylikPayoutDelete = () => {
   const qc = useQueryClient();
   return useMutation({

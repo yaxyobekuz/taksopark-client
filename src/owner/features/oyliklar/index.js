@@ -9,8 +9,8 @@ export {
   useCurrentOylikQuery,
 } from "./hooks/useOyliklarQuery";
 export { useOylikStatementQuery } from "./hooks/useOylikStatementQuery";
-export { useOylikCloseMutation } from "./hooks/useOylikCloseMutation";
 export {
   useOylikPayoutCreate,
+  useOylikPayoutUpdate,
   useOylikPayoutDelete,
 } from "./hooks/useOylikPayoutMutations";
