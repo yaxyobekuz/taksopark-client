@@ -2,6 +2,7 @@ import { Trash2, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import {
   TRANSACTION_TYPES,
   TRANSACTION_SOURCE_LABELS,
@@ -35,7 +36,7 @@ const TransactionsTable = ({ items = [] }) => {
             const isIncome = t.type === TRANSACTION_TYPES.INCOME;
             return (
               <tr key={t._id} className="border-t">
-                <td className="p-3">{new Date(t.date).toLocaleDateString("uz-UZ")}</td>
+                <td className="p-3">{formatDateUZ(t.date)}</td>
                 <td className="p-3">
                   <span className={`inline-flex items-center gap-1 ${isIncome ? "text-green-700" : "text-red-700"}`}>
                     {isIncome ? <ArrowDownCircle size={14} /> : <ArrowUpCircle size={14} />}
