@@ -10,7 +10,7 @@ const invalidateAll = (qc) => {
   qc.invalidateQueries({ queryKey: qk.damagePayments.all() });
   qc.invalidateQueries({ queryKey: qk.drivers.all() });
   qc.invalidateQueries({ queryKey: qk.transactions.all() });
-  qc.invalidateQueries({ queryKey: qk.cycles.all() });
+  qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
   qc.invalidateQueries({ queryKey: ["reports"] });
 };
 
