@@ -1,5 +1,5 @@
 import { Link, Outlet, useParams } from "react-router-dom";
-import { ArrowLeft, RefreshCw, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
@@ -9,13 +9,11 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
 import { TARIFFS, TARIFF_LABELS, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
 import { useDriverQuery } from "../hooks/useDriversQuery";
-import { useDriverRecompute } from "../hooks/useDriverMutations";
 import DriverEndTrialModal from "../components/modals/DriverEndTrialModal";
 
 const DriverDetailLayout = () => {
   const { id } = useParams();
   const { data: driver, isLoading } = useDriverQuery(id);
-  const { mutate: recompute, isPending: recomputing } = useDriverRecompute();
   const { has } = usePermissions();
   const { openModal } = useModal();
 
@@ -98,16 +96,6 @@ const DriverDetailLayout = () => {
                   : "Sinovni tugatish"}
               </Button>
             )}
-          {has(PERMISSIONS.DRIVERS_UPDATE) && (
-            <Button
-              variant="outline"
-              onClick={() => recompute(id)}
-              disabled={recomputing}
-            >
-              <RefreshCw size={14} className="mr-2" />
-              Balansni qayta hisoblash
-            </Button>
-          )}
         </div>
       </div>
 

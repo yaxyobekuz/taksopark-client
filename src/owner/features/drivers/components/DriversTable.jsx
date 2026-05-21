@@ -5,6 +5,7 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { TARIFF_LABELS, TARIFFS, TARIFF_CONFIG, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
+import { DRIVER_STATUS_LABELS, DRIVER_STATUS_BADGE_CLASS } from "@/shared/constants/drivers";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import WarningBadge from "./WarningBadge";
 
@@ -30,6 +31,7 @@ const DriversTable = ({ items = [] }) => {
             <th className="text-left p-3">Tarif</th>
             <th className="text-left p-3">Mashina</th>
             <th className="text-left p-3">Depozit</th>
+            <th className="text-left p-3">Holat</th>
             <th className="text-right p-3">Amallar</th>
           </tr>
         </thead>
@@ -66,6 +68,15 @@ const DriversTable = ({ items = [] }) => {
                   ) : (
                     "-"
                   )}
+                </td>
+                <td className="p-3">
+                  <span
+                    className={`text-xs px-2 py-1 rounded ${
+                      DRIVER_STATUS_BADGE_CLASS[d.status] || "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {DRIVER_STATUS_LABELS[d.status] || d.status}
+                  </span>
                 </td>
                 <td className="p-3" onClick={stop}>
                   <div className="flex justify-end gap-2">

@@ -10,24 +10,19 @@ import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { TARIFF_OPTIONS } from "@/shared/constants/tariffs";
+import { DRIVER_STATUS_FILTER_OPTIONS } from "@/shared/constants/drivers";
 import { useDriversQuery } from "../hooks/useDriversQuery";
 import DriversTable from "../components/DriversTable";
 import DriverCreateModal from "../components/modals/DriverCreateModal";
 import DriverEditModal from "../components/modals/DriverEditModal";
 import DriverDeleteModal from "../components/modals/DriverDeleteModal";
 
-const STATUS_OPTIONS = [
-  { value: "", label: "Barchasi" },
-  { value: "active", label: "Faol" },
-  { value: "archived", label: "Arxivlangan" },
-];
-
 const DriversListPage = () => {
   const { page, search, tariff, status, setField } = useObjectState({
     page: 1,
     search: "",
     tariff: "",
-    status: "active",
+    status: "",
   });
   const { openModal } = useModal();
   const { has } = usePermissions();
@@ -68,7 +63,7 @@ const DriversListPage = () => {
         <SelectField
           value={status}
           onChange={(v) => setField("status", v)}
-          options={STATUS_OPTIONS}
+          options={DRIVER_STATUS_FILTER_OPTIONS}
         />
       </div>
 

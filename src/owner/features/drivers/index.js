@@ -14,7 +14,6 @@ export {
 export {
   useDriverCreate,
   useDriverUpdate,
-  useDriverRecompute,
   useDriverEndTrial,
   useDriverDelete,
 } from "./hooks/useDriverMutations";

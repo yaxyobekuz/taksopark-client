@@ -37,18 +37,6 @@ export const useDriverUpdate = () => {
   });
 };
 
-export const useDriverRecompute = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id) => driversAPI.recompute(id).then((r) => r.data.data),
-    onSuccess: () => {
-      invalidateAll(qc);
-      toast.success("Balans qayta hisoblandi");
-    },
-    onError,
-  });
-};
-
 export const useDriverEndTrial = () => {
   const qc = useQueryClient();
   return useMutation({

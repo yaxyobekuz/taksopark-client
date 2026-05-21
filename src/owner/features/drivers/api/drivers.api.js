@@ -8,7 +8,6 @@ export const driversAPI = {
   warnings: () => http.get(ENDPOINTS.drivers.warnings),
   create: (body) => http.post(ENDPOINTS.drivers.base, body),
   update: (id, body) => http.patch(ENDPOINTS.drivers.byId(id), body),
-  recompute: (id) => http.post(ENDPOINTS.drivers.recompute(id)),
   endTrial: (id, body) => http.post(ENDPOINTS.drivers.endTrial(id), body),
   remove: (id) => http.delete(ENDPOINTS.drivers.byId(id)),
 };
