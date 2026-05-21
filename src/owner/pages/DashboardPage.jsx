@@ -6,12 +6,18 @@ import {
   ArrowDownCircle,
   ArrowUpCircle,
   CalendarClock,
+  BarChart3,
+  Scale,
 } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import Card from "@/shared/components/ui/card/Card";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
-import { usePaymentTodayTotalQuery } from "@/owner/features/payments";
+import {
+  usePaymentTodayTotalQuery,
+  useMonthlyIncomeExpenseQuery,
+  MonthlyIncomeExpenseChart,
+} from "@/owner/features/payments";
 import {
   useDriversQuery,
   useDriverWarningsQuery,
@@ -37,6 +43,15 @@ const DashboardPage = () => {
     limit: 5,
     days: 30,
   });
+  const { data: monthly, isLoading: monthlyLoading } =
+    useMonthlyIncomeExpenseQuery();
+
+  const months = monthly?.months || [];
+  const thisMonth = months[months.length - 1] || {
+    income: 0,
+    expense: 0,
+    profit: 0,
+  };
 
   const activeCount = activeDriversData?.meta?.total ?? 0;
 
@@ -99,6 +114,39 @@ const DashboardPage = () => {
           icon={Wallet}
         />
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <StatCard
+          label="Bu oy kirim"
+          value={thisMonth.income}
+          isMoney
+          tone="positive"
+          icon={ArrowDownCircle}
+        />
+        <StatCard
+          label="Bu oy chiqim"
+          value={thisMonth.expense}
+          isMoney
+          tone="warn"
+          icon={ArrowUpCircle}
+        />
+        <StatCard
+          label="Bu oy sof foyda"
+          value={thisMonth.profit}
+          isMoney
+          tone={thisMonth.profit >= 0 ? "positive" : "negative"}
+          icon={Scale}
+        />
+      </div>
+
+      <Card
+        title="So'nggi 12 oy - Kirim/Chiqim"
+        icon={<BarChart3 className="text-primary" />}
+      >
+        <div className="mt-3">
+          <MonthlyIncomeExpenseChart data={months} isLoading={monthlyLoading} />
+        </div>
+      </Card>
 
       {(depositLow.length > 0 ||
         depositEmpty.length > 0 ||
