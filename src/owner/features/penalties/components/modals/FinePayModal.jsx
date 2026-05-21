@@ -4,6 +4,7 @@ import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import { PAYMENT_SOURCES, PAYMENT_SOURCE_LABELS } from "@/shared/constants/payments";
 import { TARIFFS } from "@/shared/constants/tariffs";
 import { useDriverBalanceQuery } from "@/owner/features/drivers";
@@ -130,7 +131,7 @@ const FinePayModal = ({ close, fine }) => {
                 <div>
                   <div className="font-medium">{formatMoney(p.amount)}</div>
                   <div className="text-xs text-muted-foreground">
-                    {PAYMENT_SOURCE_LABELS[p.source]} · {new Date(p.paidAt).toLocaleDateString("uz-UZ")}
+                    {PAYMENT_SOURCE_LABELS[p.source]} · {formatDateUZ(p.paidAt)}
                   </div>
                 </div>
                 <button

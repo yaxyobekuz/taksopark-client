@@ -5,6 +5,7 @@ import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PAYMENT_STATUS } from "@/shared/constants/payments";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import Tooltip from "@/shared/components/ui/tooltip/Tooltip";
 import AttachmentPreview from "./AttachmentPreview";
 
@@ -49,7 +50,7 @@ const FinesTable = ({ items = [] }) => {
         <tbody>
           {items.map((f) => (
             <tr key={f._id} className="border-t align-top">
-              <td className="p-3">{new Date(f.issueDate).toLocaleDateString("uz-UZ")}</td>
+              <td className="p-3">{formatDateUZ(f.issueDate)}</td>
               <td className="p-3">{f.driver ? `${f.driver.firstName} ${f.driver.lastName}` : "-"}</td>
               <td className="p-3"><CarCell car={f.car} /></td>
               <td className="p-3 text-right font-medium">{formatMoney(f.amount)}</td>

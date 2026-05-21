@@ -5,6 +5,7 @@ import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PAYMENT_STATUS } from "@/shared/constants/payments";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import Tooltip from "@/shared/components/ui/tooltip/Tooltip";
 import AttachmentPreview from "./AttachmentPreview";
 
@@ -49,7 +50,7 @@ const DamagesTable = ({ items = [] }) => {
         <tbody>
           {items.map((d) => (
             <tr key={d._id} className="border-t align-top">
-              <td className="p-3">{new Date(d.incidentDate).toLocaleDateString("uz-UZ")}</td>
+              <td className="p-3">{formatDateUZ(d.incidentDate)}</td>
               <td className="p-3">{d.driver ? `${d.driver.firstName} ${d.driver.lastName}` : "-"}</td>
               <td className="p-3"><CarCell car={d.car} /></td>
               <td className="p-3 text-right font-medium">{formatMoney(d.amount)}</td>
