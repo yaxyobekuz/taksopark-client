@@ -13,7 +13,7 @@ const TransactionsTable = ({ items = [] }) => {
   const { has } = usePermissions();
   const deleteMutation = useTransactionDelete();
 
-  if (!items.length) return <p className="text-sm text-muted-foreground p-4">Yozuv yo'q</p>;
+  if (!items.length) return <p className="text-sm text-muted-foreground p-4">Tranzaksiya yo'q</p>;
 
   return (
     <div className="overflow-x-auto rounded-lg border">
