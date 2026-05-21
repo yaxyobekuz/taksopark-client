@@ -49,7 +49,7 @@ const DashboardPage = () => {
       <div>
         <h1 className="text-2xl font-semibold">Boshqaruv paneli</h1>
         <p className="text-sm text-muted-foreground">
-          Bugun: {new Date().toLocaleDateString("uz-UZ")}
+          Bugun: {formatDateUZ(new Date())}
         </p>
       </div>
 
