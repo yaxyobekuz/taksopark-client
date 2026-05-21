@@ -21,3 +21,9 @@ export const useReportsMinYearQuery = () =>
     queryFn: () => reportsAPI.minYear().then((r) => r.data.data),
     staleTime: 1000 * 60 * 60,
   });
+
+export const useMonthlyIncomeExpenseQuery = () =>
+  useQuery({
+    queryKey: qk.reports.monthlyIncomeExpense(),
+    queryFn: () => reportsAPI.monthlyIncomeExpense().then((r) => r.data.data),
+  });
