@@ -26,9 +26,8 @@ export const MODAL = Object.freeze({
   DAMAGE_DELETE: "damage:delete",
   DAMAGE_PAY: "damage:pay",
 
-  OYLIK_CLOSE: "oylik:close",
   OYLIK_PAYOUT: "oylik:payout",
-  OYLIK_PAYOUT_DELETE: "oylik:payoutDelete",
+  OYLIK_PAYOUT_EDIT: "oylik:payoutEdit",
 
   TRANSACTION_CREATE: "transaction:create",
 });

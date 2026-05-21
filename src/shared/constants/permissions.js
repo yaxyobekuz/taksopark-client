@@ -30,7 +30,6 @@ export const PERMISSIONS = Object.freeze({
   DAMAGES_DELETE: "damages.delete",
 
   OYLIKLAR_READ: "oyliklar.read",
-  OYLIKLAR_CLOSE: "oyliklar.close",
   OYLIKLAR_PAYOUT: "oyliklar.payout",
 
   FINES_PAY: "fines.pay",
