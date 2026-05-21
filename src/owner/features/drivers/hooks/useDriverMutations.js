@@ -10,6 +10,7 @@ const onError = (err) => {
 const invalidateAll = (qc) => {
   qc.invalidateQueries({ queryKey: qk.drivers.all() });
   qc.invalidateQueries({ queryKey: qk.cars.all() });
+  qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
 };
 
 export const useDriverCreate = () => {
@@ -43,6 +44,19 @@ export const useDriverRecompute = () => {
     onSuccess: () => {
       invalidateAll(qc);
       toast.success("Balans qayta hisoblandi");
+    },
+    onError,
+  });
+};
+
+export const useDriverEndTrial = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, endDate }) =>
+      driversAPI.endTrial(id, { endDate }).then((r) => r.data.data),
+    onSuccess: () => {
+      invalidateAll(qc);
+      toast.success("Sinov muddati belgilandi");
     },
     onError,
   });

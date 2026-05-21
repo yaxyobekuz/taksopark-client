@@ -5,6 +5,7 @@ const LABELS = {
   deposit_empty: "Depoziti tugagan",
   debtor: "Qarzdor",
   no_payment_2_days: "2 kundan ko'p to'lov yo'q",
+  oylik_late: "Oylik muddati o'tgan",
 };
 
 const COLORS = {
@@ -12,6 +13,7 @@ const COLORS = {
   deposit_empty: "bg-red-100 text-red-700 border-red-200",
   debtor: "bg-red-100 text-red-700 border-red-200",
   no_payment_2_days: "bg-orange-100 text-orange-700 border-orange-200",
+  oylik_late: "bg-red-100 text-red-700 border-red-200",
 };
 
 const WarningBadge = ({ code }) => {

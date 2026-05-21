@@ -5,6 +5,7 @@ import {
   TARIFF_LABELS,
   TARIFF_TEXT_CLASS,
 } from "@/shared/constants/tariffs";
+import { OylikBalancePanel } from "@/owner/features/oyliklar";
 import WarningBadge from "./WarningBadge";
 
 const DriverBalancePanel = ({ balance, isLoading }) => {
@@ -12,7 +13,7 @@ const DriverBalancePanel = ({ balance, isLoading }) => {
     return <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>;
   if (!balance) return null;
 
-  const { tariff, phase, deposit, cycle, warnings = [] } = balance;
+  const { tariff, phase, deposit, oylik, driver, warnings = [] } = balance;
 
   return (
     <Card className="space-y-3" title="Balans va Tarif">
@@ -22,6 +23,12 @@ const DriverBalancePanel = ({ balance, isLoading }) => {
           <p className={`font-semibold ${TARIFF_TEXT_CLASS[tariff] || ""}`}>
             {TARIFF_LABELS[tariff] || tariff}
           </p>
+          {driver?.trialEndedAt && (
+            <p className="text-xs text-muted-foreground">
+              Sinov tugagan:{" "}
+              {new Date(driver.trialEndedAt).toLocaleDateString("uz-UZ")}
+            </p>
+          )}
         </div>
         {phase?.phase && (
           <span className="text-xs px-2 py-1 rounded bg-muted">
@@ -50,48 +57,7 @@ const DriverBalancePanel = ({ balance, isLoading }) => {
         </div>
       )}
 
-      {tariff === TARIFFS.NO_DEPOSIT && cycle && (
-        <div className="space-y-2">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="text-xs text-muted-foreground">Oylik</p>
-              <p className="font-semibold">{formatMoney(cycle.salary)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Yig'ilgan to'lov</p>
-              <p className="font-semibold">{formatMoney(cycle.paidTotal)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Kutilgan reja</p>
-              <p>{formatMoney(cycle.expectedPlanTotal)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Plan Qolgan</p>
-              <p>{formatMoney(cycle.planDeficit)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Jarima</p>
-              <p>{formatMoney(cycle.finesTotal)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Zarar</p>
-              <p>{formatMoney(cycle.damagesTotal)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Beriladigan oylik</p>
-              <p className="font-semibold text-primary">
-                {formatMoney(cycle.payout)}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Qarz</p>
-              <p className={cycle.debt > 0 ? "text-red-600 font-semibold" : ""}>
-                {formatMoney(cycle.debt)}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+      {tariff === TARIFFS.NO_DEPOSIT && <OylikBalancePanel oylik={oylik} />}
 
       {warnings.length > 0 && (
         <div className="flex flex-wrap gap-2 pt-2">
