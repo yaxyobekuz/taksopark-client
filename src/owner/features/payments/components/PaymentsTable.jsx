@@ -4,6 +4,7 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 
 const PaymentsTable = ({ items = [] }) => {
   const { openModal } = useModal();
@@ -30,7 +31,7 @@ const PaymentsTable = ({ items = [] }) => {
             const deficit = Math.max(0, p.expectedPlan - p.amount);
             return (
               <tr key={p._id} className="border-t">
-                <td className="p-3">{new Date(p.date).toLocaleDateString("uz-UZ")}</td>
+                <td className="p-3">{formatDateUZ(p.date)}</td>
                 <td className="p-3">
                   {p.driver ? `${p.driver.firstName} ${p.driver.lastName}` : "-"}
                 </td>
