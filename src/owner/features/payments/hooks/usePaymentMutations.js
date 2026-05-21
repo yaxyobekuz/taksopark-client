@@ -8,7 +8,7 @@ const onError = (err) => toast.error(err?.response?.data?.message || "Xatolik yu
 const invalidate = (qc) => {
   qc.invalidateQueries({ queryKey: qk.payments.all() });
   qc.invalidateQueries({ queryKey: qk.drivers.all() });
-  qc.invalidateQueries({ queryKey: qk.cycles.all() });
+  qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
   qc.invalidateQueries({ queryKey: ["reports"] });
 };
 
