@@ -1,17 +1,9 @@
-import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Pencil, FileText, ShieldCheck } from "lucide-react";
-import useModal from "@/shared/hooks/useModal";
-import usePermissions from "@/shared/hooks/usePermissions";
-import Button from "@/shared/components/ui/button/Button";
+import { Link, useOutletContext } from "react-router-dom";
+import { FileText, ShieldCheck } from "lucide-react";
 import Card from "@/shared/components/ui/card/Card";
 import Badge from "@/shared/components/ui/badge/Badge";
-import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
-import { MODAL } from "@/shared/constants/modals";
-import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatDateUZ } from "@/shared/utils/date.utils";
-import { useCarByIdQuery } from "../hooks/useCarByIdQuery";
 import { getExpiryStatus, getDaysLeft } from "../utils/expiryStatus";
-import CarEditModal from "../components/modals/CarEditModal";
 
 const ExpiryBadge = ({ date }) => {
   const status = getExpiryStatus(date);
@@ -51,51 +43,11 @@ const DocumentCard = ({ icon: Icon, title, date }) => (
   </Card>
 );
 
-const CarDetailPage = () => {
-  const { id } = useParams();
-  const { openModal } = useModal();
-  const { has } = usePermissions();
-  const { data: car, isLoading } = useCarByIdQuery(id);
-
-  if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>;
-  }
-
-  if (!car) {
-    return (
-      <div className="space-y-4">
-        <Link
-          to="/owner/cars"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
-        >
-          <ArrowLeft size={16} /> Mashinalar ro'yxati
-        </Link>
-        <p className="text-sm text-red-600">Mashina topilmadi</p>
-      </div>
-    );
-  }
+const CarOverviewPage = () => {
+  const { car } = useOutletContext();
 
   return (
     <div className="space-y-4">
-      <div>
-        <Link
-          to="/owner/cars"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
-        >
-          <ArrowLeft size={16} /> Mashinalar ro'yxati
-        </Link>
-      </div>
-
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <h1 className="text-2xl font-semibold">{car.model}</h1>
-
-        {has(PERMISSIONS.CARS_UPDATE) && (
-          <Button onClick={() => openModal(MODAL.CAR_EDIT, { car })}>
-            <Pencil size={16} className="mr-2" /> Tahrirlash
-          </Button>
-        )}
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <DocumentCard
           icon={ShieldCheck}
@@ -155,12 +107,8 @@ const CarDetailPage = () => {
           </div>
         </div>
       </Card>
-
-      <ModalWrapper name={MODAL.CAR_EDIT} title="Mashinani tahrirlash">
-        <CarEditModal />
-      </ModalWrapper>
     </div>
   );
 };
 
-export default CarDetailPage;
+export default CarOverviewPage;
