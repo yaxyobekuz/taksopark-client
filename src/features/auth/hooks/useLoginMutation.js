@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 // API
 import { authAPI } from "../api/auth.api";
+import { setAccessToken } from "@/shared/api/http";
 
 // Query keys
 import { qk } from "@/shared/lib/query/keys";
@@ -23,7 +24,7 @@ const useLoginMutation = () => {
   return useMutation({
     mutationFn: (body) => authAPI.login(body).then((r) => r.data.data),
     onSuccess: (data) => {
-      localStorage.setItem("authToken", data.accessToken);
+      setAccessToken(data.accessToken);
       qc.setQueryData(qk.auth.me(), { user: data.user, role: data.user.role });
       qc.invalidateQueries({ queryKey: qk.auth.me() });
       toast.success("Tizimga xush kelibsiz");
