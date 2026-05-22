@@ -3,6 +3,24 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
+// Access token faqat xotirada (memory) saqlanadi - localStorage'da emas (XSS himoyasi).
+// Sahifa yangilanganda yo'qoladi; bootstrapAuth() httpOnly refresh cookie orqali tiklaydi.
+let accessToken = null;
+const tokenListeners = new Set();
+
+// token o'zgarishini kuzatuvchilar (guard/useAuth qayta render bo'lishi uchun)
+export const onTokenChange = (cb) => {
+  tokenListeners.add(cb);
+  return () => tokenListeners.delete(cb);
+};
+
+export const setAccessToken = (token) => {
+  accessToken = token || null;
+  tokenListeners.forEach((cb) => cb());
+};
+
+export const getAccessToken = () => accessToken;
+
 const http = axios.create({
   baseURL: API_URL,
   withCredentials: true, // required so the refresh httpOnly cookie is sent
@@ -10,8 +28,7 @@ const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
 });
 
@@ -54,13 +71,13 @@ http.interceptors.response.use(
       const r = await http.post("/auth/refresh");
       const newToken = r.data?.data?.accessToken;
       if (!newToken) throw new Error("No access token in refresh response");
-      localStorage.setItem("authToken", newToken);
+      setAccessToken(newToken);
       flushWaiters(newToken);
       original.headers.Authorization = `Bearer ${newToken}`;
       return http(original);
     } catch (e) {
       flushWaiters(null);
-      localStorage.removeItem("authToken");
+      setAccessToken(null);
       if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
         window.location.href = "/login";
       }
@@ -70,5 +87,20 @@ http.interceptors.response.use(
     }
   },
 );
+
+// App start'da bir marta chaqiriladi: httpOnly refresh cookie bo'lsa yangi access token oladi.
+// Sessiya yo'q bo'lsa false qaytaradi (xato tashlamaydi).
+export const bootstrapAuth = async () => {
+  try {
+    const r = await http.post("/auth/refresh");
+    const token = r.data?.data?.accessToken;
+    if (!token) return false;
+    setAccessToken(token);
+    return true;
+  } catch {
+    setAccessToken(null);
+    return false;
+  }
+};
 
 export default http;
