@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Button from "@/shared/components/ui/button/Button";
 
 // React
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 
 const Pagination = ({
   contentRef,
@@ -18,24 +18,25 @@ const Pagination = ({
   hasPrevPage = false,
   showPageNumbers = true,
 }) => {
-  if (totalPages <= 1 && !showPageNumbers) {
-    return null;
-  }
+  const isFirstRef = useRef(true);
 
-  const [isFirst, setIsFirst] = useState(true);
-  const scrollToTop = useMemo(() => {
+  const scrollToTop = useCallback(() => {
     if (!contentRef || !contentRef.current) return 0;
     const rect = contentRef.current.getBoundingClientRect();
     return rect.top + window.scrollY - 44;
   }, [contentRef]);
 
   useEffect(() => {
-    if (isFirst) {
-      setIsFirst(false);
-    } else {
-      window.scrollTo({ top: scrollToTop, left: 0, behavior: "smooth" });
+    if (isFirstRef.current) {
+      isFirstRef.current = false;
+      return;
     }
-  }, [currentPage]);
+    window.scrollTo({ top: scrollToTop(), left: 0, behavior: "smooth" });
+  }, [currentPage, scrollToTop]);
+
+  if (totalPages <= 1 && !showPageNumbers) {
+    return null;
+  }
 
   const goToPage = (page) => {
     if (page < 1 || page > totalPages || page === currentPage) return;
