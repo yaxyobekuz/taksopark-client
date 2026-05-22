@@ -25,7 +25,7 @@ const DriverEditModal = ({ close, driver }) => {
       carId: driver.car?._id || driver.car || "",
       notes: driver.notes || "",
     });
-  }, [driver]);
+  }, [driver, setFields]);
 
   const { data: carsData } = useCarsQuery({ limit: 500, isActive: "true" });
   const carOptions = (carsData?.data || []).map((c) => ({

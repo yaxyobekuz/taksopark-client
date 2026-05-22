@@ -26,10 +26,10 @@ const MONTHS = [
 const pad = (n) => String(n).padStart(2, "0");
 
 const FinanceReportPage = () => {
-  const now = new Date();
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { month, year, carId, setField } = useObjectState({
-    month: now.getMonth() + 1,
-    year: now.getFullYear(),
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
     carId: "",
   });
 
@@ -45,12 +45,12 @@ const FinanceReportPage = () => {
   ];
 
   const yearOptions = useMemo(() => {
-    const min = minYearData?.year || now.getFullYear();
-    const max = now.getFullYear();
+    const min = minYearData?.year || currentYear;
+    const max = currentYear;
     const list = [];
     for (let y = max; y >= min; y--) list.push({ value: y, label: String(y) });
     return list;
-  }, [minYearData?.year]);
+  }, [minYearData?.year, currentYear]);
 
   const fromDate = `${year}-${pad(month)}-01`;
   const lastDay = new Date(year, month, 0).getDate();

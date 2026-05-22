@@ -12,7 +12,7 @@ const PaymentEditModal = ({ close, payment }) => {
   useEffect(() => {
     if (!payment) return;
     setFields({ amount: payment.amount, note: payment.note || "" });
-  }, [payment]);
+  }, [payment, setFields]);
   const { mutate, isPending } = usePaymentUpdate();
 
   const handleSubmit = (e) => {

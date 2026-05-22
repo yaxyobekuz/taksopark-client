@@ -34,7 +34,7 @@ const CarEditModal = ({ close, car }) => {
       licenseExpiryDate: toDateInput(car.licenseExpiryDate),
       powerOfAttorneyExpiryDate: toDateInput(car.powerOfAttorneyExpiryDate),
     });
-  }, [car]);
+  }, [car, setFields]);
 
   const { mutate, isPending } = useCarUpdate();
 

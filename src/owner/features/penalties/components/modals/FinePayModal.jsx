@@ -31,7 +31,7 @@ const FinePayModal = ({ close, fine }) => {
 
   useEffect(() => {
     setFields({ amount: remaining });
-  }, [remaining]);
+  }, [remaining, setFields]);
 
   const tariff = balance?.tariff || balance?.driver?.tariff;
   const depositRemaining = balance?.deposit?.remaining ?? 0;
