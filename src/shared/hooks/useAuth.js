@@ -11,16 +11,19 @@ import { qk } from "@/shared/lib/query/keys";
 // Constants
 import { ROLES } from "@/shared/constants/roles";
 
+// Hooks
+import useAuthReady from "@/shared/hooks/useAuthReady";
+
 const fetchMe = () => http.get(ENDPOINTS.auth.me).then((r) => r.data.data);
 
 const useAuth = () => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+  // Bootstrap tugaganidan keyin va token mavjud bo'lsagina /me so'raymiz
+  const { ready, hasToken } = useAuthReady();
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: qk.auth.me(),
     queryFn: fetchMe,
-    enabled: !!token,
+    enabled: ready && hasToken,
     retry: false,
     staleTime: 5 * 60 * 1000,
   });
@@ -33,7 +36,7 @@ const useAuth = () => {
     permissions: data?.permissions || [],
     isOwner: role === ROLES.OWNER,
     isAuthenticated: !!data?.user,
-    isLoading: !!token && isLoading,
+    isLoading: !ready || (hasToken && isLoading),
     isError,
     refetch,
   };

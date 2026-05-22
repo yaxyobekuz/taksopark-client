@@ -1,19 +1,21 @@
 // React
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const useObjectState = (initialState = {}) => {
   const [state, setState] = useState(initialState);
   const [savedInitialState] = useState(initialState);
 
-  const setField = (key, value) => {
+  const setField = useCallback((key, value) => {
     setState((prev) => ({ ...prev, [key]: value }));
-  };
+  }, []);
 
-  const setFields = (updates = {}) => {
+  const setFields = useCallback((updates = {}) => {
     setState((prev) => ({ ...prev, ...updates }));
-  };
+  }, []);
 
-  const resetState = () => setState(savedInitialState);
+  const resetState = useCallback(() => {
+    setState(savedInitialState);
+  }, [savedInitialState]);
 
   return { ...state, state, setField, setFields, resetState };
 };
