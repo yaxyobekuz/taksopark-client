@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
+
 import usePermissions from "@/shared/hooks/usePermissions";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
+import PageHeader from "@/shared/components/ui/layout/PageHeader";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
 const PenaltiesLayout = () => {
@@ -16,8 +18,15 @@ const PenaltiesLayout = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Jarima & Zarar</h1>
-      <TabsLinks items={tabs} />
+      <PageHeader title="Jarima & Zarar" />
+
+      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-2 bg-background border-b">
+        <TabsLinks
+          items={tabs}
+          listClassName="overflow-x-auto scrollbar-hide"
+        />
+      </div>
+
       <Outlet />
     </div>
   );

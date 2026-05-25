@@ -1,13 +1,18 @@
 import { Link, Outlet, useParams } from "react-router-dom";
 import { ArrowLeft, Pencil } from "lucide-react";
+
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
+import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
+import EmptyState from "@/shared/components/ui/feedback/EmptyState";
+
 import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
+
 import { useCarByIdQuery } from "../hooks/useCarByIdQuery";
 import CarEditModal from "../components/modals/CarEditModal";
 
@@ -18,7 +23,11 @@ const CarDetailLayout = () => {
   const { openModal } = useModal();
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>;
+    return (
+      <div className="space-y-4">
+        <SkeletonCard count={2} />
+      </div>
+    );
   }
   if (!car) {
     return (
@@ -29,7 +38,7 @@ const CarDetailLayout = () => {
         >
           <ArrowLeft size={16} /> Mashinalar ro'yxati
         </Link>
-        <p className="text-sm text-red-600">Mashina topilmadi</p>
+        <EmptyState title="Mashina topilmadi" />
       </div>
     );
   }
@@ -48,19 +57,29 @@ const CarDetailLayout = () => {
         <ArrowLeft size={16} /> Mashinalar ro'yxati
       </Link>
 
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold">{car.model}</h1>
-          {car.plateNumber && <PlateNumber value={car.plateNumber} size="lg" />}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3 min-w-0">
+          <h1 className="text-lg sm:text-xl font-semibold truncate">
+            {car.model}
+          </h1>
+          {car.plateNumber && <PlateNumber value={car.plateNumber} size="md" />}
         </div>
         {has(PERMISSIONS.CARS_UPDATE) && (
-          <Button onClick={() => openModal(MODAL.CAR_EDIT, { car })}>
-            <Pencil size={16} className="mr-2" /> Tahrirlash
+          <Button
+            size="sm"
+            onClick={() => openModal(MODAL.CAR_EDIT, { car })}
+          >
+            <Pencil size={14} className="mr-1.5" /> Tahrirlash
           </Button>
         )}
       </div>
 
-      <TabsLinks items={tabs} />
+      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-2 bg-background border-b">
+        <TabsLinks
+          items={tabs}
+          listClassName="overflow-x-auto scrollbar-hide"
+        />
+      </div>
 
       <Outlet context={{ car }} />
 

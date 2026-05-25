@@ -1,14 +1,23 @@
 import { Link, Outlet, useParams } from "react-router-dom";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
+
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
+import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
+import EmptyState from "@/shared/components/ui/feedback/EmptyState";
+
 import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
-import { TARIFFS, TARIFF_LABELS, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
+import {
+  TARIFFS,
+  TARIFF_LABELS,
+  TARIFF_TEXT_CLASS,
+} from "@/shared/constants/tariffs";
+
 import { useDriverQuery } from "../hooks/useDriversQuery";
 import DriverEndTrialModal from "../components/modals/DriverEndTrialModal";
 
@@ -19,7 +28,11 @@ const DriverDetailLayout = () => {
   const { openModal } = useModal();
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>;
+    return (
+      <div className="space-y-4">
+        <SkeletonCard count={2} />
+      </div>
+    );
   }
   if (!driver) {
     return (
@@ -30,7 +43,7 @@ const DriverDetailLayout = () => {
         >
           <ArrowLeft size={14} className="mr-1" /> Haydovchilar
         </Link>
-        <p className="text-sm text-red-600">Haydovchi topilmadi</p>
+        <EmptyState title="Haydovchi topilmadi" />
       </div>
     );
   }
@@ -58,20 +71,25 @@ const DriverDetailLayout = () => {
         <ArrowLeft size={14} className="mr-1" /> Haydovchilar
       </Link>
 
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="text-lg sm:text-xl font-semibold truncate">
             {driver.firstName} {driver.lastName}
           </h1>
-          <p className="text-sm text-muted-foreground">
-            <a href={`tel:${driver.phone}`} className="hover:text-primary">
-              {driver.phone}
-            </a>{" "}
-            ·{" "}
+          <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5 mt-0.5">
+            {driver.phone && (
+              <a
+                href={`tel:${driver.phone}`}
+                className="hover:text-primary"
+              >
+                {driver.phone}
+              </a>
+            )}
+            <span>·</span>
             <span className={TARIFF_TEXT_CLASS[driver.tariff]}>
               {TARIFF_LABELS[driver.tariff]}
-            </span>{" "}
-            ·{" "}
+            </span>
+            <span>·</span>
             {driver.car ? (
               <Link
                 to={`/owner/cars/${driver.car._id}`}
@@ -84,18 +102,19 @@ const DriverDetailLayout = () => {
                 )}
               </Link>
             ) : (
-              "Mashina biriktirilmagan"
+              <span>Mashina biriktirilmagan</span>
             )}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           {has(PERMISSIONS.DRIVERS_END_TRIAL) &&
             driver.tariff === TARIFFS.NO_DEPOSIT && (
               <Button
+                size="sm"
                 variant="outline"
                 onClick={() => openModal(MODAL.DRIVER_END_TRIAL, { driver })}
               >
-                <ShieldCheck size={14} className="mr-2" />
+                <ShieldCheck size={14} className="mr-1.5" />
                 {driver.trialEndedAt
                   ? "Sinov sanasini o'zgartirish"
                   : "Sinovni tugatish"}
@@ -104,11 +123,20 @@ const DriverDetailLayout = () => {
         </div>
       </div>
 
-      <TabsLinks items={tabs} />
+      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-2 bg-background border-b">
+        <TabsLinks
+          items={tabs}
+          listClassName="overflow-x-auto scrollbar-hide"
+        />
+      </div>
 
       <Outlet context={{ driver }} />
 
-      <ModalWrapper name={MODAL.DRIVER_END_TRIAL} title="Sinov muddatini tugatish" className="max-w-md">
+      <ModalWrapper
+        name={MODAL.DRIVER_END_TRIAL}
+        title="Sinov muddatini tugatish"
+        className="max-w-md"
+      >
         <DriverEndTrialModal />
       </ModalWrapper>
     </div>
