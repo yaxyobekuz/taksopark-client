@@ -3,7 +3,7 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
-import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
+import InputImage from "@/shared/components/ui/input/InputImage";
 import { useCarDocumentTypesQuery } from "@/owner/features/carDocumentTypes";
 import { useCarDocumentAdd } from "../../hooks/useCarDocumentMutations";
 
@@ -53,8 +53,8 @@ const CarDocumentCreateModal = ({ close, carId }) => {
         onChange={(e) => setField("expiryDate", e.target.value)}
         disabled={isPending}
       />
-      <ImageUpload
-        label="Fayl (rasm yoki PDF)"
+      <InputImage
+        label="Hujjat rasmi"
         file={file}
         onChange={(f) => setField("file", f)}
         disabled={isPending}

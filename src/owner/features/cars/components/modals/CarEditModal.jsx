@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
-import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
+import InputImage from "@/shared/components/ui/input/InputImage";
 import { useCarUpdate } from "../../hooks/useCarMutations";
 
 const CarEditModal = ({ close, car }) => {
@@ -35,7 +35,7 @@ const CarEditModal = ({ close, car }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <ImageUpload
+      <InputImage
         label="Mashina rasmi"
         value={car?.photoUrl}
         file={photoFile}

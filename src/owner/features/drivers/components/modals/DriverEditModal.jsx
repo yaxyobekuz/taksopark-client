@@ -3,7 +3,7 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
-import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
+import InputImage from "@/shared/components/ui/input/InputImage";
 import { useCarsQuery } from "@/owner/features/cars";
 import { useDriverUpdate } from "../../hooks/useDriverMutations";
 
@@ -61,7 +61,7 @@ const DriverEditModal = ({ close, driver }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <ImageUpload
+      <InputImage
         label="Haydovchi rasmi"
         value={driver?.photoUrl}
         file={photoFile}

@@ -1,7 +1,7 @@
 import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
-import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
+import InputImage from "@/shared/components/ui/input/InputImage";
 import { useCarCreate } from "../../hooks/useCarMutations";
 
 const CarCreateModal = ({ close }) => {
@@ -34,7 +34,7 @@ const CarCreateModal = ({ close }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <ImageUpload
+      <InputImage
         label="Mashina rasmi"
         file={photoFile}
         onChange={(f) => setField("photoFile", f)}

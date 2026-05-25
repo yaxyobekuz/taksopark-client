@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
-import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
+import InputImage from "@/shared/components/ui/input/InputImage";
 import { useCarDocumentUpdate } from "../../hooks/useCarDocumentMutations";
 
 const toDateInput = (date) =>
@@ -53,8 +53,8 @@ const CarDocumentEditModal = ({ close, carId, document }) => {
       />
 
       <div className="space-y-2">
-        <ImageUpload
-          label="Fayl"
+        <InputImage
+          label="Hujjat rasmi"
           file={file}
           value={!file && !removeFile ? document?.file?.url || "" : ""}
           onChange={(f) => {
