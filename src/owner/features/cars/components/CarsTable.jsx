@@ -23,8 +23,8 @@ const CarsTable = ({ items = [] }) => {
       <table className="w-full text-sm">
         <thead>
           <tr>
-            <th className="text-left p-3">Davlat raqami</th>
             <th className="text-left p-3">Model</th>
+            <th className="text-left p-3">Davlat raqami</th>
             <th className="text-left p-3">Haydovchi</th>
             <th className="text-right p-3">Amallar</th>
           </tr>
@@ -37,9 +37,6 @@ const CarsTable = ({ items = [] }) => {
               className="border-t cursor-pointer hover:bg-muted/50"
             >
               <td className="p-3">
-                <PlateNumber value={car.plateNumber} size="sm" />
-              </td>
-              <td className="p-3">
                 <div className="flex items-center gap-2">
                   {buildFileUrl(car.photoUrl) ? (
                     <img
@@ -50,6 +47,9 @@ const CarsTable = ({ items = [] }) => {
                   ) : null}
                   <span>{car.model}</span>
                 </div>
+              </td>
+              <td className="p-3">
+                <PlateNumber value={car.plateNumber} size="sm" />
               </td>
               <td className="p-3">
                 {car.currentDriver
