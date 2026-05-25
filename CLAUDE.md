@@ -1,6 +1,6 @@
 # Frontend - Taksopark (client/)
 
-Vite + React 19 + Redux Toolkit + TanStack Query + shadcn/ui + Tailwind. **Based on FSD**, each role is split internally into `features/`.
+Vite + React 19 + Redux Toolkit + TanStack Query + shadcn/ui + Tailwind. **Based on FSD**, the `owner/` panel is split internally into `features/`.
 
 ## Folder structure
 
@@ -26,14 +26,12 @@ client/src/
 │  └─ constants/            # roles, permissions, modals
 ├─ features/                # role-independent global features
 │  └─ auth/
-├─ owner/                   # OWNER panel
-│  ├─ features/<feature>/   # api, hooks, components, pages, store, utils, index.js
-│  ├─ pages/                # role-level pages (e.g. DashboardPage)
-│  ├─ routes/index.jsx
-│  ├─ navigation/sidebar.config.js
-│  └─ index.js
-├─ teacher/                 # TEACHER panel (same structure)
-└─ student/                 # STUDENT panel (same structure)
+└─ owner/                   # OWNER panel (only role)
+   ├─ features/<feature>/   # api, hooks, components, pages, store, utils, index.js
+   ├─ pages/                # role-level pages (e.g. DashboardPage)
+   ├─ routes/index.jsx
+   ├─ navigation/sidebar.config.js
+   └─ index.js
 ```
 
 ## Feature rules
