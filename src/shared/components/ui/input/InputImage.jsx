@@ -50,7 +50,7 @@ const InputImage = ({
       return;
     }
     if (f.size > MAX_SIZE_BYTES) {
-      setError("Rasm hajmi 5 MB dan oshmasligi kerak");
+      setError("Rasm hajmi 20 MB dan oshmasligi kerak");
       return;
     }
     setError("");
