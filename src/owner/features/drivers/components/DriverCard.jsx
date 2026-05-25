@@ -15,6 +15,7 @@ import {
   DRIVER_STATUS_BADGE_CLASS,
 } from "@/shared/constants/drivers";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { buildFileUrl } from "@/shared/utils/fileUrl";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 
 const DriverCard = ({ driver }) => {
@@ -23,6 +24,7 @@ const DriverCard = ({ driver }) => {
   const { has } = usePermissions();
 
   const initial = (driver.firstName?.[0] || "?").toUpperCase();
+  const photoUrl = buildFileUrl(driver.photoUrl);
 
   return (
     <div
@@ -30,9 +32,17 @@ const DriverCard = ({ driver }) => {
       className="bg-white border rounded-[2px] p-3 active:bg-muted/50 transition-colors cursor-pointer"
     >
       <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary font-semibold shrink-0">
-          {initial}
-        </div>
+        {photoUrl ? (
+          <img
+            src={photoUrl}
+            alt=""
+            className="size-10 rounded-full object-cover shrink-0 border"
+          />
+        ) : (
+          <div className="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary font-semibold shrink-0">
+            {initial}
+          </div>
+        )}
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">

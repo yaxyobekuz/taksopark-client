@@ -3,6 +3,7 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
+import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
 import { useCarsQuery } from "@/owner/features/cars";
 import { useDriverUpdate } from "../../hooks/useDriverMutations";
 
@@ -10,11 +11,12 @@ const buildFullName = (driver) =>
   driver ? `${driver.firstName || ""} ${driver.lastName || ""}`.trim() : "";
 
 const DriverEditModal = ({ close, driver }) => {
-  const { fullName, phone, carId, notes, setField, setFields, state } = useObjectState({
+  const { fullName, phone, carId, notes, photoFile, setField, setFields, state } = useObjectState({
     fullName: buildFullName(driver),
     phone: driver?.phone || "",
     carId: driver?.car?._id || driver?.car || "",
     notes: driver?.notes || "",
+    photoFile: null,
   });
 
   useEffect(() => {
@@ -24,6 +26,7 @@ const DriverEditModal = ({ close, driver }) => {
       phone: driver.phone || "",
       carId: driver.car?._id || driver.car || "",
       notes: driver.notes || "",
+      photoFile: null,
     });
   }, [driver, setFields]);
 
@@ -50,6 +53,7 @@ const DriverEditModal = ({ close, driver }) => {
         phone: state.phone,
         carId: carId || null,
         notes: state.notes,
+        photoFile,
       },
       { onSuccess: () => close() },
     );
@@ -57,6 +61,13 @@ const DriverEditModal = ({ close, driver }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <ImageUpload
+        label="Haydovchi rasmi"
+        value={driver?.photoUrl}
+        file={photoFile}
+        onChange={(f) => setField("photoFile", f)}
+        disabled={isPending}
+      />
       <InputField
         label="F.I.SH"
         value={fullName}

@@ -7,6 +7,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { TARIFF_LABELS, TARIFFS, TARIFF_CONFIG, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
 import { DRIVER_STATUS_LABELS, DRIVER_STATUS_BADGE_CLASS } from "@/shared/constants/drivers";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { buildFileUrl } from "@/shared/utils/fileUrl";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import WarningBadge from "./WarningBadge";
 
@@ -50,7 +51,20 @@ const DriversTable = ({ items = [] }) => {
                 className="border-t cursor-pointer hover:bg-muted/50"
               >
                 <td className="p-3 font-medium">
-                  {d.firstName} {d.lastName}
+                  <div className="flex items-center gap-2">
+                    {buildFileUrl(d.photoUrl) ? (
+                      <img
+                        src={buildFileUrl(d.photoUrl)}
+                        alt=""
+                        className="size-8 rounded-full object-cover border shrink-0"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center size-8 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0">
+                        {(d.firstName?.[0] || "?").toUpperCase()}
+                      </div>
+                    )}
+                    <span>{d.firstName} {d.lastName}</span>
+                  </div>
                 </td>
                 <td className="p-3">{d.phone}</td>
                 <td className="p-3">

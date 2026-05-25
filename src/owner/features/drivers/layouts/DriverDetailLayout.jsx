@@ -8,6 +8,7 @@ import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 
+import { buildFileUrl } from "@/shared/utils/fileUrl";
 import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -72,7 +73,23 @@ const DriverDetailLayout = () => {
       </Link>
 
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
+        <div className="flex items-start gap-3 min-w-0">
+          {(() => {
+            const photoUrl = buildFileUrl(driver.photoUrl);
+            const initial = (driver.firstName?.[0] || "?").toUpperCase();
+            return photoUrl ? (
+              <img
+                src={photoUrl}
+                alt=""
+                className="size-14 rounded-full object-cover border shrink-0"
+              />
+            ) : (
+              <div className="flex items-center justify-center size-14 rounded-full bg-primary/10 text-primary font-semibold text-lg shrink-0">
+                {initial}
+              </div>
+            );
+          })()}
+          <div className="min-w-0">
           <h1 className="text-lg sm:text-xl font-semibold truncate">
             {driver.firstName} {driver.lastName}
           </h1>
@@ -105,6 +122,7 @@ const DriverDetailLayout = () => {
               <span>Mashina biriktirilmagan</span>
             )}
           </p>
+          </div>
         </div>
         <div className="flex gap-2 shrink-0">
           {has(PERMISSIONS.DRIVERS_END_TRIAL) &&

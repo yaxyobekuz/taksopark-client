@@ -2,18 +2,20 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
+import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
 import { TARIFF_OPTIONS, TARIFFS } from "@/shared/constants/tariffs";
 import { useCarsQuery } from "@/owner/features/cars";
 import { useDriverCreate } from "../../hooks/useDriverMutations";
 
 const DriverCreateModal = ({ close }) => {
-  const { fullName, phone, tariff, carId, startDate, notes, setField, state } = useObjectState({
+  const { fullName, phone, tariff, carId, startDate, notes, photoFile, setField, state } = useObjectState({
     fullName: "",
     phone: "+998",
     tariff: TARIFFS.DEPOSIT,
     carId: "",
     startDate: new Date().toISOString().slice(0, 10),
     notes: "",
+    photoFile: null,
   });
 
   const { data: carsData } = useCarsQuery({ limit: 500, isActive: "true" });
@@ -39,12 +41,19 @@ const DriverCreateModal = ({ close }) => {
       carId: carId || null,
       startDate: state.startDate,
       notes: state.notes,
+      photoFile,
     };
     mutate(payload, { onSuccess: () => close() });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <ImageUpload
+        label="Haydovchi rasmi"
+        file={photoFile}
+        onChange={(f) => setField("photoFile", f)}
+        disabled={isPending}
+      />
       <InputField
         label="F.I.SH"
         value={fullName}
