@@ -1,4 +1,10 @@
-import { FileText, Pencil, Plus, Trash2, Image as ImageIcon } from "lucide-react";
+import {
+  FileText,
+  Pencil,
+  Plus,
+  Trash2,
+  Image as ImageIcon,
+} from "lucide-react";
 
 import Badge from "@/shared/components/ui/badge/Badge";
 import Button from "@/shared/components/ui/button/Button";
@@ -42,7 +48,7 @@ const FilePreview = ({ file }) => {
       className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
     >
       {isImage ? <ImageIcon size={14} /> : <FileText size={14} />}
-      {file.filename || "Faylni ochish"}
+      Faylni ko'rish
     </a>
   );
 };
@@ -52,58 +58,64 @@ const CarDocumentsSection = ({ carId, documents = [] }) => {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold">Hujjatlar</h3>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => openModal(MODAL.CAR_DOC_CREATE, { carId })}
-        >
-          <Plus size={14} className="mr-1.5" /> Qo'shish
-        </Button>
-      </div>
-
       {documents.length === 0 ? (
         <p className="text-sm text-muted-foreground py-3">
           Hujjat qo'shilmagan
         </p>
       ) : (
-        <div className="divide-y">
-          {documents.map((doc) => (
-            <div
-              key={doc._id}
-              className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
-            >
-              <div className="min-w-0 space-y-1">
-                <p className="text-sm font-medium text-gray-900 truncate">
-                  {doc.documentType?.name || "—"}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {doc.expiryDate ? formatDateUZ(doc.expiryDate) : "Muddati belgilanmagan"}
-                </p>
-                {doc.file?.url && <FilePreview file={doc.file} />}
-              </div>
-              <div className="flex items-center gap-2">
-                <ExpiryBadge date={doc.expiryDate} />
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => openModal(MODAL.CAR_DOC_EDIT, { carId, document: doc })}
-                >
-                  <Pencil size={14} />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => openModal(MODAL.CAR_DOC_DELETE, { carId, document: doc })}
-                >
-                  <Trash2 size={14} className="text-red-600" />
-                </Button>
-              </div>
+        documents.map((doc) => (
+          <div
+            key={doc._id}
+            className="flex flex-wrap items-center justify-between gap-3 py-3 border-b first:pt-0 last:pb-0"
+          >
+            <div className="min-w-0 space-y-1">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {doc.documentType?.name || "—"}
+              </p>
+
+              <p className="text-xs text-muted-foreground">
+                {doc.expiryDate
+                  ? formatDateUZ(doc.expiryDate) + " gacha"
+                  : "Muddati belgilanmagan"}
+              </p>
+
+              {doc.file?.url && <FilePreview file={doc.file} />}
             </div>
-          ))}
-        </div>
+
+            <div className="flex items-center gap-2">
+              <ExpiryBadge date={doc.expiryDate} />
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() =>
+                  openModal(MODAL.CAR_DOC_EDIT, { carId, document: doc })
+                }
+              >
+                <Pencil size={14} />
+              </Button>
+
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() =>
+                  openModal(MODAL.CAR_DOC_DELETE, { carId, document: doc })
+                }
+              >
+                <Trash2 size={14} className="text-red-600" />
+              </Button>
+            </div>
+          </div>
+        ))
       )}
+
+      <div className="flex items-center justify-center w-full">
+        <Button
+          size="sm"
+          onClick={() => openModal(MODAL.CAR_DOC_CREATE, { carId })}
+        >
+          <Plus /> Yangi hujjat qo'shish
+        </Button>
+      </div>
     </div>
   );
 };

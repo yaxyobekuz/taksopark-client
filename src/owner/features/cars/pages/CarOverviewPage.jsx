@@ -79,7 +79,7 @@ const DriverPanel = ({ driver }) => {
         {driver.phone && (
           <div className="flex items-center justify-between gap-2">
             <span className="text-muted-foreground inline-flex items-center gap-1.5">
-              <Phone size={12} strokeWidth={1.5} /> Telefon
+              Telefon
             </span>
             <a
               href={`tel:${driver.phone}`}
