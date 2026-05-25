@@ -5,14 +5,32 @@ const normalize = (raw) =>
     .replace(/[\s\-_.]+/g, "")
     .toUpperCase();
 
-const PLATE_RX = /^(\d{2})([A-Z])(\d{3})([A-Z]{2})$/;
+// O'zbekiston davlat raqamining barcha asosiy formatlari (yangi + eski + maxsus)
+const PLATE_PATTERNS = [
+  // Yangi standart: 01 A 123 BC
+  { rx: /^(\d{2})([A-Z])(\d{3})([A-Z]{2})$/, fmt: (m) => `${m[2]} ${m[3]} ${m[4]}` },
+  // Eski Toshkent / seriyali: 10 AAB 299  yoki  10 A AB 299
+  { rx: /^(\d{2})([A-Z]{3})(\d{3})$/, fmt: (m) => `${m[2]} ${m[3]}` },
+  // Eski format: 01 123 ABC  (raqam-harf almashinishi teskari)
+  { rx: /^(\d{2})(\d{3})([A-Z]{3})$/, fmt: (m) => `${m[2]} ${m[3]}` },
+  // Mototsikl: 01 12 ABC  (2 raqam + 3 harf)
+  { rx: /^(\d{2})(\d{2})([A-Z]{3})$/, fmt: (m) => `${m[2]} ${m[3]}` },
+  // 4 raqam + 2 harf: 01 1234 AB
+  { rx: /^(\d{2})(\d{4})([A-Z]{2})$/, fmt: (m) => `${m[2]} ${m[3]}` },
+  // Diplomatik/maxsus (D/T/H/CD/CC) + 4 raqam + 2 raqamli region
+  { rx: /^([A-Z]{1,2})(\d{3,4})(\d{2})$/, fmt: (m) => `${m[1]} ${m[2]}`, regionFromGroup: 3 },
+];
 
 const parsePlate = (raw) => {
   const value = normalize(raw);
-  const match = value.match(PLATE_RX);
-  if (!match) return null;
-  const [, region, letter, digits, suffix] = match;
-  return { region, main: `${letter} ${digits} ${suffix}` };
+  if (!value) return null;
+  for (const { rx, fmt, regionFromGroup } of PLATE_PATTERNS) {
+    const match = value.match(rx);
+    if (!match) continue;
+    const region = match[regionFromGroup ?? 1];
+    return { region, main: fmt(match) };
+  }
+  return null;
 };
 
 const SIZES = {
@@ -54,9 +72,9 @@ const PlateNumber = ({ value, size = "md", className = "" }) => {
   const sz = SIZES[size] || SIZES.md;
   const parsed = parsePlate(value);
 
-  // Fallback: pattern noto'g'ri yoki bo'sh
+  // Fallback: pattern noto'g'ri yoki bo'sh - xom qiymatni ham plate uslubida ko'rsatish
   if (!parsed) {
-    const display = String(value || "").trim() || "-";
+    const display = normalize(value) || "-";
     return (
       <span
         className={cn(
