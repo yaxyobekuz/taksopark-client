@@ -1,12 +1,21 @@
 import { useParams } from "react-router-dom";
-import Card from "@/shared/components/ui/card/Card";
+import { Wallet, HandCoins, Scale } from "lucide-react";
+
 import Button from "@/shared/components/ui/button/Button";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
+import StatCard from "@/shared/components/ui/card/StatCard";
+import DetailSection from "@/shared/components/ui/layout/DetailSection";
+import KeyValueList from "@/shared/components/ui/data/KeyValueList";
+import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
+import SkeletonStatCard from "@/shared/components/ui/skeleton/SkeletonStatCard";
+import EmptyState from "@/shared/components/ui/feedback/EmptyState";
+
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
+
 import { useOylikStatementQuery } from "../hooks/useOylikStatementQuery";
 import OyliklarTable from "../components/OyliklarTable";
 import OylikSummaryCard from "../components/OylikSummaryCard";
@@ -21,66 +30,83 @@ const OylikStatementPage = () => {
   const { openModal } = useModal();
   const { has } = usePermissions();
 
-  if (isLoading) return <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>;
-  if (!data) return <p className="text-sm text-muted-foreground">Ma'lumot yo'q</p>;
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <SkeletonStatCard count={3} />
+        </div>
+        <SkeletonCard count={2} />
+      </div>
+    );
+  }
+
+  if (!data) {
+    return <EmptyState title="Ma'lumot yo'q" />;
+  }
 
   const { totals, rows, currentBalance } = data;
-  // Eng oxirgi oylik - joriy oylik, qolganlari - oldingilar
   const currentOylik = rows.length ? rows[rows.length - 1] : null;
   const previousOyliklar = rows.slice(0, -1);
 
+  const balanceHint =
+    currentBalance < 0
+      ? "haydovchi qarzi"
+      : currentBalance > 0
+        ? "haydovchiga to'lanishi kerak"
+        : "balans";
+
   return (
     <div className="space-y-4">
-      <Card title="Umumiy hisob-kitob">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-          <div>
-            <p className="text-xs text-muted-foreground">Jami oylik</p>
-            <p className="font-semibold">{formatMoney(totals.salary)}</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Jami berilgan</p>
-            <p className="font-semibold">{formatMoney(totals.paidOut)}</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Jami yig'ilgan</p>
-            <p>{formatMoney(totals.collected)}</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Jarima + Zarar</p>
-            <p>{formatMoney(totals.fines + totals.damages)}</p>
-          </div>
-          <div className="col-span-2 md:col-span-4 border-t pt-3">
-            <p className="text-xs text-muted-foreground">Joriy qoldiq</p>
-            <p
-              className={`text-lg font-semibold ${
-                currentBalance < 0
-                  ? "text-red-600"
-                  : currentBalance > 0
-                    ? "text-green-700"
-                    : ""
-              }`}
-            >
-              {formatMoney(currentBalance)}{" "}
-              <span className="text-xs text-muted-foreground font-normal">
-                ({currentBalance < 0 ? "haydovchi qarzi" : currentBalance > 0 ? "haydovchiga to'lanishi kerak" : "balans"})
-              </span>
-            </p>
-          </div>
-        </div>
-      </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <StatCard
+          label="Joriy qoldiq"
+          value={currentBalance}
+          icon={Scale}
+          tone={currentBalance < 0 ? "negative" : currentBalance > 0 ? "positive" : "default"}
+          isMoney
+          hint={balanceHint}
+        />
+        <StatCard
+          label="Jami oylik"
+          value={totals.salary}
+          icon={Wallet}
+          tone="info"
+          isMoney
+        />
+        <StatCard
+          label="Jami berilgan"
+          value={totals.paidOut}
+          icon={HandCoins}
+          tone="default"
+          isMoney
+        />
+      </div>
+
+      <DetailSection title="Boshqa ko'rsatkichlar" defaultOpen={false}>
+        <KeyValueList
+          columns={2}
+          items={[
+            { label: "Jami yig'ilgan", value: formatMoney(totals.collected) },
+            { label: "Jami jarima", value: formatMoney(totals.fines) },
+            { label: "Jami zarar", value: formatMoney(totals.damages) },
+            {
+              label: "Jami chegirma",
+              value: formatMoney(totals.fines + totals.damages),
+            },
+          ]}
+        />
+      </DetailSection>
 
       {currentOylik && (
-        <Card title={`Joriy oylik (#${currentOylik.oylikNumber})`}>
-          <OylikSummaryCard oylik={currentOylik} />
-          {currentOylik.payouts?.length > 0 && (
-            <div className="mt-3 space-y-2">
-              <p className="text-sm font-medium">To'lovlar tarixi</p>
-              <PayoutsList oylikId={currentOylik._id} payouts={currentOylik.payouts} />
-            </div>
-          )}
-          <div className="flex gap-2 mt-4">
-            {has(PERMISSIONS.OYLIKLAR_PAYOUT) && currentOylik.remainingPayout > 0 && (
+        <DetailSection
+          title={`Joriy oylik (#${currentOylik.oylikNumber})`}
+          defaultOpen
+          actions={
+            has(PERMISSIONS.OYLIKLAR_PAYOUT) &&
+            currentOylik.remainingPayout > 0 && (
               <Button
+                size="sm"
                 onClick={() =>
                   openModal(MODAL.OYLIK_PAYOUT, {
                     oylik: { ...currentOylik, driver: data.driver },
@@ -89,21 +115,40 @@ const OylikStatementPage = () => {
               >
                 To'lov berish
               </Button>
-            )}
-          </div>
-        </Card>
+            )
+          }
+        >
+          <OylikSummaryCard oylik={currentOylik} />
+          {currentOylik.payouts?.length > 0 && (
+            <div className="mt-3 space-y-2">
+              <p className="text-sm font-medium">To'lovlar tarixi</p>
+              <PayoutsList
+                oylikId={currentOylik._id}
+                payouts={currentOylik.payouts}
+              />
+            </div>
+          )}
+        </DetailSection>
       )}
 
       {previousOyliklar.length > 0 && (
-        <Card title="Oldingi oyliklar">
+        <DetailSection title="Oldingi oyliklar" defaultOpen={false}>
           <OyliklarTable items={previousOyliklar} variant="statement" />
-        </Card>
+        </DetailSection>
       )}
 
-      <ModalWrapper name={MODAL.OYLIK_PAYOUT} title="Oylik haqini berish" className="max-w-xl">
+      <ModalWrapper
+        name={MODAL.OYLIK_PAYOUT}
+        title="Oylik haqini berish"
+        className="max-w-xl"
+      >
         <OylikPayoutModal />
       </ModalWrapper>
-      <ModalWrapper name={MODAL.OYLIK_PAYOUT_EDIT} title="To'lovni tahrirlash" className="max-w-lg">
+      <ModalWrapper
+        name={MODAL.OYLIK_PAYOUT_EDIT}
+        title="To'lovni tahrirlash"
+        className="max-w-lg"
+      >
         <OylikPayoutEditModal />
       </ModalWrapper>
     </div>

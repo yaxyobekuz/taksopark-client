@@ -1,9 +1,15 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { TrendingUp, AlertTriangle, Wrench, Wallet, Scale } from "lucide-react";
+
 import useObjectState from "@/shared/hooks/useObjectState";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import StatCard from "@/shared/components/ui/card/StatCard";
+import SkeletonStatCard from "@/shared/components/ui/skeleton/SkeletonStatCard";
+import AnimatedCounter from "@/shared/components/ui/counter/AnimatedCounter";
+import { formatMoney } from "@/shared/utils/formatMoney";
+import { cn } from "@/shared/utils/cn";
+
 import { useCarFinanceQuery } from "../hooks/useCarFinanceQuery";
 
 const MONTHS = [
@@ -52,40 +58,75 @@ const CarFinancePage = () => {
     profit: 0,
   };
 
+  const profitPositive = row.profit >= 0;
+
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <SelectField
-          label="Oy"
-          value={month}
-          onChange={(v) => setField("month", Number(v))}
-          options={MONTHS}
-        />
-        <SelectField
-          label="Yil"
-          value={year}
-          onChange={(v) => setField("year", Number(v))}
-          options={yearOptions}
-        />
+      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
+        <div className="grid grid-cols-2 gap-3">
+          <SelectField
+            label="Oy"
+            value={month}
+            onChange={(v) => setField("month", Number(v))}
+            options={MONTHS}
+          />
+          <SelectField
+            label="Yil"
+            value={year}
+            onChange={(v) => setField("year", Number(v))}
+            options={yearOptions}
+          />
+        </div>
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <SkeletonStatCard count={4} />
+        </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatCard label="Daromad" value={row.revenue} icon={TrendingUp} tone="positive" isMoney />
             <StatCard label="Jarima" value={row.fines} icon={AlertTriangle} tone="negative" isMoney />
             <StatCard label="Zarar" value={row.damages} icon={Wrench} tone="negative" isMoney />
             <StatCard label="Oylik" value={row.salary} icon={Wallet} tone="negative" isMoney />
           </div>
-          <StatCard
-            label="Sof foyda"
-            value={row.profit}
-            icon={Scale}
-            tone={row.profit >= 0 ? "positive" : "negative"}
-            isMoney
-          />
+
+          <div
+            className={cn(
+              "rounded-[2px] border p-5 flex items-center justify-between gap-4",
+              profitPositive
+                ? "bg-gradient-to-r from-emerald-50 to-emerald-100 border-emerald-200"
+                : "bg-gradient-to-r from-rose-50 to-rose-100 border-rose-200",
+            )}
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <div
+                className={cn(
+                  "flex items-center justify-center size-10 rounded-full shrink-0",
+                  profitPositive
+                    ? "bg-emerald-600 text-white"
+                    : "bg-rose-600 text-white",
+                )}
+              >
+                <Scale size={20} strokeWidth={1.5} />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Sof foyda</p>
+                <p
+                  className={cn(
+                    "text-2xl font-bold tracking-tight",
+                    profitPositive ? "text-emerald-700" : "text-rose-700",
+                  )}
+                >
+                  <AnimatedCounter
+                    value={row.profit}
+                    formatter={formatMoney}
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
         </>
       )}
     </div>
