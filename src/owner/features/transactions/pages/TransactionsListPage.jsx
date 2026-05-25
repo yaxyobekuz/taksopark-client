@@ -1,12 +1,18 @@
 import { useMemo } from "react";
-import { Plus } from "lucide-react";
+import { Plus, ArrowLeftRight } from "lucide-react";
+
 import useObjectState from "@/shared/hooks/useObjectState";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
+
 import Button from "@/shared/components/ui/button/Button";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Pagination from "@/shared/components/ui/pagination/Pagination";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
+import PageHeader from "@/shared/components/ui/layout/PageHeader";
+import EmptyState from "@/shared/components/ui/feedback/EmptyState";
+import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
+
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import {
@@ -40,7 +46,7 @@ const pad = (n) => String(n).padStart(2, "0");
 
 const TransactionsListPage = () => {
   const now = new Date();
-  const { page, type, month, year, setField } = useObjectState({
+  const { page, type, month, year, setField, setFields } = useObjectState({
     page: 1,
     type: "",
     month: now.getMonth() + 1,
@@ -72,7 +78,7 @@ const TransactionsListPage = () => {
   const { data: summary } = useTransactionsSummaryQuery({ fromDate, toDate });
 
   const items = data?.data || [];
-  const meta = data?.meta || { pages: 1 };
+  const meta = data?.meta || { pages: 1, total: 0 };
 
   const typeOptions = [
     { value: "", label: "Hammasi" },
@@ -85,40 +91,57 @@ const TransactionsListPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Kirim-Chiqim</h1>
-        {has(PERMISSIONS.TRANSACTIONS_CREATE) && (
-          <Button onClick={() => openModal(MODAL.TRANSACTION_CREATE)}>
-            <Plus size={16} className="mr-2" /> Yangi tranzaksiya
-          </Button>
-        )}
-      </div>
+      <PageHeader
+        title="Kirim-Chiqim"
+        description={meta.total ? `Jami ${meta.total} ta` : ""}
+        actions={
+          has(PERMISSIONS.TRANSACTIONS_CREATE) && (
+            <Button onClick={() => openModal(MODAL.TRANSACTION_CREATE)}>
+              <Plus size={16} className="mr-1.5" /> Yangi tranzaksiya
+            </Button>
+          )
+        }
+      />
 
       <TransactionsSummaryCards summary={summary} />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <SelectField
-          label="Turi"
-          value={type}
-          onChange={(v) => setField("type", v)}
-          options={typeOptions}
-        />
-        <SelectField
-          label="Oy"
-          value={month}
-          onChange={(v) => setField("month", Number(v))}
-          options={MONTHS}
-        />
-        <SelectField
-          label="Yil"
-          value={year}
-          onChange={(v) => setField("year", Number(v))}
-          options={yearOptions}
-        />
+      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <SelectField
+            label="Turi"
+            value={type}
+            onChange={(v) => setFields({ type: v, page: 1 })}
+            options={typeOptions}
+          />
+          <SelectField
+            label="Oy"
+            value={month}
+            onChange={(v) => setFields({ month: Number(v), page: 1 })}
+            options={MONTHS}
+          />
+          <SelectField
+            label="Yil"
+            value={year}
+            onChange={(v) => setFields({ year: Number(v), page: 1 })}
+            options={yearOptions}
+          />
+        </div>
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Yuklanmoqda...</p>
+        <div className="overflow-x-auto rounded-lg border bg-white">
+          <table className="w-full text-sm">
+            <tbody>
+              <SkeletonTableRow count={5} columns={5} />
+            </tbody>
+          </table>
+        </div>
+      ) : items.length === 0 ? (
+        <EmptyState
+          icon={ArrowLeftRight}
+          title="Tranzaksiya yo'q"
+          description="Tanlangan davrda kirim-chiqim mavjud emas"
+        />
       ) : (
         <TransactionsTable items={items} />
       )}
