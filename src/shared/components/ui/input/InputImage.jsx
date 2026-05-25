@@ -8,13 +8,13 @@ import {
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { cn } from "@/shared/utils/cn";
 
-const MAX_SIZE_BYTES = 5 * 1024 * 1024;
+const MAX_SIZE_BYTES = 20 * 1024 * 1024;
 
 const InputImage = ({
   id = "",
   name = "",
   label = "",
-  description = "JPG, PNG yoki WebP, 5 MB gacha",
+  description,
   value = "",
   file = null,
   onChange,
