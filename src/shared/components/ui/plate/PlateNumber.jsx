@@ -1,17 +1,10 @@
-// O'zbekiston davlat raqami uchun chiroyli badge.
-// plateNumber qanday saqlangan bo'lsa shunday qabul qiladi (string).
-// Patternga mos kelsa region + asosiy qism + UZ ko'rinishida, aks holda fallback.
-
 import { cn } from "@/shared/utils/cn";
 
-// Bo'sh joy, defis va boshqa ajratuvchilarni olib tashlash + UPPERCASE
 const normalize = (raw) =>
   String(raw || "")
     .replace(/[\s\-_.]+/g, "")
     .toUpperCase();
 
-// UZ raqam patterni: 2 raqam (region) + 1 harf + 3 raqam + 2 harf
-// Misol: 70D272PA, 01A001AA
 const PLATE_RX = /^(\d{2})([A-Z])(\d{3})([A-Z]{2})$/;
 
 const parsePlate = (raw) => {
@@ -44,7 +37,11 @@ const SIZES = {
 };
 
 const UZFlag = ({ className = "" }) => (
-  <svg viewBox="0 0 30 15" className={cn("h-full w-auto", className)} aria-hidden>
+  <svg
+    viewBox="0 0 30 15"
+    className={cn("h-full w-auto p-px", className)}
+    aria-hidden
+  >
     <rect width="30" height="5" fill="#1eb53a" y="10" />
     <rect width="30" height="5" fill="#fff" y="5" />
     <rect width="30" height="5" fill="#0099b5" />
@@ -63,7 +60,7 @@ const PlateNumber = ({ value, size = "md", className = "" }) => {
     return (
       <span
         className={cn(
-          "inline-flex items-center font-mono font-bold tracking-wider rounded-md bg-white text-gray-900 border-2 border-gray-900",
+          "inline-flex items-center font-bold tracking-wider rounded-md bg-white text-gray-900 border-2 border-gray-900",
           sz.wrap,
           sz.main,
           className,
@@ -77,7 +74,7 @@ const PlateNumber = ({ value, size = "md", className = "" }) => {
   return (
     <span
       className={cn(
-        "inline-flex items-stretch font-mono font-bold tracking-wider rounded-md bg-white text-gray-900 border-2 border-gray-900 overflow-hidden select-none",
+        "inline-flex items-stretch font-bold tracking-wider rounded-md bg-white text-gray-900 border-2 border-gray-900 overflow-hidden select-none",
         sz.wrap,
         className,
       )}
