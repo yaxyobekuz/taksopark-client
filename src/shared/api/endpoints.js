@@ -19,6 +19,12 @@ export const ENDPOINTS = Object.freeze({
     base: "/cars",
     byId: (id) => `/cars/${id}`,
     expiring: "/cars/expiring",
+    documents: (id) => `/cars/${id}/documents`,
+    documentById: (id, docId) => `/cars/${id}/documents/${docId}`,
+  },
+  carDocumentTypes: {
+    base: "/car-document-types",
+    byId: (id) => `/car-document-types/${id}`,
   },
   drivers: {
     base: "/drivers",

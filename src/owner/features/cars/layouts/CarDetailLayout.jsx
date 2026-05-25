@@ -8,6 +8,7 @@ import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 
+import { buildFileUrl } from "@/shared/utils/fileUrl";
 import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -15,6 +16,9 @@ import { MODAL } from "@/shared/constants/modals";
 
 import { useCarByIdQuery } from "../hooks/useCarByIdQuery";
 import CarEditModal from "../components/modals/CarEditModal";
+import CarDocumentCreateModal from "../components/modals/CarDocumentCreateModal";
+import CarDocumentEditModal from "../components/modals/CarDocumentEditModal";
+import CarDocumentDeleteModal from "../components/modals/CarDocumentDeleteModal";
 
 const CarDetailLayout = () => {
   const { id } = useParams();
@@ -59,6 +63,13 @@ const CarDetailLayout = () => {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3 min-w-0">
+          {buildFileUrl(car.photoUrl) ? (
+            <img
+              src={buildFileUrl(car.photoUrl)}
+              alt=""
+              className="size-14 rounded-md object-cover border shrink-0"
+            />
+          ) : null}
           <h1 className="text-lg sm:text-xl font-semibold truncate">
             {car.model}
           </h1>
@@ -85,6 +96,15 @@ const CarDetailLayout = () => {
 
       <ModalWrapper name={MODAL.CAR_EDIT} title="Mashinani tahrirlash">
         <CarEditModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.CAR_DOC_CREATE} title="Hujjat qo'shish">
+        <CarDocumentCreateModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.CAR_DOC_EDIT} title="Hujjatni tahrirlash">
+        <CarDocumentEditModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.CAR_DOC_DELETE} title="O'chirishni tasdiqlash">
+        <CarDocumentDeleteModal />
       </ModalWrapper>
     </div>
   );

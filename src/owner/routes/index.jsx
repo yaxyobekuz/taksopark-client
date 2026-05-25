@@ -32,6 +32,7 @@ import {
 } from "@/owner/features/penalties";
 import { OyliklarListPage } from "@/owner/features/oyliklar";
 import { TransactionsListPage } from "@/owner/features/transactions";
+import { CarDocumentTypesPage } from "@/owner/features/carDocumentTypes";
 
 const OwnerRoutes = () => (
   <Routes>
@@ -184,6 +185,15 @@ const OwnerRoutes = () => (
     <Route path="reports" element={<Navigate to="/owner/payments/reports" replace />} />
     <Route path="reports/daily-plan" element={<Navigate to="/owner/payments/reports/daily-plan" replace />} />
     <Route path="reports/finance" element={<Navigate to="/owner/payments/reports/finance" replace />} />
+
+    <Route
+      path="settings/car-documents"
+      element={
+        <PermissionGuard required={PERMISSIONS.CARS_DOCUMENTS_MANAGE}>
+          <CarDocumentTypesPage />
+        </PermissionGuard>
+      }
+    />
 
     <Route path="*" element={<Navigate to="dashboard" replace />} />
   </Routes>

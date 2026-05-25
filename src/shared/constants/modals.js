@@ -9,6 +9,14 @@ export const MODAL = Object.freeze({
   CAR_EDIT: "car:edit",
   CAR_DELETE: "car:delete",
 
+  CAR_DOC_TYPE_CREATE: "carDocType:create",
+  CAR_DOC_TYPE_EDIT: "carDocType:edit",
+  CAR_DOC_TYPE_DELETE: "carDocType:delete",
+
+  CAR_DOC_CREATE: "carDoc:create",
+  CAR_DOC_EDIT: "carDoc:edit",
+  CAR_DOC_DELETE: "carDoc:delete",
+
   DRIVER_CREATE: "driver:create",
   DRIVER_EDIT: "driver:edit",
   DRIVER_DELETE: "driver:delete",

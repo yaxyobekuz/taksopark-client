@@ -1,6 +1,7 @@
 import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
+import ImageUpload from "@/shared/components/ui/image-upload/ImageUpload";
 import { useCarCreate } from "../../hooks/useCarMutations";
 
 const CarCreateModal = ({ close }) => {
@@ -8,8 +9,7 @@ const CarCreateModal = ({ close }) => {
     plateNumber,
     model,
     notes,
-    licenseExpiryDate,
-    powerOfAttorneyExpiryDate,
+    photoFile,
     setField,
     state,
     resetState,
@@ -17,8 +17,7 @@ const CarCreateModal = ({ close }) => {
     plateNumber: "",
     model: "",
     notes: "",
-    licenseExpiryDate: "",
-    powerOfAttorneyExpiryDate: "",
+    photoFile: null,
   });
   const { mutate, isPending } = useCarCreate();
 
@@ -35,6 +34,12 @@ const CarCreateModal = ({ close }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <ImageUpload
+        label="Mashina rasmi"
+        file={photoFile}
+        onChange={(f) => setField("photoFile", f)}
+        disabled={isPending}
+      />
       <InputField
         label="Model"
         value={model}
@@ -50,22 +55,6 @@ const CarCreateModal = ({ close }) => {
         placeholder="01A001AA  "
         disabled={isPending}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <InputField
-          label="Litsenziya muddati"
-          type="date"
-          value={licenseExpiryDate}
-          onChange={(e) => setField("licenseExpiryDate", e.target.value)}
-          disabled={isPending}
-        />
-        <InputField
-          label="Dovernost muddati"
-          type="date"
-          value={powerOfAttorneyExpiryDate}
-          onChange={(e) => setField("powerOfAttorneyExpiryDate", e.target.value)}
-          disabled={isPending}
-        />
-      </div>
       <InputField
         label="Izoh"
         type="textarea"

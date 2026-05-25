@@ -20,6 +20,10 @@ export const qk = Object.freeze({
     one: (id) => ["cars", "detail", id],
     expiring: (params) => ["cars", "expiring", params],
   },
+  carDocumentTypes: {
+    all: () => ["carDocumentTypes"],
+    list: () => ["carDocumentTypes", "list"],
+  },
   drivers: {
     all: () => ["drivers"],
     list: (params) => ["drivers", "list", params],

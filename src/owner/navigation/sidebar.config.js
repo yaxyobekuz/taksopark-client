@@ -7,6 +7,8 @@ import {
   AlertTriangle,
   CalendarRange,
   ArrowLeftRight,
+  Settings,
+  FileType,
 } from "lucide-react";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
@@ -59,6 +61,19 @@ const ownerSidebar = [
         url: "/owner/transactions",
         permission: PERMISSIONS.TRANSACTIONS_READ,
         icon: ArrowLeftRight,
+      },
+    ],
+  },
+  {
+    title: "Sozlamalar",
+    icon: Settings,
+    isActive: true,
+    items: [
+      {
+        title: "Mashina hujjat turlari",
+        url: "/owner/settings/car-documents",
+        permission: PERMISSIONS.CARS_DOCUMENTS_MANAGE,
+        icon: FileType,
       },
     ],
   },

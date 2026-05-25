@@ -223,21 +223,11 @@ const DashboardPage = () => {
           >
             <div className="text-sm space-y-1 mt-3">
               {expiringCars.map((car) => {
-                const candidates = [
-                  car.licenseExpiryDate && {
-                    label: "Litsenziya",
-                    date: car.licenseExpiryDate,
-                  },
-                  car.powerOfAttorneyExpiryDate && {
-                    label: "Dovernost",
-                    date: car.powerOfAttorneyExpiryDate,
-                  },
-                ].filter(Boolean);
-                const soonest = candidates.sort(
-                  (a, b) => new Date(a.date) - new Date(b.date),
-                )[0];
-                const days = getDaysLeft(soonest.date);
+                const expiring = car.expiringDocument;
+                if (!expiring?.expiryDate) return null;
+                const days = getDaysLeft(expiring.expiryDate);
                 const expired = days < 0;
+                const label = expiring.documentType?.name || "Hujjat";
                 return (
                   <Link
                     key={car._id}
@@ -253,7 +243,7 @@ const DashboardPage = () => {
                       <span>-</span>
                     )}
                     <span>
-                      {soonest.label}: {formatDateUZ(soonest.date)}
+                      {label}: {formatDateUZ(expiring.expiryDate)}
                     </span>
                     <span
                       className={

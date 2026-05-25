@@ -13,6 +13,7 @@ export const PERMISSIONS = Object.freeze({
   CARS_CREATE: "cars.create",
   CARS_UPDATE: "cars.update",
   CARS_DELETE: "cars.delete",
+  CARS_DOCUMENTS_MANAGE: "cars.documents.manage",
 
   PAYMENTS_READ: "payments.read",
   PAYMENTS_CREATE: "payments.create",
