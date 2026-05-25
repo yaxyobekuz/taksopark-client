@@ -5,6 +5,7 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatDateUZ } from "@/shared/utils/date.utils";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { getExpiryStatus } from "../utils/expiryStatus";
 
 const ExpiryCell = ({ date }) => {
@@ -50,7 +51,7 @@ const CarsTable = ({ items = [] }) => {
               onClick={() => navigate(`/owner/cars/${car._id}`)}
               className="border-t cursor-pointer hover:bg-muted/50"
             >
-              <td className="p-3 font-medium">{car.plateNumber || "-"}</td>
+              <td className="p-3"><PlateNumber value={car.plateNumber} size="sm" /></td>
               <td className="p-3">{car.model}</td>
               <td className="p-3"><ExpiryCell date={car.licenseExpiryDate} /></td>
               <td className="p-3"><ExpiryCell date={car.powerOfAttorneyExpiryDate} /></td>

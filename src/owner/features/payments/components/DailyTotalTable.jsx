@@ -1,6 +1,7 @@
 import { Wallet, Target, AlertCircle } from "lucide-react";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import StatCard from "@/shared/components/ui/card/StatCard";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 
 const DailyTotalTable = ({ data }) => {
   if (!data) return null;
@@ -57,7 +58,10 @@ const DailyTotalTable = ({ data }) => {
               return (
                 <tr key={row.carId} className="border-t">
                   <td className="p-3">
-                    {row.model || "-"} - {row.plateNumber || "-"}
+                    <div className="flex items-center gap-2">
+                      <span>{row.model || "-"}</span>
+                      {row.plateNumber ? <PlateNumber value={row.plateNumber} size="sm" /> : <span>-</span>}
+                    </div>
                   </td>
                   <td className="p-3">{row.driverName || "-"}</td>
                   <td className="p-3 text-right text-muted-foreground">

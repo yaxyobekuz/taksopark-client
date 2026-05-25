@@ -3,6 +3,7 @@ import { ArrowLeft, Pencil } from "lucide-react";
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -47,8 +48,11 @@ const CarDetailLayout = () => {
         <ArrowLeft size={16} /> Mashinalar ro'yxati
       </Link>
 
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <h1 className="text-2xl font-semibold">{car.model}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-semibold">{car.model}</h1>
+          {car.plateNumber && <PlateNumber value={car.plateNumber} size="lg" />}
+        </div>
         {has(PERMISSIONS.CARS_UPDATE) && (
           <Button onClick={() => openModal(MODAL.CAR_EDIT, { car })}>
             <Pencil size={16} className="mr-2" /> Tahrirlash

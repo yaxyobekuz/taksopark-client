@@ -1,4 +1,5 @@
 import { formatMoney } from "@/shared/utils/formatMoney";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 
 const FinanceMatrix = ({ data }) => {
   if (!data) return null;
@@ -58,7 +59,12 @@ const FinanceMatrix = ({ data }) => {
             )}
             {rows.map((row) => (
               <tr key={row.carId} className="border-t">
-                <td className="p-3 font-medium">{row.model || "-"} - {row.plateNumber || "-"}</td>
+                <td className="p-3">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{row.model || "-"}</span>
+                    {row.plateNumber ? <PlateNumber value={row.plateNumber} size="sm" /> : <span>-</span>}
+                  </div>
+                </td>
                 <td className="p-3">{row.driver || "-"}</td>
                 <td className="p-3 text-right">{formatMoney(row.revenue)}</td>
                 <td className="p-3 text-right">{formatMoney(row.fines)}</td>

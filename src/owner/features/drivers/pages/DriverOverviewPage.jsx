@@ -1,5 +1,6 @@
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import Card from "@/shared/components/ui/card/Card";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import { useDriverBalanceQuery } from "../hooks/useDriversQuery";
 import DriverBalancePanel from "../components/DriverBalancePanel";
@@ -36,15 +37,19 @@ const DriverOverviewPage = () => {
         <Card title="Mashina" className="space-y-2">
           {driver.car ? (
             <div className="space-y-2 mt-3">
-              <p className="text-sm">
-                <span className="text-muted-foreground">Raqami:</span>{" "}
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-muted-foreground">Raqami:</span>
                 <Link
                   to={`/owner/cars/${driver.car._id}`}
-                  className="text-primary hover:underline"
+                  className="inline-flex items-center hover:opacity-80"
                 >
-                  {driver.car.plateNumber || "-"}
+                  {driver.car.plateNumber ? (
+                    <PlateNumber value={driver.car.plateNumber} size="sm" />
+                  ) : (
+                    <span>-</span>
+                  )}
                 </Link>
-              </p>
+              </div>
               <p className="text-sm">
                 <span className="text-muted-foreground">Model:</span>{" "}
                 {driver.car.model}

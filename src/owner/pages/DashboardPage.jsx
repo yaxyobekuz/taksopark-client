@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import Card from "@/shared/components/ui/card/Card";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import {
@@ -167,10 +168,11 @@ const DashboardPage = () => {
                     <Link
                       key={d._id}
                       to={`/owner/drivers/${d._id}`}
-                      className="block hover:text-primary"
+                      className="flex flex-wrap items-center gap-2 hover:text-primary"
                     >
-                      {d.firstName} {d.lastName} - {d.car?.plateNumber || "-"} (
-                      {formatMoney(d.depositRemaining)})
+                      <span>{d.firstName} {d.lastName}</span>
+                      {d.car?.plateNumber ? <PlateNumber value={d.car.plateNumber} size="sm" /> : <span>-</span>}
+                      <span>({formatMoney(d.depositRemaining)})</span>
                     </Link>
                   ))}
                 </div>
@@ -187,10 +189,11 @@ const DashboardPage = () => {
                     <Link
                       key={d._id}
                       to={`/owner/drivers/${d._id}`}
-                      className="block hover:text-primary"
+                      className="flex flex-wrap items-center gap-2 hover:text-primary"
                     >
-                      {d.firstName} {d.lastName} - {d.car?.plateNumber || "-"} (
-                      {formatMoney(d.depositRemaining)})
+                      <span>{d.firstName} {d.lastName}</span>
+                      {d.car?.plateNumber ? <PlateNumber value={d.car.plateNumber} size="sm" /> : <span>-</span>}
+                      <span>({formatMoney(d.depositRemaining)})</span>
                     </Link>
                   ))}
                 </div>
@@ -207,10 +210,11 @@ const DashboardPage = () => {
                     <Link
                       key={w.driver._id}
                       to={`/owner/drivers/${w.driver._id}`}
-                      className="block hover:text-primary"
+                      className="flex flex-wrap items-center gap-2 hover:text-primary"
                     >
-                      {w.driver.firstName} {w.driver.lastName} -{" "}
-                      {w.driver.car?.plateNumber || "-"} ({w.daysSince} kun)
+                      <span>{w.driver.firstName} {w.driver.lastName}</span>
+                      {w.driver.car?.plateNumber ? <PlateNumber value={w.driver.car.plateNumber} size="sm" /> : <span>-</span>}
+                      <span>({w.daysSince} kun)</span>
                     </Link>
                   ))}
                 </div>
@@ -247,15 +251,13 @@ const DashboardPage = () => {
                 <Link
                   key={car._id}
                   to={`/owner/cars/${car._id}`}
-                  className="block text-muted-foreground hover:text-primary"
+                  className="flex flex-wrap items-center gap-2 text-muted-foreground hover:text-primary"
                 >
                   <span className="font-medium text-foreground">
                     {car.model}
                   </span>
-                  {" - "}
-                  {car.plateNumber || "-"}
-                  {" - "}
-                  {soonest.label}: {formatDateUZ(soonest.date)}{" "}
+                  {car.plateNumber ? <PlateNumber value={car.plateNumber} size="sm" /> : <span>-</span>}
+                  <span>{soonest.label}: {formatDateUZ(soonest.date)}</span>
                   <span
                     className={
                       expired ? "text-red-600 font-medium" : "text-amber-700"

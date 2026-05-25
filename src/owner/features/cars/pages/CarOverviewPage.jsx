@@ -2,6 +2,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import { FileText, ShieldCheck } from "lucide-react";
 import Card from "@/shared/components/ui/card/Card";
 import Badge from "@/shared/components/ui/badge/Badge";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import { getExpiryStatus, getDaysLeft } from "../utils/expiryStatus";
 
@@ -69,7 +70,9 @@ const CarOverviewPage = () => {
           </div>
           <div>
             <p className="text-muted-foreground">Davlat raqami</p>
-            <p className="font-medium">{car.plateNumber || "-"}</p>
+            <div className="mt-1">
+              {car.plateNumber ? <PlateNumber value={car.plateNumber} size="md" /> : <span className="font-medium">-</span>}
+            </div>
           </div>
           <div>
             <p className="text-muted-foreground">Joriy haydovchi</p>

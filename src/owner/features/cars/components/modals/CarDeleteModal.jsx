@@ -1,4 +1,5 @@
 import Button from "@/shared/components/ui/button/Button";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { useCarDelete } from "../../hooks/useCarMutations";
 
 const CarDeleteModal = ({ close, car }) => {
@@ -9,10 +10,13 @@ const CarDeleteModal = ({ close, car }) => {
   };
   return (
     <div className="space-y-4">
-      <p className="text-sm">
-        <span className="font-semibold">{car?.plateNumber}</span> mashinasini o'chirmoqchimisiz?
-        Mashina arxivlanadi.
-      </p>
+      <div className="text-sm space-y-2">
+        <div className="flex items-center gap-2">
+          {car?.plateNumber && <PlateNumber value={car.plateNumber} size="sm" />}
+          <span>mashinasini o'chirmoqchimisiz?</span>
+        </div>
+        <p>Mashina arxivlanadi.</p>
+      </div>
       <div className="flex gap-2">
         <Button variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>
           Bekor qilish

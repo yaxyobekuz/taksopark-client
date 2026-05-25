@@ -3,6 +3,7 @@ import { ArrowLeft, ShieldCheck } from "lucide-react";
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -74,9 +75,13 @@ const DriverDetailLayout = () => {
             {driver.car ? (
               <Link
                 to={`/owner/cars/${driver.car._id}`}
-                className="hover:text-primary"
+                className="inline-flex items-center align-middle hover:text-primary"
               >
-                {driver.car.plateNumber || driver.car.model}
+                {driver.car.plateNumber ? (
+                  <PlateNumber value={driver.car.plateNumber} size="sm" />
+                ) : (
+                  driver.car.model
+                )}
               </Link>
             ) : (
               "Mashina biriktirilmagan"

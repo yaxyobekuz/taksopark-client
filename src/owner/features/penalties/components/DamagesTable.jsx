@@ -7,6 +7,7 @@ import { PAYMENT_STATUS } from "@/shared/constants/payments";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import Tooltip from "@/shared/components/ui/tooltip/Tooltip";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import AttachmentPreview from "./AttachmentPreview";
 
 const CarCell = ({ car }) => {
@@ -15,7 +16,12 @@ const CarCell = ({ car }) => {
   const tooltip = (
     <div className="space-y-0.5 text-xs">
       {car.model && <div><span className="text-muted-foreground">Nomi:</span> {car.model}</div>}
-      {car.plateNumber && <div><span className="text-muted-foreground">Raqami:</span> {car.plateNumber}</div>}
+      {car.plateNumber && (
+        <div className="flex items-center gap-2">
+          <span className="text-muted-foreground">Raqami:</span>
+          <PlateNumber value={car.plateNumber} size="sm" />
+        </div>
+      )}
       {car.notes && <div><span className="text-muted-foreground">Izoh:</span> {car.notes}</div>}
     </div>
   );

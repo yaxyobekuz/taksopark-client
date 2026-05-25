@@ -7,6 +7,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { TARIFF_LABELS, TARIFFS, TARIFF_CONFIG, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
 import { DRIVER_STATUS_LABELS, DRIVER_STATUS_BADGE_CLASS } from "@/shared/constants/drivers";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import WarningBadge from "./WarningBadge";
 
 const stop = (e) => e.stopPropagation();
@@ -57,7 +58,7 @@ const DriversTable = ({ items = [] }) => {
                     {TARIFF_LABELS[d.tariff] || d.tariff}
                   </span>
                 </td>
-                <td className="p-3">{d.car?.plateNumber || "-"}</td>
+                <td className="p-3">{d.car?.plateNumber ? <PlateNumber value={d.car.plateNumber} size="sm" /> : "-"}</td>
                 <td className="p-3">
                   {d.tariff === TARIFFS.DEPOSIT ? (
                     <div className="flex items-center gap-2">
