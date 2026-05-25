@@ -2,26 +2,26 @@ import { useEffect } from "react";
 import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
-import InputImage from "@/shared/components/ui/input/InputImage";
+import InputImages from "@/shared/components/ui/input/InputImages";
 import { useCarDocumentUpdate } from "../../hooks/useCarDocumentMutations";
 
 const toDateInput = (date) =>
   date ? new Date(date).toISOString().slice(0, 10) : "";
 
 const CarDocumentEditModal = ({ close, carId, document }) => {
-  const { expiryDate, file, removeFile, setField, setFields, state } =
+  const { expiryDate, files, removeFileUrls, setField, setFields, state } =
     useObjectState({
       expiryDate: toDateInput(document?.expiryDate),
-      file: null,
-      removeFile: false,
+      files: [],
+      removeFileUrls: [],
     });
 
   useEffect(() => {
     if (!document) return;
     setFields({
       expiryDate: toDateInput(document.expiryDate),
-      file: null,
-      removeFile: false,
+      files: [],
+      removeFileUrls: [],
     });
   }, [document, setFields]);
 
@@ -52,29 +52,29 @@ const CarDocumentEditModal = ({ close, carId, document }) => {
         disabled={isPending}
       />
 
-      <div className="space-y-2">
-        <InputImage
-          label="Hujjat rasmi"
-          file={file}
-          value={!file && !removeFile ? document?.file?.url || "" : ""}
-          onChange={(f) => {
-            setField("file", f);
-            if (f) setField("removeFile", false);
-          }}
-          disabled={isPending}
-        />
-        {document?.file?.url && !file && (
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={removeFile}
-              onChange={(e) => setField("removeFile", e.target.checked)}
-              disabled={isPending}
-            />
-            Mavjud faylni o'chirish
-          </label>
-        )}
-      </div>
+      <InputImages
+        label="Rasmlar"
+        existing={document?.files || []}
+        files={files}
+        removedUrls={removeFileUrls}
+        onAdd={(picked) => setField("files", [...files, ...picked])}
+        onRemoveNew={(idx) =>
+          setField(
+            "files",
+            files.filter((_, i) => i !== idx),
+          )
+        }
+        onRemoveExisting={(url) =>
+          setField("removeFileUrls", [...removeFileUrls, url])
+        }
+        onRestoreExisting={(url) =>
+          setField(
+            "removeFileUrls",
+            removeFileUrls.filter((u) => u !== url),
+          )
+        }
+        disabled={isPending}
+      />
 
       <div className="flex gap-2">
         <Button type="button" variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>

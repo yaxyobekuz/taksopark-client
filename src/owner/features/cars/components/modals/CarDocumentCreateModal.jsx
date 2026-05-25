@@ -3,13 +3,13 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
-import InputImage from "@/shared/components/ui/input/InputImage";
+import InputImages from "@/shared/components/ui/input/InputImages";
 import { useCarDocumentTypesQuery } from "@/owner/features/carDocumentTypes";
 import { useCarDocumentAdd } from "../../hooks/useCarDocumentMutations";
 
 const CarDocumentCreateModal = ({ close, carId }) => {
-  const { documentType, expiryDate, file, setField, state, resetState } =
-    useObjectState({ documentType: "", expiryDate: "", file: null });
+  const { documentType, expiryDate, files, setField, state, resetState } =
+    useObjectState({ documentType: "", expiryDate: "", files: [] });
 
   const { data: types = [], isLoading: typesLoading } =
     useCarDocumentTypesQuery();
@@ -53,10 +53,16 @@ const CarDocumentCreateModal = ({ close, carId }) => {
         onChange={(e) => setField("expiryDate", e.target.value)}
         disabled={isPending}
       />
-      <InputImage
-        label="Hujjat rasmi"
-        file={file}
-        onChange={(f) => setField("file", f)}
+      <InputImages
+        label="Rasmlar (bir nechta tanlash mumkin)"
+        files={files}
+        onAdd={(picked) => setField("files", [...files, ...picked])}
+        onRemoveNew={(idx) =>
+          setField(
+            "files",
+            files.filter((_, i) => i !== idx),
+          )
+        }
         disabled={isPending}
       />
       <div className="flex gap-2">

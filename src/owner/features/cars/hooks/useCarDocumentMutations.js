@@ -9,12 +9,18 @@ const onError = (err) => {
   toast.error(msg);
 };
 
-const buildFormData = ({ documentType, expiryDate, file, removeFile }) => {
+const buildFormData = ({ documentType, expiryDate, files, removeFileUrls }) => {
   const fd = new FormData();
   if (documentType) fd.append("documentType", documentType);
   if (expiryDate !== undefined) fd.append("expiryDate", expiryDate ?? "");
-  if (removeFile) fd.append("removeFile", "true");
-  if (file instanceof File) fd.append("attachments", file);
+  if (Array.isArray(files)) {
+    for (const f of files) {
+      if (f instanceof File) fd.append("attachments", f);
+    }
+  }
+  if (Array.isArray(removeFileUrls)) {
+    for (const url of removeFileUrls) fd.append("removeFileUrls", url);
+  }
   return fd;
 };
 
@@ -26,11 +32,11 @@ const invalidate = (qc, carId) => {
 export const useCarDocumentAdd = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ carId, documentType, expiryDate, file }) =>
+    mutationFn: ({ carId, documentType, expiryDate, files }) =>
       http
         .post(
           ENDPOINTS.cars.documents(carId),
-          buildFormData({ documentType, expiryDate, file }),
+          buildFormData({ documentType, expiryDate, files }),
           { headers: { "Content-Type": "multipart/form-data" } },
         )
         .then((r) => r.data.data),
@@ -45,11 +51,11 @@ export const useCarDocumentAdd = () => {
 export const useCarDocumentUpdate = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ carId, docId, expiryDate, file, removeFile }) =>
+    mutationFn: ({ carId, docId, expiryDate, files, removeFileUrls }) =>
       http
         .patch(
           ENDPOINTS.cars.documentById(carId, docId),
-          buildFormData({ expiryDate, file, removeFile }),
+          buildFormData({ expiryDate, files, removeFileUrls }),
           { headers: { "Content-Type": "multipart/form-data" } },
         )
         .then((r) => r.data.data),

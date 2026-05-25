@@ -36,8 +36,7 @@ const ExpiryBadge = ({ date }) => {
   );
 };
 
-const FilePreview = ({ file }) => {
-  if (!file?.url) return null;
+const FileThumb = ({ file }) => {
   const url = buildFileUrl(file.url);
   const isImage = (file.mime || "").startsWith("image/");
   return (
@@ -45,10 +44,16 @@ const FilePreview = ({ file }) => {
       href={url}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+      className="block size-16 overflow-hidden rounded-[2px] border bg-muted/40"
+      title={file.filename || "Faylni ochish"}
     >
-      {isImage ? <ImageIcon size={14} /> : <FileText size={14} />}
-      Faylni ko'rish
+      {isImage ? (
+        <img src={url} alt={file.filename || ""} className="size-full object-cover" />
+      ) : (
+        <span className="flex size-full items-center justify-center text-muted-foreground">
+          <FileText size={20} />
+        </span>
+      )}
     </a>
   );
 };
@@ -66,20 +71,27 @@ const CarDocumentsSection = ({ carId, documents = [] }) => {
         documents.map((doc) => (
           <div
             key={doc._id}
-            className="flex flex-wrap items-center justify-between gap-3 py-3 border-b first:pt-0 last:pb-0"
+            className="flex flex-wrap items-start justify-between gap-3 py-3 border-b first:pt-0 last:pb-0"
           >
-            <div className="min-w-0 space-y-1">
-              <p className="text-sm font-medium text-gray-900 truncate">
-                {doc.documentType?.name || "—"}
-              </p>
+            <div className="min-w-0 space-y-2 flex-1">
+              <div>
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {doc.documentType?.name || "—"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {doc.expiryDate
+                    ? formatDateUZ(doc.expiryDate) + " gacha"
+                    : "Muddati belgilanmagan"}
+                </p>
+              </div>
 
-              <p className="text-xs text-muted-foreground">
-                {doc.expiryDate
-                  ? formatDateUZ(doc.expiryDate) + " gacha"
-                  : "Muddati belgilanmagan"}
-              </p>
-
-              {doc.file?.url && <FilePreview file={doc.file} />}
+              {doc.files?.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {doc.files.map((f) => (
+                    <FileThumb key={f.url} file={f} />
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-2">

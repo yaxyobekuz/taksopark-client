@@ -9,6 +9,8 @@ const CarDocumentDeleteModal = ({ close, carId, document }) => {
     mutate({ carId, docId: document._id }, { onSuccess: () => close() });
   };
 
+  const fileCount = document?.files?.length || 0;
+
   return (
     <div className="space-y-4">
       <p className="text-sm">
@@ -17,9 +19,9 @@ const CarDocumentDeleteModal = ({ close, carId, document }) => {
         </span>{" "}
         ni o'chirmoqchimisiz?
       </p>
-      {document?.file?.url && (
+      {fileCount > 0 && (
         <p className="text-xs text-muted-foreground">
-          Biriktirilgan fayl ham serverdan o'chiriladi.
+          Biriktirilgan {fileCount} ta fayl ham serverdan o'chiriladi.
         </p>
       )}
       <div className="flex gap-2">
