@@ -1,5 +1,5 @@
 import { Link, Outlet, useParams } from "react-router-dom";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { ArrowLeft, Pencil, CheckCircle2, XCircle } from "lucide-react";
 
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
@@ -73,6 +73,15 @@ const CarDetailLayout = () => {
           <h1 className="text-lg sm:text-xl font-semibold truncate">
             {car.model}
           </h1>
+          {car.isActive ? (
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded">
+              <CheckCircle2 size={12} strokeWidth={2} /> Faol
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground bg-gray-100 px-2 py-0.5 rounded">
+              <XCircle size={12} strokeWidth={2} /> Faol emas
+            </span>
+          )}
           {car.plateNumber && <PlateNumber value={car.plateNumber} size="md" />}
         </div>
         {has(PERMISSIONS.CARS_UPDATE) && (

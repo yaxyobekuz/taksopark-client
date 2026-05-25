@@ -25,21 +25,33 @@ const DetailSection = ({
       className={cn(
         "bg-white border rounded-[2px] overflow-hidden",
         className,
+        open ? "h-full" : "h-auto",
       )}
     >
-      <div className="flex items-center justify-between px-4 xs:px-5 py-3 border-b bg-gray-50/60">
+      <div
+        className={cn(
+          "flex items-center justify-between px-4 xs:px-5 py-3 bg-gray-50/60",
+          open ? "border-b" : "",
+        )}
+      >
         <CollapsibleTrigger
           asChild
           disabled={!collapsible}
           className="flex items-center gap-2 text-left group"
         >
-          <button type="button" className="flex items-center gap-2 min-w-0">
+          <button type="button" className="flex items-center gap-2 w-full">
             {Icon && (
-              <Icon size={18} strokeWidth={1.5} className="text-gray-600 shrink-0" />
+              <Icon
+                size={18}
+                strokeWidth={1.5}
+                className="text-gray-600 shrink-0"
+              />
             )}
+
             <h2 className="font-semibold text-sm text-gray-900 truncate">
               {title}
             </h2>
+
             {collapsible && (
               <ChevronDown
                 size={16}

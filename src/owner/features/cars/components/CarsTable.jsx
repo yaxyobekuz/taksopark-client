@@ -6,36 +6,8 @@ import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
-import { getExpiryStatus } from "../utils/expiryStatus";
 
 const stop = (e) => e.stopPropagation();
-
-const summarizeDocs = (docs = []) => {
-  let expired = 0;
-  let soon = 0;
-  for (const d of docs) {
-    const s = getExpiryStatus(d.expiryDate);
-    if (s === "expired") expired += 1;
-    else if (s === "expiring_soon") soon += 1;
-  }
-  return { total: docs.length, expired, soon };
-};
-
-const DocsCell = ({ documents }) => {
-  const { total, expired, soon } = summarizeDocs(documents);
-  if (total === 0) return <span className="text-muted-foreground">-</span>;
-  return (
-    <div className="flex items-center gap-2 text-xs">
-      <span>{total} ta</span>
-      {expired > 0 && (
-        <span className="text-red-600 font-medium">{expired} o'tgan</span>
-      )}
-      {soon > 0 && (
-        <span className="text-amber-600 font-medium">{soon} tez orada</span>
-      )}
-    </div>
-  );
-};
 
 const CarsTable = ({ items = [] }) => {
   const navigate = useNavigate();
@@ -53,7 +25,6 @@ const CarsTable = ({ items = [] }) => {
           <tr>
             <th className="text-left p-3">Davlat raqami</th>
             <th className="text-left p-3">Model</th>
-            <th className="text-left p-3">Hujjatlar</th>
             <th className="text-left p-3">Haydovchi</th>
             <th className="text-right p-3">Amallar</th>
           </tr>
@@ -65,7 +36,9 @@ const CarsTable = ({ items = [] }) => {
               onClick={() => navigate(`/owner/cars/${car._id}`)}
               className="border-t cursor-pointer hover:bg-muted/50"
             >
-              <td className="p-3"><PlateNumber value={car.plateNumber} size="sm" /></td>
+              <td className="p-3">
+                <PlateNumber value={car.plateNumber} size="sm" />
+              </td>
               <td className="p-3">
                 <div className="flex items-center gap-2">
                   {buildFileUrl(car.photoUrl) ? (
@@ -78,7 +51,6 @@ const CarsTable = ({ items = [] }) => {
                   <span>{car.model}</span>
                 </div>
               </td>
-              <td className="p-3"><DocsCell documents={car.documents} /></td>
               <td className="p-3">
                 {car.currentDriver
                   ? `${car.currentDriver.firstName} ${car.currentDriver.lastName}`
