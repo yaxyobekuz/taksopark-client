@@ -1,59 +1,87 @@
-// Utils
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { Home, Users, Car, Menu } from "lucide-react";
+
 import { cn } from "@/shared/utils/cn";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/shared/components/shadcn/sheet";
+import SidebarNav from "@/shared/components/layout/SidebarNav";
 
-// Router
-import { NavLink } from "react-router-dom";
+const PRIMARY_PATHS = ["/owner/dashboard", "/owner/drivers", "/owner/cars"];
 
-// Icons
-import { Home, User, Coins } from "lucide-react";
+const PRIMARY_ITEMS = [
+  { path: "/owner/dashboard", label: "Asosiy", icon: Home },
+  { path: "/owner/drivers", label: "Haydovchilar", icon: Users },
+  { path: "/owner/cars", label: "Mashinalar", icon: Car },
+];
 
 const BottomNavbar = () => {
-  const navItems = [
-    { path: "/dashboard", label: "Asosiy", icon: Home },
-    { path: "/transactions", label: "Tangalar", icon: Coins },
-    { path: "/profile", label: "Profil", icon: User },
-  ];
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  const menuActive = !PRIMARY_PATHS.some((p) => pathname.startsWith(p));
 
   return (
-    <div className="fixed top-auto inset-0 z-20 flex justify-center pb-4">
-      <div className="container">
-        <nav className="bottom-navigation flex items-center gap-1 p-1 rounded-full bg-white xs:p-1.5">
-          {navItems.map((nav) => (
+    <>
+      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t md:hidden">
+        <div className="grid grid-cols-4">
+          {PRIMARY_ITEMS.map((it) => (
             <NavLink
-              to={nav.path}
-              key={nav.path}
+              key={it.path}
+              to={it.path}
               className={({ isActive }) =>
                 cn(
-                  "flex flex-col items-center justify-center relative w-full h-12 rounded-full transition-all duration-300 xs:h-14",
+                  "flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] transition-colors",
                   isActive
-                    ? "bg-blue-100 text-blue-600"
-                    : "text-gray-500 hover:bg-white/40 hover:text-gray-900",
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-gray-900",
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  <nav.icon
-                    size={20}
-                    strokeWidth={isActive ? 2 : 1.5}
-                    className="size-5 mb-0.5 xs:mb-1"
-                  />
-
-                  <span
-                    className={cn(
-                      isActive ? "font-bold xs:font-semibold" : "font-medium",
-                      "text-[10px] xs:text-xs",
-                    )}
-                  >
-                    {nav.label}
+                  <it.icon size={20} strokeWidth={isActive ? 2 : 1.5} />
+                  <span className={cn(isActive && "font-semibold")}>
+                    {it.label}
                   </span>
                 </>
               )}
             </NavLink>
           ))}
-        </nav>
-      </div>
-    </div>
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            className={cn(
+              "flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] transition-colors",
+              menuActive
+                ? "text-primary"
+                : "text-muted-foreground hover:text-gray-900",
+            )}
+          >
+            <Menu size={20} strokeWidth={menuActive ? 2 : 1.5} />
+            <span className={cn(menuActive && "font-semibold")}>Menyu</span>
+          </button>
+        </div>
+      </nav>
+
+      <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+        <SheetContent
+          side="bottom"
+          className="max-h-[80vh] overflow-y-auto rounded-t-xl"
+        >
+          <SheetHeader className="text-left">
+            <SheetTitle>Menyu</SheetTitle>
+          </SheetHeader>
+          <div className="mt-3">
+            <SidebarNav onItemClick={() => setMenuOpen(false)} />
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
 
