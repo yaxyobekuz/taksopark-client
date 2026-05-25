@@ -49,11 +49,15 @@
 }
 
 /* === Fully hidden (existing utility) === */
-.hidden-scrollbar {
+.hidden-scrollbar,
+.scrollbar-hide,
+.hidden-scroll {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
 
-.hidden-scrollbar::-webkit-scrollbar {
+.hidden-scrollbar::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar,
+.hidden-scroll::-webkit-scrollbar {
   display: none; /* Safari & Chrome */
 }
