@@ -20,6 +20,7 @@ import { Drawer, DrawerContent } from "@/shared/components/shadcn/drawer";
 
 const ModalWrapper = ({
   children,
+  footer = null,
   name = "",
   className = "",
   description = "",
@@ -30,12 +31,15 @@ const ModalWrapper = ({
   const isDesktop = useMediaQuery("(min-width: 480px)");
   const hanldeCloseModal = (data) => !isLoading && closeModal(name, data);
 
-  const body = cloneElement(children, {
+  const injectedProps = {
     isLoading,
     setIsLoading,
     close: hanldeCloseModal,
     ...(data || {}),
-  });
+  };
+
+  const body = cloneElement(children, injectedProps);
+  const footerNode = footer ? cloneElement(footer, injectedProps) : null;
 
   if (isDesktop) {
     return (
@@ -51,6 +55,9 @@ const ModalWrapper = ({
 
           {/* Body */}
           {body}
+
+          {/* Footer */}
+          {footerNode && <div className="pt-2">{footerNode}</div>}
         </DialogContent>
       </Dialog>
     );
@@ -66,9 +73,23 @@ const ModalWrapper = ({
         </DialogHeader>
 
         {/* Body */}
-        <div className="w-full max-h-[calc(100vh-154px)] overflow-y-auto hidden-scroll">
+        <div
+          className={cn(
+            "w-full overflow-y-auto hidden-scroll",
+            footerNode
+              ? "max-h-[calc(100vh-220px)]"
+              : "max-h-[calc(100vh-154px)]",
+          )}
+        >
           {body}
         </div>
+
+        {/* Footer */}
+        {footerNode && (
+          <div className="sticky bottom-0 bg-white border-t pt-3 mt-2 -mx-5 px-5">
+            {footerNode}
+          </div>
+        )}
       </DrawerContent>
     </Drawer>
   );
