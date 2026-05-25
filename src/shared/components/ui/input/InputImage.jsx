@@ -73,31 +73,39 @@ const InputImage = ({
           {required && <span className="text-primary">*</span>}
         </FieldLabel>
       )}
+
       <button
         type="button"
         onClick={open}
         disabled={disabled}
         className={cn(
-          "relative flex items-center gap-3 w-full rounded-md border border-input bg-background p-2 text-left",
+          "relative flex items-center gap-3 w-full rounded-[2px] border-2 border-dashed bg-white p-2 text-left",
           "transition hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           disabled && "opacity-60 cursor-not-allowed",
         )}
       >
-        <div className="size-16 shrink-0 overflow-hidden rounded border bg-muted/40 flex items-center justify-center">
+        <div className="size-16 shrink-0 overflow-hidden border bg-muted/40 flex items-center justify-center">
           {hasPreview ? (
             <img src={previewUrl} alt="" className="size-full object-cover" />
           ) : (
             <ImagePlus size={20} className="text-muted-foreground" />
           )}
         </div>
+
         <div className="flex-1 min-w-0 text-sm">
           <p className="font-medium truncate">
             {hasPreview ? "Rasmni almashtirish" : "Rasm tanlash"}
           </p>
+
           <p className="text-xs text-muted-foreground truncate">
-            {file instanceof File ? file.name : hasPreview ? "Joriy rasm" : "Fayl tanlanmagan"}
+            {file instanceof File
+              ? file.name
+              : hasPreview
+                ? "Joriy rasm"
+                : "Fayl tanlanmagan"}
           </p>
         </div>
+
         {file instanceof File && !disabled && (
           <span
             role="button"
@@ -107,12 +115,14 @@ const InputImage = ({
             className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
             aria-label="Tanlovni bekor qilish"
           >
-            <X size={14} />
+            <X size={20} strokeWidth={1.5} />
           </span>
         )}
       </button>
       {error ? (
-        <FieldDescription className="text-destructive">{error}</FieldDescription>
+        <FieldDescription className="text-destructive">
+          {error}
+        </FieldDescription>
       ) : (
         description && <FieldDescription>{description}</FieldDescription>
       )}
