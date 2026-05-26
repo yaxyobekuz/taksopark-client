@@ -1,27 +1,13 @@
 import { useMemo } from "react";
 import useObjectState from "@/shared/hooks/useObjectState";
 import SelectField from "@/shared/components/ui/select/SelectField";
+import { MONTHS } from "@/shared/constants/months";
 import { useCarsQuery } from "@/owner/features/cars";
 import {
   useFinanceReportQuery,
   useReportsMinYearQuery,
 } from "../hooks/useReportsQuery";
 import FinanceMatrix from "../components/FinanceMatrix";
-
-const MONTHS = [
-  { value: 1, label: "Yanvar" },
-  { value: 2, label: "Fevral" },
-  { value: 3, label: "Mart" },
-  { value: 4, label: "Aprel" },
-  { value: 5, label: "May" },
-  { value: 6, label: "Iyun" },
-  { value: 7, label: "Iyul" },
-  { value: 8, label: "Avgust" },
-  { value: 9, label: "Sentabr" },
-  { value: 10, label: "Oktabr" },
-  { value: 11, label: "Noyabr" },
-  { value: 12, label: "Dekabr" },
-];
 
 const pad = (n) => String(n).padStart(2, "0");
 

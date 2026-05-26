@@ -1,6 +1,7 @@
 export { default as PaymentsLayout } from "./layouts/PaymentsLayout";
 export { default as PaymentsListPage } from "./pages/PaymentsListPage";
 export { default as DailyPlanReportPage } from "./pages/DailyPlanReportPage";
+export { default as MonthlyPlanReportPage } from "./pages/MonthlyPlanReportPage";
 export { default as FinanceReportPage } from "./pages/FinanceReportPage";
 export { default as MonthlyIncomeExpenseChart } from "./components/MonthlyIncomeExpenseChart";
 export { usePaymentsQuery, usePaymentTodayTotalQuery } from "./hooks/usePaymentsQuery";
@@ -9,4 +10,6 @@ export {
   useDailyPlanTotalQuery,
   useFinanceReportQuery,
   useMonthlyIncomeExpenseQuery,
+  useDepositDriversMonthlyQuery,
+  useReportsMinYearQuery,
 } from "./hooks/useReportsQuery";

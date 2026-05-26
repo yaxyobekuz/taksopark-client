@@ -6,4 +6,6 @@ export const reportsAPI = {
   finance: (params) => http.get(ENDPOINTS.reports.finance, { params }),
   minYear: () => http.get(ENDPOINTS.reports.minYear),
   monthlyIncomeExpense: () => http.get(ENDPOINTS.reports.monthlyIncomeExpense),
+  depositDriversMonthly: (params) =>
+    http.get(ENDPOINTS.reports.depositDriversMonthly, { params }),
 };
