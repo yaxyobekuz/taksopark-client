@@ -54,7 +54,7 @@ const CarDocumentCreateModal = ({ close, carId }) => {
         disabled={isPending}
       />
       <InputImages
-        label="Rasmlar (bir nechta tanlash mumkin)"
+        label="Rasmlar "
         files={files}
         onAdd={(picked) => setField("files", [...files, ...picked])}
         onRemoveNew={(idx) =>
