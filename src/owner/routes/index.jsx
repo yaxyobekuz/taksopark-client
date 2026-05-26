@@ -23,6 +23,7 @@ import {
   PaymentsLayout,
   PaymentsListPage,
   DailyPlanReportPage,
+  MonthlyPlanReportPage,
   FinanceReportPage,
 } from "@/owner/features/payments";
 import {
@@ -138,6 +139,7 @@ const OwnerRoutes = () => (
       >
         <Route index element={<Navigate to="daily-plan" replace />} />
         <Route path="daily-plan" element={<DailyPlanReportPage />} />
+        <Route path="monthly-plan" element={<MonthlyPlanReportPage />} />
         <Route path="finance" element={<FinanceReportPage />} />
       </Route>
     </Route>

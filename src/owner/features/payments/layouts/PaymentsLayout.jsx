@@ -13,6 +13,7 @@ const PaymentsLayout = () => {
   if (has(PERMISSIONS.REPORTS_READ)) {
     tabs.push(
       { to: "/owner/payments/reports/daily-plan", label: "Kunlik reja" },
+      { to: "/owner/payments/reports/monthly-plan", label: "Oylik reja" },
       { to: "/owner/payments/reports/finance", label: "Statistika" },
     );
   }
