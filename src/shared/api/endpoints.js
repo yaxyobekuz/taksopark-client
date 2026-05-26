@@ -32,6 +32,12 @@ export const ENDPOINTS = Object.freeze({
     balance: (id) => `/drivers/${id}/balance`,
     endTrial: (id) => `/drivers/${id}/end-trial`,
     warnings: "/drivers/warnings",
+    documents: (id) => `/drivers/${id}/documents`,
+    documentById: (id, docId) => `/drivers/${id}/documents/${docId}`,
+  },
+  driverDocumentTypes: {
+    base: "/driver-document-types",
+    byId: (id) => `/driver-document-types/${id}`,
   },
   payments: {
     base: "/payments",

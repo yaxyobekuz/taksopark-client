@@ -17,6 +17,14 @@ export const MODAL = Object.freeze({
   CAR_DOC_EDIT: "carDoc:edit",
   CAR_DOC_DELETE: "carDoc:delete",
 
+  DRIVER_DOC_TYPE_CREATE: "driverDocType:create",
+  DRIVER_DOC_TYPE_EDIT: "driverDocType:edit",
+  DRIVER_DOC_TYPE_DELETE: "driverDocType:delete",
+
+  DRIVER_DOC_CREATE: "driverDoc:create",
+  DRIVER_DOC_EDIT: "driverDoc:edit",
+  DRIVER_DOC_DELETE: "driverDoc:delete",
+
   DRIVER_CREATE: "driver:create",
   DRIVER_EDIT: "driver:edit",
   DRIVER_DELETE: "driver:delete",

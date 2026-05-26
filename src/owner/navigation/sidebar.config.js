@@ -75,6 +75,12 @@ const ownerSidebar = [
         permission: PERMISSIONS.CARS_DOCUMENTS_MANAGE,
         icon: FileType,
       },
+      {
+        title: "Haydovchi hujjat turlari",
+        url: "/owner/settings/driver-documents",
+        permission: PERMISSIONS.DRIVERS_DOCUMENTS_MANAGE,
+        icon: FileType,
+      },
     ],
   },
 ];

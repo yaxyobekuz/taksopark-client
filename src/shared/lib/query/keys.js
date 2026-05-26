@@ -24,6 +24,10 @@ export const qk = Object.freeze({
     all: () => ["carDocumentTypes"],
     list: () => ["carDocumentTypes", "list"],
   },
+  driverDocumentTypes: {
+    all: () => ["driverDocumentTypes"],
+    list: () => ["driverDocumentTypes", "list"],
+  },
   drivers: {
     all: () => ["drivers"],
     list: (params) => ["drivers", "list", params],
