@@ -35,3 +35,9 @@ export const useDepositDriversMonthlyQuery = (params, enabled = true) =>
       reportsAPI.depositDriversMonthly(params).then((r) => r.data.data),
     enabled: enabled && !!params.year && !!params.month,
   });
+
+export const useDailyIncomeExpenseQuery = (days = 30) =>
+  useQuery({
+    queryKey: qk.reports.dailyIncomeExpense(days),
+    queryFn: () => reportsAPI.dailyIncomeExpense(days).then((r) => r.data.data),
+  });

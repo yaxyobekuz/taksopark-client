@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import {
   Wallet,
-  Users,
   AlertTriangle,
   ArrowDownCircle,
   ArrowUpCircle,
   CalendarClock,
   BarChart3,
+  LineChart as LineChartIcon,
   Scale,
 } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
@@ -15,14 +15,12 @@ import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import {
-  usePaymentTodayTotalQuery,
   useMonthlyIncomeExpenseQuery,
+  useDailyIncomeExpenseQuery,
   MonthlyIncomeExpenseChart,
+  DailyIncomeExpenseChart,
 } from "@/owner/features/payments";
-import {
-  useDriversQuery,
-  useDriverWarningsQuery,
-} from "@/owner/features/drivers";
+import { useDriverWarningsQuery } from "@/owner/features/drivers";
 import { useTransactionsSummaryQuery } from "@/owner/features/transactions";
 import { useCarsExpiringQuery } from "@/owner/features/cars";
 import { getDaysLeft } from "@/owner/features/cars/utils/expiryStatus";
@@ -30,11 +28,6 @@ import { getDaysLeft } from "@/owner/features/cars/utils/expiryStatus";
 const today = new Date().toISOString().slice(0, 10);
 
 const DashboardPage = () => {
-  const { data: todayTotal } = usePaymentTodayTotalQuery(today);
-  const { data: activeDriversData } = useDriversQuery({
-    status: "active",
-    limit: 1,
-  });
   const { data: warnings } = useDriverWarningsQuery();
   const { data: todaySummary } = useTransactionsSummaryQuery({
     fromDate: today,
@@ -46,6 +39,8 @@ const DashboardPage = () => {
   });
   const { data: monthly, isLoading: monthlyLoading } =
     useMonthlyIncomeExpenseQuery();
+  const { data: daily, isLoading: dailyLoading } =
+    useDailyIncomeExpenseQuery(30);
 
   const months = monthly?.months || [];
   const thisMonth = months[months.length - 1] || {
@@ -54,8 +49,6 @@ const DashboardPage = () => {
     profit: 0,
   };
 
-  const activeCount = activeDriversData?.meta?.total ?? 0;
-
   const depositLow = warnings?.depositLow || [];
   const depositEmpty = warnings?.depositEmpty || [];
   const noPayment = warnings?.noPayment2Days || [];
@@ -63,35 +56,10 @@ const DashboardPage = () => {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <div>
-          <h1 className="text-2xl font-semibold">Boshqaruv paneli</h1>
-          <p className="text-sm text-muted-foreground">
-            Bugun: {formatDateUZ(new Date())}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard
-            label="Bugungi to'plangan"
-            value={todayTotal?.totalAmount || 0}
-            isMoney
-            tone="positive"
-            icon={Wallet}
-          />
-          <StatCard
-            label="Bugungi kutilgan reja"
-            value={todayTotal?.totalExpected || 0}
-            isMoney
-            tone="info"
-            icon={Wallet}
-          />
-          <StatCard
-            label="Faol haydovchilar"
-            value={activeCount}
-            tone="default"
-            icon={Users}
-          />
-        </div>
+        {/* Title */}
+        <h1 className="text-2xl font-semibold">
+          Xush kelibsiz, hurmatli foydalanuvchi! 🫡
+        </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard
@@ -116,6 +84,18 @@ const DashboardPage = () => {
             icon={Wallet}
           />
         </div>
+
+        <Card
+          title="So'nggi 30 kun - Kirim/Chiqim"
+          icon={<LineChartIcon size={20} className="text-primary" />}
+        >
+          <div className="mt-3">
+            <DailyIncomeExpenseChart
+              data={daily?.items || []}
+              isLoading={dailyLoading}
+            />
+          </div>
+        </Card>
       </div>
 
       <div className="space-y-4">

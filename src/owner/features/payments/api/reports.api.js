@@ -8,4 +8,6 @@ export const reportsAPI = {
   monthlyIncomeExpense: () => http.get(ENDPOINTS.reports.monthlyIncomeExpense),
   depositDriversMonthly: (params) =>
     http.get(ENDPOINTS.reports.depositDriversMonthly, { params }),
+  dailyIncomeExpense: (days) =>
+    http.get(ENDPOINTS.reports.dailyIncomeExpense, { params: { days } }),
 };

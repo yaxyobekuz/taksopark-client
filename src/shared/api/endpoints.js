@@ -42,7 +42,6 @@ export const ENDPOINTS = Object.freeze({
   payments: {
     base: "/payments",
     byId: (id) => `/payments/${id}`,
-    todayTotal: "/payments/today-total",
   },
   fines: {
     base: "/fines",
@@ -66,6 +65,7 @@ export const ENDPOINTS = Object.freeze({
     minYear: "/reports/min-year",
     monthlyIncomeExpense: "/reports/monthly-income-expense",
     depositDriversMonthly: "/reports/deposit-drivers-monthly",
+    dailyIncomeExpense: "/reports/daily-income-expense",
   },
   finePayments: {
     base: "/fine-payments",
