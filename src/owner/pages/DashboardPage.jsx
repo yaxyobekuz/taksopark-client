@@ -124,8 +124,8 @@ const DashboardPage = () => {
           noPayment.length > 0) && (
           <Card
             title="Diqqat talab qiluvchi haydovchilar"
-            icon={<AlertTriangle className="text-amber-600" />}
-            className="border-l-4 border-l-amber-400 bg-amber-50/40 space-y-3"
+            icon={<AlertTriangle size={20} className="text-amber-600" />}
+            className="border-l-4 border-l-amber-400 space-y-3"
           >
             <div className="space-y-3 mt-3">
               {depositEmpty.length > 0 && (
@@ -218,8 +218,8 @@ const DashboardPage = () => {
         {expiringCars.length > 0 && (
           <Card
             title="Muddati tugayotgan mashinalar"
-            icon={<CalendarClock className="text-red-600" />}
-            className="border-l-4 border-l-red-400 bg-red-50/40"
+            icon={<CalendarClock size={20} className="text-red-600" />}
+            className="border-l-4 border-l-red-400"
           >
             <div className="text-sm space-y-1 mt-3">
               {expiringCars.map((car) => {
@@ -266,14 +266,12 @@ const DashboardPage = () => {
             label="Bu oy kirim"
             value={thisMonth.income}
             isMoney
-            tone="positive"
             icon={ArrowDownCircle}
           />
           <StatCard
             label="Bu oy chiqim"
             value={thisMonth.expense}
             isMoney
-            tone="warn"
             icon={ArrowUpCircle}
           />
           <StatCard
