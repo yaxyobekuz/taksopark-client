@@ -62,6 +62,7 @@ export const qk = Object.freeze({
     finance: (params) => ["reports", "finance", params],
     minYear: () => ["reports", "minYear"],
     monthlyIncomeExpense: () => ["reports", "monthlyIncomeExpense"],
+    depositDriversMonthly: (params) => ["reports", "depositDriversMonthly", params],
   },
   finePayments: {
     all: () => ["finePayments"],
