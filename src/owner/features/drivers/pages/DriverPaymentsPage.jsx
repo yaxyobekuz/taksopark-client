@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { Plus, BadgeDollarSign } from "lucide-react";
 
 import useObjectState from "@/shared/hooks/useObjectState";
@@ -12,17 +12,21 @@ import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import ConfirmDialog from "@/shared/components/ui/dialog/ConfirmDialog";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
+import DetailSection from "@/shared/components/ui/layout/DetailSection";
 
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { TARIFFS } from "@/shared/constants/tariffs";
 import { usePaymentsQuery } from "@/owner/features/payments";
 import { usePaymentDelete } from "@/owner/features/payments/hooks/usePaymentMutations";
 import PaymentsTable from "@/owner/features/payments/components/PaymentsTable";
 import PaymentCreateModal from "@/owner/features/payments/components/modals/PaymentCreateModal";
 import PaymentEditModal from "@/owner/features/payments/components/modals/PaymentEditModal";
+import DriverMonthlyProgressCard from "../components/DriverMonthlyProgressCard";
 
 const DriverPaymentsPage = () => {
   const { id } = useParams();
+  const { driver } = useOutletContext();
   const { page, date, setField, setFields } = useObjectState({
     page: 1,
     date: "",
@@ -43,6 +47,12 @@ const DriverPaymentsPage = () => {
 
   return (
     <div className="space-y-4">
+      {driver.tariff === TARIFFS.DEPOSIT && (
+        <DetailSection title="Oylik to'lov progressi" defaultOpen>
+          <DriverMonthlyProgressCard driverId={id} />
+        </DetailSection>
+      )}
+
       <div className="flex items-end justify-between gap-4">
         <div className="max-w-xs flex-1">
           <InputField
