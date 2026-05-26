@@ -10,7 +10,6 @@ import InputField from "@/shared/components/ui/input/InputField";
 import Pagination from "@/shared/components/ui/pagination/Pagination";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import ConfirmDialog from "@/shared/components/ui/dialog/ConfirmDialog";
-import PageHeader from "@/shared/components/ui/layout/PageHeader";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
 
@@ -46,25 +45,7 @@ const PaymentsListPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader
-        title="To'lovlar"
-        description={meta.total ? `Jami ${meta.total} ta` : ""}
-        actions={
-          has(PERMISSIONS.PAYMENTS_CREATE) && (
-            <Button
-              onClick={() =>
-                openModal(MODAL.PAYMENT_CREATE, {
-                  presetDriverId: driverIdParam,
-                })
-              }
-            >
-              <Plus size={16} className="mr-1.5" /> Yangi to'lov
-            </Button>
-          )
-        }
-      />
-
-      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
+      <div className="flex items-center justify-between sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
         <div className="max-w-xs">
           <InputField
             label="Sana"
@@ -73,6 +54,18 @@ const PaymentsListPage = () => {
             onChange={(e) => setFields({ date: e.target.value, page: 1 })}
           />
         </div>
+
+        {has(PERMISSIONS.PAYMENTS_CREATE) && (
+          <Button
+            onClick={() =>
+              openModal(MODAL.PAYMENT_CREATE, {
+                presetDriverId: driverIdParam,
+              })
+            }
+          >
+            <Plus /> Yangi to'lov
+          </Button>
+        )}
       </div>
 
       {isLoading ? (

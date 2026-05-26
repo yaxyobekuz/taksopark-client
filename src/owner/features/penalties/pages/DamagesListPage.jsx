@@ -46,25 +46,7 @@ const DamagesListPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader
-        title="Zararlar"
-        description={meta.total ? `Jami ${meta.total} ta` : ""}
-        actions={
-          has(PERMISSIONS.DAMAGES_CREATE) && (
-            <Button
-              onClick={() =>
-                openModal(MODAL.DAMAGE_CREATE, {
-                  presetDriverId: driverIdParam,
-                })
-              }
-            >
-              <Plus size={16} className="mr-1.5" /> Yangi zarar
-            </Button>
-          )
-        }
-      />
-
-      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
+      <div className="flex items-center justify-between sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
         <div className="max-w-xs">
           <InputField
             label="Sana"
@@ -73,6 +55,18 @@ const DamagesListPage = () => {
             onChange={(e) => setFields({ date: e.target.value, page: 1 })}
           />
         </div>
+
+        {has(PERMISSIONS.DAMAGES_CREATE) && (
+          <Button
+            onClick={() =>
+              openModal(MODAL.DAMAGE_CREATE, {
+                presetDriverId: driverIdParam,
+              })
+            }
+          >
+            <Plus size={16} className="mr-1.5" /> Yangi zarar
+          </Button>
+        )}
       </div>
 
       {isLoading ? (
@@ -105,7 +99,11 @@ const DamagesListPage = () => {
         onPageChange={(p) => setField("page", p)}
       />
 
-      <ModalWrapper name={MODAL.DAMAGE_CREATE} title="Yangi zarar" className="max-w-xl">
+      <ModalWrapper
+        name={MODAL.DAMAGE_CREATE}
+        title="Yangi zarar"
+        className="max-w-xl"
+      >
         <DamageCreateModal />
       </ModalWrapper>
       <ConfirmDialog
@@ -127,7 +125,11 @@ const DamagesListPage = () => {
           })
         }
       />
-      <ModalWrapper name={MODAL.DAMAGE_PAY} title="Zararni to'lash" className="max-w-xl">
+      <ModalWrapper
+        name={MODAL.DAMAGE_PAY}
+        title="Zararni to'lash"
+        className="max-w-xl"
+      >
         <DamagePayModal />
       </ModalWrapper>
     </div>

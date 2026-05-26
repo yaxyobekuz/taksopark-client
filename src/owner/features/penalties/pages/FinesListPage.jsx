@@ -46,25 +46,7 @@ const FinesListPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader
-        title="Jarimalar"
-        description={meta.total ? `Jami ${meta.total} ta` : ""}
-        actions={
-          has(PERMISSIONS.FINES_CREATE) && (
-            <Button
-              onClick={() =>
-                openModal(MODAL.FINE_CREATE, {
-                  presetDriverId: driverIdParam,
-                })
-              }
-            >
-              <Plus size={16} className="mr-1.5" /> Yangi jarima
-            </Button>
-          )
-        }
-      />
-
-      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
+      <div className="flex items-center justify-between sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
         <div className="max-w-xs">
           <InputField
             label="Sana"
@@ -73,6 +55,18 @@ const FinesListPage = () => {
             onChange={(e) => setFields({ date: e.target.value, page: 1 })}
           />
         </div>
+
+        {has(PERMISSIONS.FINES_CREATE) && (
+          <Button
+            onClick={() =>
+              openModal(MODAL.FINE_CREATE, {
+                presetDriverId: driverIdParam,
+              })
+            }
+          >
+            <Plus /> Yangi jarima
+          </Button>
+        )}
       </div>
 
       {isLoading ? (
@@ -105,7 +99,11 @@ const FinesListPage = () => {
         onPageChange={(p) => setField("page", p)}
       />
 
-      <ModalWrapper name={MODAL.FINE_CREATE} title="Yangi jarima" className="max-w-xl">
+      <ModalWrapper
+        name={MODAL.FINE_CREATE}
+        title="Yangi jarima"
+        className="max-w-xl"
+      >
         <FineCreateModal />
       </ModalWrapper>
       <ConfirmDialog
@@ -127,7 +125,11 @@ const FinesListPage = () => {
           })
         }
       />
-      <ModalWrapper name={MODAL.FINE_PAY} title="Jarimani to'lash" className="max-w-xl">
+      <ModalWrapper
+        name={MODAL.FINE_PAY}
+        title="Jarimani to'lash"
+        className="max-w-xl"
+      >
         <FinePayModal />
       </ModalWrapper>
     </div>
