@@ -21,6 +21,9 @@ import {
 
 import { useDriverQuery } from "../hooks/useDriversQuery";
 import DriverEndTrialModal from "../components/modals/DriverEndTrialModal";
+import DriverDocumentCreateModal from "../components/modals/DriverDocumentCreateModal";
+import DriverDocumentEditModal from "../components/modals/DriverDocumentEditModal";
+import DriverDocumentDeleteModal from "../components/modals/DriverDocumentDeleteModal";
 
 const DriverDetailLayout = () => {
   const { id } = useParams();
@@ -59,7 +62,7 @@ const DriverDetailLayout = () => {
   if (has(PERMISSIONS.DAMAGES_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/damages`, label: "Zararlar" });
   }
-  if (has(PERMISSIONS.OYLIKLAR_READ)) {
+  if (has(PERMISSIONS.OYLIKLAR_READ) && driver.tariff === TARIFFS.NO_DEPOSIT) {
     tabs.push({ to: `/owner/drivers/${id}/oyliklar`, label: "Oyliklar" });
   }
 
@@ -156,6 +159,15 @@ const DriverDetailLayout = () => {
         className="max-w-md"
       >
         <DriverEndTrialModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.DRIVER_DOC_CREATE} title="Hujjat qo'shish">
+        <DriverDocumentCreateModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.DRIVER_DOC_EDIT} title="Hujjatni tahrirlash">
+        <DriverDocumentEditModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.DRIVER_DOC_DELETE} title="O'chirishni tasdiqlash">
+        <DriverDocumentDeleteModal />
       </ModalWrapper>
     </div>
   );

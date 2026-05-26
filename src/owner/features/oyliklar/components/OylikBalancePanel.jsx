@@ -1,7 +1,7 @@
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 
-const OylikBalancePanel = ({ oylik }) => {
+const OylikBalancePanel = ({ oylik, compact = false }) => {
   if (!oylik) return <p className="text-sm text-muted-foreground">Joriy oylik yo'q</p>;
   return (
     <div className="space-y-2">
@@ -39,32 +39,36 @@ const OylikBalancePanel = ({ oylik }) => {
             </div>
           </>
         )}
-        <div>
-          <p className="text-xs text-muted-foreground">Jarima</p>
-          <p>{formatMoney(oylik.finesTotal)}</p>
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">Zarar</p>
-          <p>{formatMoney(oylik.damagesTotal)}</p>
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">Hisoblangan haq</p>
-          <p className="font-semibold text-primary">{formatMoney(oylik.earnedPayout)}</p>
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">Berilgan</p>
-          <p>{formatMoney(oylik.paidOut || 0)}</p>
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">Qolgan to'lov</p>
-          <p
-            className={
-              (oylik.remainingPayout || 0) > 0 ? "font-semibold text-primary" : "text-muted-foreground"
-            }
-          >
-            {formatMoney(oylik.remainingPayout || 0)}
-          </p>
-        </div>
+        {!compact && (
+          <>
+            <div>
+              <p className="text-xs text-muted-foreground">Jarima</p>
+              <p>{formatMoney(oylik.finesTotal)}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Zarar</p>
+              <p>{formatMoney(oylik.damagesTotal)}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Hisoblangan haq</p>
+              <p className="font-semibold text-primary">{formatMoney(oylik.earnedPayout)}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Berilgan</p>
+              <p>{formatMoney(oylik.paidOut || 0)}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Qolgan to'lov</p>
+              <p
+                className={
+                  (oylik.remainingPayout || 0) > 0 ? "font-semibold text-primary" : "text-muted-foreground"
+                }
+              >
+                {formatMoney(oylik.remainingPayout || 0)}
+              </p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
