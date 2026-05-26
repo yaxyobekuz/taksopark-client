@@ -8,12 +8,15 @@ import {
   BarChart3,
   LineChart as LineChartIcon,
   Scale,
+  Car as CarIcon,
 } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import Card from "@/shared/components/ui/card/Card";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
+import Tooltip from "@/shared/components/ui/tooltip/Tooltip";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
+import { buildFileUrl } from "@/shared/utils/fileUrl";
 import {
   useMonthlyIncomeExpenseQuery,
   useDailyIncomeExpenseQuery,
@@ -26,6 +29,110 @@ import { useCarsExpiringQuery } from "@/owner/features/cars";
 import { getDaysLeft } from "@/owner/features/cars/utils/expiryStatus";
 
 const today = new Date().toISOString().slice(0, 10);
+
+const initialsOf = (first = "", last = "") =>
+  `${(first[0] || "").toUpperCase()}${(last[0] || "").toUpperCase()}` || "?";
+
+const DriverAvatar = ({ driver, size = 36 }) => {
+  const src = buildFileUrl(driver?.photoUrl);
+  const cls = "rounded-full object-cover border shrink-0 bg-white";
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt=""
+        style={{ width: size, height: size }}
+        className={cls}
+      />
+    );
+  }
+  return (
+    <div
+      style={{ width: size, height: size }}
+      className="flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 border"
+    >
+      {initialsOf(driver?.firstName, driver?.lastName)}
+    </div>
+  );
+};
+
+const CarAvatar = ({ car, size = 28 }) => {
+  const src = buildFileUrl(car?.photoUrl);
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt=""
+        style={{ width: size, height: size }}
+        className="rounded-md object-cover border shrink-0 bg-white"
+      />
+    );
+  }
+  return (
+    <div
+      style={{ width: size, height: size }}
+      className="flex items-center justify-center rounded-md bg-muted text-muted-foreground shrink-0 border"
+    >
+      <CarIcon size={Math.round(size * 0.55)} />
+    </div>
+  );
+};
+
+const CarTooltipContent = ({ car }) => (
+  <div className="flex items-center gap-2 max-w-[260px]">
+    <CarAvatar car={car} size={40} />
+    <div className="flex flex-col gap-1 min-w-0">
+      <span className="font-medium truncate">{car?.model || "Mashina"}</span>
+      {car?.plateNumber && <PlateNumber value={car.plateNumber} size="sm" />}
+    </div>
+  </div>
+);
+
+// Asosiy haydovchi item: chap - avatar+ism (driverga link), o'ng - meta + car (carga link).
+const DriverWarningItem = ({ driver, meta, accentClassName = "" }) => {
+  const hasCar = !!driver?.car;
+  return (
+    <div className="flex items-center justify-between gap-3 py-2 px-2 rounded-md hover:bg-muted/60 transition-colors">
+      <Link
+        to={`/owner/drivers/${driver._id}`}
+        className="flex items-center gap-2.5 min-w-0 group"
+      >
+        <DriverAvatar driver={driver} />
+        <div className="flex flex-col min-w-0">
+          <span className="text-sm font-medium text-foreground truncate group-hover:text-primary">
+            {driver.firstName} {driver.lastName}
+          </span>
+          {driver.phone && (
+            <span className="text-xs text-muted-foreground truncate">
+              {driver.phone}
+            </span>
+          )}
+        </div>
+      </Link>
+
+      <div className="flex items-center gap-3 shrink-0">
+        {meta && (
+          <span className={`text-xs font-medium ${accentClassName}`}>
+            {meta}
+          </span>
+        )}
+        {hasCar ? (
+          <Tooltip content={<CarTooltipContent car={driver.car} />}>
+            <Link
+              to={`/owner/cars/${driver.car._id}`}
+              className="shrink-0"
+              aria-label={driver.car.model || "Mashina"}
+            >
+              <CarAvatar car={driver.car} />
+            </Link>
+          </Tooltip>
+        ) : (
+          <span className="text-xs text-muted-foreground">Mashinasiz</span>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const DashboardPage = () => {
   const { data: warnings } = useDriverWarningsQuery();
@@ -56,7 +163,6 @@ const DashboardPage = () => {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        {/* Title */}
         <h1 className="text-2xl font-semibold">
           Xush kelibsiz, hurmatli foydalanuvchi! 🫡
         </h1>
@@ -105,88 +211,58 @@ const DashboardPage = () => {
           <Card
             title="Diqqat talab qiluvchi haydovchilar"
             icon={<AlertTriangle size={20} className="text-amber-600" />}
-            className="border-l-4 border-l-amber-400 space-y-3"
+            className="border-l-4 border-l-amber-400"
           >
-            <div className="space-y-3 mt-3">
+            <div className="mt-3 divide-y">
               {depositEmpty.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium text-red-700">
+                <div className="pb-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-1">
                     Depoziti tugagan ({depositEmpty.length})
                   </p>
-                  <div className="text-sm text-muted-foreground space-y-1 mt-1">
+                  <div className="divide-y">
                     {depositEmpty.map((d) => (
-                      <Link
+                      <DriverWarningItem
                         key={d._id}
-                        to={`/owner/drivers/${d._id}`}
-                        className="flex flex-wrap items-center gap-2 hover:text-primary"
-                      >
-                        <span>
-                          {d.firstName} {d.lastName}
-                        </span>
-                        {d.car?.plateNumber ? (
-                          <PlateNumber value={d.car.plateNumber} size="sm" />
-                        ) : (
-                          <span>-</span>
-                        )}
-                        <span>({formatMoney(d.depositRemaining)})</span>
-                      </Link>
+                        driver={d}
+                        meta={formatMoney(d.depositRemaining)}
+                        accentClassName="text-red-600"
+                      />
                     ))}
                   </div>
                 </div>
               )}
 
               {depositLow.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium text-amber-700">
+                <div className="py-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 mb-1">
                     Depoziti 500 000 dan kam ({depositLow.length})
                   </p>
-                  <div className="text-sm text-muted-foreground space-y-1 mt-1">
+                  <div className="divide-y">
                     {depositLow.map((d) => (
-                      <Link
+                      <DriverWarningItem
                         key={d._id}
-                        to={`/owner/drivers/${d._id}`}
-                        className="flex flex-wrap items-center gap-2 hover:text-primary"
-                      >
-                        <span>
-                          {d.firstName} {d.lastName}
-                        </span>
-                        {d.car?.plateNumber ? (
-                          <PlateNumber value={d.car.plateNumber} size="sm" />
-                        ) : (
-                          <span>-</span>
-                        )}
-                        <span>({formatMoney(d.depositRemaining)})</span>
-                      </Link>
+                        driver={d}
+                        meta={formatMoney(d.depositRemaining)}
+                        accentClassName="text-amber-700"
+                      />
                     ))}
                   </div>
                 </div>
               )}
 
               {noPayment.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium text-orange-700">
+                <div className="pt-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-orange-700 mb-1">
                     2 kundan ortiq to'lov yo'q ({noPayment.length})
                   </p>
-                  <div className="text-sm text-muted-foreground space-y-1 mt-1">
+                  <div className="divide-y">
                     {noPayment.map((w) => (
-                      <Link
+                      <DriverWarningItem
                         key={w.driver._id}
-                        to={`/owner/drivers/${w.driver._id}`}
-                        className="flex flex-wrap items-center gap-2 hover:text-primary"
-                      >
-                        <span>
-                          {w.driver.firstName} {w.driver.lastName}
-                        </span>
-                        {w.driver.car?.plateNumber ? (
-                          <PlateNumber
-                            value={w.driver.car.plateNumber}
-                            size="sm"
-                          />
-                        ) : (
-                          <span>-</span>
-                        )}
-                        <span>({w.daysSince} kun)</span>
-                      </Link>
+                        driver={w.driver}
+                        meta={`${w.daysSince} kun`}
+                        accentClassName="text-orange-700"
+                      />
                     ))}
                   </div>
                 </div>
@@ -201,7 +277,7 @@ const DashboardPage = () => {
             icon={<CalendarClock size={20} className="text-red-600" />}
             className="border-l-4 border-l-red-400"
           >
-            <div className="text-sm space-y-1 mt-3">
+            <div className="mt-3 divide-y">
               {expiringCars.map((car) => {
                 const expiring = car.expiringDocument;
                 if (!expiring?.expiryDate) return null;
@@ -212,26 +288,34 @@ const DashboardPage = () => {
                   <Link
                     key={car._id}
                     to={`/owner/cars/${car._id}`}
-                    className="flex flex-wrap items-center gap-2 text-muted-foreground hover:text-primary"
+                    className="flex items-center justify-between gap-3 py-2 px-2 rounded-md hover:bg-muted/60 transition-colors group"
                   >
-                    <span className="font-medium text-foreground">
-                      {car.model}
-                    </span>
-                    {car.plateNumber ? (
-                      <PlateNumber value={car.plateNumber} size="sm" />
-                    ) : (
-                      <span>-</span>
-                    )}
-                    <span>
-                      {label}: {formatDateUZ(expiring.expiryDate)}
-                    </span>
-                    <span
-                      className={
-                        expired ? "text-red-600 font-medium" : "text-amber-700"
-                      }
-                    >
-                      ({expired ? `${-days} kun o'tgan` : `${days} kun qoldi`})
-                    </span>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <CarAvatar car={car} size={36} />
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-medium text-foreground truncate group-hover:text-primary">
+                          {car.model}
+                        </span>
+                        <span className="text-xs text-muted-foreground truncate">
+                          {label}: {formatDateUZ(expiring.expiryDate)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 shrink-0">
+                      <span
+                        className={`text-xs font-medium ${
+                          expired ? "text-red-600" : "text-amber-700"
+                        }`}
+                      >
+                        {expired
+                          ? `${-days} kun o'tgan`
+                          : `${days} kun qoldi`}
+                      </span>
+                      {car.plateNumber && (
+                        <PlateNumber value={car.plateNumber} size="sm" />
+                      )}
+                    </div>
                   </Link>
                 );
               })}
