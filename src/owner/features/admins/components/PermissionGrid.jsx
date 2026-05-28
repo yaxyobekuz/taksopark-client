@@ -50,7 +50,7 @@ const PermissionGrid = ({ value = [], onChange, disabled }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {groups.map(([group, items]) => {
         const allOn = items.every((it) => selected.has(it.key));
         return (
@@ -68,11 +68,12 @@ const PermissionGrid = ({ value = [], onChange, disabled }) => {
                 {allOn ? "Bekor qilish" : "Barchasini tanlash"}
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {items.map((it) => (
                 <label
                   key={it.key}
-                  className="flex items-center justify-between gap-2 text-sm py-1"
+                  className="flex items-center justify-between gap-4 text-sm py-1"
                 >
                   <span className="text-muted-foreground">{it.label}</span>
                   <Switch

@@ -24,8 +24,8 @@ const DetailSection = ({
       onOpenChange={collapsible ? setOpen : undefined}
       className={cn(
         "bg-white border rounded-[2px] overflow-hidden",
-        className,
         open ? "h-full" : "h-auto",
+        className,
       )}
     >
       <div

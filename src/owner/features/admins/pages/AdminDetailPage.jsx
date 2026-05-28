@@ -31,7 +31,9 @@ const AdminDetailPage = () => {
   const { data: admin, isLoading } = useAdminQuery(id);
   const setPermissions = useAdminSetPermissions();
 
-  const { permissions, setField, setFields } = useObjectState({ permissions: [] });
+  const { permissions, setField, setFields } = useObjectState({
+    permissions: [],
+  });
 
   useEffect(() => {
     if (admin) setFields({ permissions: admin.permissions || [] });
@@ -70,7 +72,11 @@ const AdminDetailPage = () => {
       value: admin.phone || "-",
       href: admin.phone ? `tel:${admin.phone}` : null,
     },
-    { label: "Parol", value: admin.password || "-", copyable: !!admin.password },
+    {
+      label: "Parol",
+      value: admin.password || "-",
+      copyable: !!admin.password,
+    },
     {
       label: "Holat",
       value: admin.isActive ? "Faol" : "Faol emas",
@@ -93,10 +99,18 @@ const AdminDetailPage = () => {
         <div className="flex flex-wrap gap-2">
           {canUpdate && (
             <>
-              <Button size="sm" variant="outline" onClick={() => openModal(MODAL.ADMIN_EDIT, { admin })}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => openModal(MODAL.ADMIN_EDIT, { admin })}
+              >
                 <Pencil size={14} className="mr-1.5" /> Tahrirlash
               </Button>
-              <Button size="sm" variant="outline" onClick={() => openModal(MODAL.ADMIN_PASSWORD, { admin })}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => openModal(MODAL.ADMIN_PASSWORD, { admin })}
+              >
                 <KeyRound size={14} className="mr-1.5" /> Parol
               </Button>
             </>
@@ -118,7 +132,7 @@ const AdminDetailPage = () => {
         {`${admin.firstName} ${admin.lastName || ""}`.trim()}
       </h1>
 
-      <DetailSection title="Asosiy ma'lumot" defaultOpen>
+      <DetailSection title="Asosiy ma'lumot" defaultOpen className="h-max">
         <KeyValueList columns={2} items={items} />
       </DetailSection>
 
@@ -129,23 +143,41 @@ const AdminDetailPage = () => {
             onChange={(v) => setField("permissions", v)}
             disabled={!canUpdate || setPermissions.isPending}
           />
+          
           {canUpdate && (
             <div className="flex justify-end">
-              <Button onClick={handleSavePermissions} disabled={setPermissions.isPending}>
-                {setPermissions.isPending ? "Saqlanmoqda..." : "Ruxsatlarni saqlash"}
+              <Button
+                onClick={handleSavePermissions}
+                disabled={setPermissions.isPending}
+              >
+                {setPermissions.isPending
+                  ? "Saqlanmoqda..."
+                  : "Ruxsatlarni saqlash"}
               </Button>
             </div>
           )}
         </div>
       </DetailSection>
 
-      <ModalWrapper name={MODAL.ADMIN_EDIT} title="Adminni tahrirlash" className="max-w-xl">
+      <ModalWrapper
+        name={MODAL.ADMIN_EDIT}
+        title="Adminni tahrirlash"
+        className="max-w-xl"
+      >
         <AdminEditModal />
       </ModalWrapper>
-      <ModalWrapper name={MODAL.ADMIN_PASSWORD} title="Parolni o'zgartirish" className="max-w-md">
+      <ModalWrapper
+        name={MODAL.ADMIN_PASSWORD}
+        title="Parolni o'zgartirish"
+        className="max-w-md"
+      >
         <AdminPasswordModal />
       </ModalWrapper>
-      <ModalWrapper name={MODAL.ADMIN_DELETE} title="Adminni o'chirish" className="max-w-md">
+      <ModalWrapper
+        name={MODAL.ADMIN_DELETE}
+        title="Adminni o'chirish"
+        className="max-w-md"
+      >
         <AdminDeleteModal onDeleted={() => navigate("/owner/admins")} />
       </ModalWrapper>
     </div>
