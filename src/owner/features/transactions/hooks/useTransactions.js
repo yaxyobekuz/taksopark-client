@@ -22,6 +22,12 @@ export const useTransactionsSummaryQuery = (params) =>
     queryFn: () => transactionsAPI.summary(params).then((r) => r.data.data),
   });
 
+export const useCategoryReportQuery = (params) =>
+  useQuery({
+    queryKey: qk.reports.categoryMonthly(params),
+    queryFn: () => transactionsAPI.categoryReport(params).then((r) => r.data.data),
+  });
+
 export const useTransactionCreate = () => {
   const qc = useQueryClient();
   return useMutation({
@@ -29,6 +35,18 @@ export const useTransactionCreate = () => {
     onSuccess: () => {
       invalidate(qc);
       toast.success("Saqlandi");
+    },
+    onError,
+  });
+};
+
+export const useTransactionUpdate = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...body }) => transactionsAPI.update(id, body).then((r) => r.data.data),
+    onSuccess: () => {
+      invalidate(qc);
+      toast.success("Yangilandi");
     },
     onError,
   });

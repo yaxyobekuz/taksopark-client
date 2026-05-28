@@ -1,6 +1,8 @@
-import { Trash2, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+import { Pencil, Trash2, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import usePermissions from "@/shared/hooks/usePermissions";
+import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { MODAL } from "@/shared/constants/modals";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import {
@@ -12,6 +14,7 @@ import { useTransactionDelete } from "../hooks/useTransactions";
 
 const TransactionsTable = ({ items = [] }) => {
   const { has } = usePermissions();
+  const { openModal } = useModal();
   const deleteMutation = useTransactionDelete();
 
   if (!items.length) return <p className="text-sm text-muted-foreground p-4">Tranzaksiya yo'q</p>;
@@ -51,16 +54,30 @@ const TransactionsTable = ({ items = [] }) => {
                 </td>
                 <td className="p-3 text-muted-foreground">{t.note || "-"}</td>
                 <td className="p-3 text-right">
-                  {has(PERMISSIONS.TRANSACTIONS_DELETE) && t.source === TRANSACTION_SOURCES.MANUAL && (
-                    <button
-                      type="button"
-                      onClick={() => deleteMutation.mutate(t._id)}
-                      disabled={deleteMutation.isPending}
-                      className="text-muted-foreground hover:text-red-600"
-                      title="O'chirish"
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                  {t.source === TRANSACTION_SOURCES.MANUAL && (
+                    <div className="flex items-center justify-end gap-2">
+                      {has(PERMISSIONS.TRANSACTIONS_UPDATE) && (
+                        <button
+                          type="button"
+                          onClick={() => openModal(MODAL.TRANSACTION_EDIT, { transaction: t })}
+                          className="text-muted-foreground hover:text-foreground"
+                          title="Tahrirlash"
+                        >
+                          <Pencil size={16} />
+                        </button>
+                      )}
+                      {has(PERMISSIONS.TRANSACTIONS_DELETE) && (
+                        <button
+                          type="button"
+                          onClick={() => deleteMutation.mutate(t._id)}
+                          disabled={deleteMutation.isPending}
+                          className="text-muted-foreground hover:text-red-600"
+                          title="O'chirish"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      )}
+                    </div>
                   )}
                 </td>
               </tr>

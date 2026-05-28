@@ -25,7 +25,9 @@ import {
 } from "../hooks/useTransactions";
 import TransactionsTable from "../components/TransactionsTable";
 import TransactionsSummaryCards from "../components/TransactionsSummaryCards";
+import CategoryReportSection from "../components/CategoryReportSection";
 import TransactionCreateModal from "../components/modals/TransactionCreateModal";
+import TransactionEditModal from "../components/modals/TransactionEditModal";
 
 const MONTHS = [
   { value: 1, label: "Yanvar" },
@@ -154,12 +156,21 @@ const TransactionsListPage = () => {
         onPageChange={(p) => setField("page", p)}
       />
 
+      <CategoryReportSection fromDate={fromDate} toDate={toDate} />
+
       <ModalWrapper
         name={MODAL.TRANSACTION_CREATE}
         title="Yangi tranzaksiya"
         className="max-w-lg"
       >
         <TransactionCreateModal />
+      </ModalWrapper>
+      <ModalWrapper
+        name={MODAL.TRANSACTION_EDIT}
+        title="Tranzaksiyani tahrirlash"
+        className="max-w-lg"
+      >
+        <TransactionEditModal />
       </ModalWrapper>
     </div>
   );
