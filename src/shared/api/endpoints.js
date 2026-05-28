@@ -31,6 +31,8 @@ export const ENDPOINTS = Object.freeze({
     byId: (id) => `/drivers/${id}`,
     balance: (id) => `/drivers/${id}/balance`,
     endTrial: (id) => `/drivers/${id}/end-trial`,
+    changeTariff: (id) => `/drivers/${id}/change-tariff`,
+    deposit: (id) => `/drivers/${id}/deposit`,
     warnings: "/drivers/warnings",
     documents: (id) => `/drivers/${id}/documents`,
     documentById: (id, docId) => `/drivers/${id}/documents/${docId}`,

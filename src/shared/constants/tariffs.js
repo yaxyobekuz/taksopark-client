@@ -15,21 +15,23 @@ export const TARIFF_TEXT_CLASS = Object.freeze({
   [TARIFFS.NO_DEPOSIT]: "text-amber-600 font-medium",
 });
 
+// Narx (kunlik to'lov, oylik cashback) endi mashinada saqlanadi. Bu yerda faqat
+// tarifga xos metadata qoladi.
 export const TARIFF_CONFIG = Object.freeze({
   [TARIFFS.DEPOSIT]: {
-    depositInitial: 2_500_000,
-    dailyPlan: 500_000,
-    depositWarnThreshold: 500_000,
-    hasSalary: false,
+    hasTrial: false,
+    hasCashback: false,
+    trialDays: 0,
   },
   [TARIFFS.NO_DEPOSIT]: {
-    depositInitial: 0,
-    dailyPlan: 560_000,
-    monthlySalary: 5_500_000,
+    hasTrial: true,
+    hasCashback: true,
     trialDays: 7,
-    hasSalary: true,
   },
 });
+
+// Depozit past ogohlantirish chegarasi (park darajasida).
+export const DEPOSIT_WARN_THRESHOLD = 500_000;
 
 export const TARIFF_OPTIONS = ALL_TARIFFS.map((value) => ({
   value,

@@ -20,7 +20,7 @@ import DriverDocumentsSection from "../components/DriverDocumentsSection";
 
 const PHASE_LABELS = {
   deposit: "Depozit",
-  salary: "Oylik",
+  salary: "Oylik cashback",
 };
 
 const DriverOverviewPage = () => {
@@ -34,6 +34,7 @@ const DriverOverviewPage = () => {
   const phase = balance?.phase;
   const deposit = balance?.deposit;
   const oylik = balance?.oylik;
+  const totalDebt = balance?.totalDebt ?? driver.totalDebt ?? 0;
   const warnings = balance?.warnings || [];
 
   const tariffNode = tariff ? (
@@ -107,7 +108,7 @@ const DriverOverviewPage = () => {
         }
       : null,
     tariff === TARIFFS.NO_DEPOSIT && oylik
-      ? { label: "Oylik", value: formatMoney(oylik.salary) }
+      ? { label: "Oylik cashback", value: formatMoney(oylik.salary) }
       : null,
     tariff === TARIFFS.NO_DEPOSIT && oylik && oylik.expectedPlanTotal > 0
       ? {
@@ -125,6 +126,32 @@ const DriverOverviewPage = () => {
       ? {
           label: "Plan qoldig'i",
           value: formatMoney(oylik.planDeficit),
+        }
+      : null,
+    tariff === TARIFFS.NO_DEPOSIT && oylik
+      ? {
+          label: "Hisoblangan cashback",
+          value: (
+            <span className="font-semibold text-primary">
+              {formatMoney(oylik.earnedPayout)}
+            </span>
+          ),
+        }
+      : null,
+    tariff === TARIFFS.NO_DEPOSIT && oylik
+      ? {
+          label: "To'lanadigan qoldiq",
+          value: formatMoney(oylik.remainingPayout),
+        }
+      : null,
+    totalDebt > 0
+      ? {
+          label: "Umumiy qarz",
+          value: (
+            <span className="font-semibold text-red-700">
+              {formatMoney(totalDebt)}
+            </span>
+          ),
         }
       : null,
     driver.notes

@@ -25,5 +25,7 @@ export const driversAPI = {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   endTrial: (id, body) => http.post(ENDPOINTS.drivers.endTrial(id), body),
+  changeTariff: (id, body) => http.post(ENDPOINTS.drivers.changeTariff(id), body),
+  adjustDeposit: (id, body) => http.post(ENDPOINTS.drivers.deposit(id), body),
   remove: (id) => http.delete(ENDPOINTS.drivers.byId(id)),
 };

@@ -4,7 +4,7 @@ import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
-import { TARIFF_LABELS, TARIFFS, TARIFF_CONFIG, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
+import { TARIFF_LABELS, TARIFFS, DEPOSIT_WARN_THRESHOLD, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
 import { DRIVER_STATUS_LABELS, DRIVER_STATUS_BADGE_CLASS } from "@/shared/constants/drivers";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
@@ -17,7 +17,7 @@ const DriversTable = ({ items = [] }) => {
   const navigate = useNavigate();
   const { openModal } = useModal();
   const { has } = usePermissions();
-  const threshold = TARIFF_CONFIG[TARIFFS.DEPOSIT].depositWarnThreshold;
+  const threshold = DEPOSIT_WARN_THRESHOLD;
 
   if (!items.length) {
     return <p className="text-sm text-muted-foreground p-4">Haydovchi yo'q</p>;

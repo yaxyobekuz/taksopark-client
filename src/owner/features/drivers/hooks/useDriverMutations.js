@@ -11,6 +11,7 @@ const invalidateAll = (qc) => {
   qc.invalidateQueries({ queryKey: qk.drivers.all() });
   qc.invalidateQueries({ queryKey: qk.cars.all() });
   qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
+  qc.invalidateQueries({ queryKey: qk.transactions.all() });
 };
 
 export const useDriverCreate = () => {
@@ -45,6 +46,32 @@ export const useDriverEndTrial = () => {
     onSuccess: () => {
       invalidateAll(qc);
       toast.success("Sinov muddati belgilandi");
+    },
+    onError,
+  });
+};
+
+export const useDriverChangeTariff = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...body }) =>
+      driversAPI.changeTariff(id, body).then((r) => r.data.data),
+    onSuccess: () => {
+      invalidateAll(qc);
+      toast.success("Tarif o'zgartirildi");
+    },
+    onError,
+  });
+};
+
+export const useDriverAdjustDeposit = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...body }) =>
+      driversAPI.adjustDeposit(id, body).then((r) => r.data.data),
+    onSuccess: () => {
+      invalidateAll(qc);
+      toast.success("Depozit yangilandi");
     },
     onError,
   });

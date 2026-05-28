@@ -2,26 +2,8 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
-import { TARIFFS, TARIFF_CONFIG } from "@/shared/constants/tariffs";
 import { useDriversQuery } from "@/owner/features/drivers";
 import { usePaymentCreate } from "../../hooks/usePaymentMutations";
-
-// Tanlangan sana haydovchining oylik fazasiga to'g'ri keladimi?
-const isSalaryPhaseOn = (driver, dateStr) => {
-  if (!driver || driver.tariff !== TARIFFS.NO_DEPOSIT) return false;
-  const ref = new Date(dateStr);
-  ref.setHours(0, 0, 0, 0);
-  if (driver.trialEndedAt) {
-    const te = new Date(driver.trialEndedAt);
-    te.setHours(0, 0, 0, 0);
-    if (ref >= te) return true;
-  }
-  const trialDays = TARIFF_CONFIG[TARIFFS.NO_DEPOSIT].trialDays;
-  const autoEnd = new Date(driver.startDate);
-  autoEnd.setHours(0, 0, 0, 0);
-  autoEnd.setDate(autoEnd.getDate() + trialDays);
-  return ref >= autoEnd;
-};
 
 const PaymentCreateModal = ({ close, presetDriverId }) => {
   const { driverId, date, amount, note, setField, state } = useObjectState({
@@ -36,13 +18,11 @@ const PaymentCreateModal = ({ close, presetDriverId }) => {
     value: d._id,
     label: `${d.firstName} ${d.lastName} (${d.car?.plateNumber || "mashina yo'q"})`,
   }));
-  const selectedDriver = drivers.find((d) => d._id === driverId);
-  const blocked = isSalaryPhaseOn(selectedDriver, date);
   const { mutate, isPending } = usePaymentCreate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!driverId || !date || amount === "" || blocked) return;
+    if (!driverId || !date || amount === "") return;
     mutate({ ...state, amount: Number(amount) }, { onSuccess: () => close() });
   };
 
@@ -64,12 +44,6 @@ const PaymentCreateModal = ({ close, presetDriverId }) => {
         required
         disabled={isPending}
       />
-      {blocked && (
-        <div className="rounded bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
-          Bu sana haydovchining oylik fazasiga to'g'ri keladi. Oylik fazasida kunlik
-          to'lov qabul qilinmaydi. Faqat sinov davridagi sanani tanlang.
-        </div>
-      )}
       <InputField
         label="Summa (so'm)"
         type="price"
@@ -89,7 +63,7 @@ const PaymentCreateModal = ({ close, presetDriverId }) => {
         <Button type="button" variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>
           Bekor qilish
         </Button>
-        <Button type="submit" className="flex-1" disabled={isPending || blocked}>
+        <Button type="submit" className="flex-1" disabled={isPending}>
           {isPending ? "Saqlanmoqda..." : "Saqlash"}
         </Button>
       </div>

@@ -1,5 +1,5 @@
 import { Link, Outlet, useParams } from "react-router-dom";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck, ArrowLeftRight, Wallet } from "lucide-react";
 
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
@@ -21,6 +21,8 @@ import {
 
 import { useDriverQuery } from "../hooks/useDriversQuery";
 import DriverEndTrialModal from "../components/modals/DriverEndTrialModal";
+import DriverChangeTariffModal from "../components/modals/DriverChangeTariffModal";
+import DriverDepositModal from "../components/modals/DriverDepositModal";
 import DriverDocumentCreateModal from "../components/modals/DriverDocumentCreateModal";
 import DriverDocumentEditModal from "../components/modals/DriverDocumentEditModal";
 import DriverDocumentDeleteModal from "../components/modals/DriverDocumentDeleteModal";
@@ -127,7 +129,7 @@ const DriverDetailLayout = () => {
           </p>
           </div>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex flex-wrap gap-2 shrink-0">
           {has(PERMISSIONS.DRIVERS_END_TRIAL) &&
             driver.tariff === TARIFFS.NO_DEPOSIT && (
               <Button
@@ -141,6 +143,26 @@ const DriverDetailLayout = () => {
                   : "Sinovni tugatish"}
               </Button>
             )}
+          {has(PERMISSIONS.DRIVERS_UPDATE) && driver.tariff === TARIFFS.DEPOSIT && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => openModal(MODAL.DRIVER_DEPOSIT, { driver })}
+            >
+              <Wallet size={14} className="mr-1.5" />
+              Depozit
+            </Button>
+          )}
+          {has(PERMISSIONS.DRIVERS_UPDATE) && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => openModal(MODAL.DRIVER_CHANGE_TARIFF, { driver })}
+            >
+              <ArrowLeftRight size={14} className="mr-1.5" />
+              Tarifni o'zgartirish
+            </Button>
+          )}
         </div>
       </div>
 
@@ -159,6 +181,20 @@ const DriverDetailLayout = () => {
         className="max-w-md"
       >
         <DriverEndTrialModal />
+      </ModalWrapper>
+      <ModalWrapper
+        name={MODAL.DRIVER_CHANGE_TARIFF}
+        title="Tarifni o'zgartirish"
+        className="max-w-md"
+      >
+        <DriverChangeTariffModal />
+      </ModalWrapper>
+      <ModalWrapper
+        name={MODAL.DRIVER_DEPOSIT}
+        title="Depozitni boshqarish"
+        className="max-w-md"
+      >
+        <DriverDepositModal />
       </ModalWrapper>
       <ModalWrapper name={MODAL.DRIVER_DOC_CREATE} title="Hujjat qo'shish">
         <DriverDocumentCreateModal />

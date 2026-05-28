@@ -43,9 +43,9 @@ const DriverEndTrialModal = ({ close, driver }) => {
         disabled={isPending}
       />
       <div className="rounded bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
-        Shu sanadan boshlab haydovchi kunlik to'lov qilmaydi, kompaniya unga oylik
-        beradi. Sinov davridagi to'lanmagan kunlar uchun keyin ham to'lov qo'shish
-        mumkin.
+        Shu sanadan boshlab haydovchiga oylik cashback hisoblana boshlaydi. Haydovchi
+        kunlik to'lovni davom ettiradi; jarima, zarar va kam to'lov cashbackdan
+        ushlanadi.
       </div>
       <div className="flex gap-2">
         <Button
