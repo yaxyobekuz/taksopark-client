@@ -123,6 +123,18 @@ const CarOverviewPage = () => {
               columns={2}
               items={[
                 { label: "Model", value: car.model },
+                {
+                  label: "Depozitli kunlik to'lov",
+                  value: formatMoney(car.dailyPaymentDeposit),
+                },
+                {
+                  label: "Depozitsiz kunlik to'lov",
+                  value: formatMoney(car.dailyPaymentNoDeposit),
+                },
+                {
+                  label: "Oylik cashback",
+                  value: formatMoney(car.monthlyCashback),
+                },
                 { label: "Izoh", value: car.notes || "-", fullWidth: true },
               ]}
             />

@@ -1,7 +1,6 @@
 import { Link, Outlet, useParams } from "react-router-dom";
-import { ArrowLeft, Pencil, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
 
-import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
@@ -10,12 +9,10 @@ import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import usePermissions from "@/shared/hooks/usePermissions";
-import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
 
 import { useCarByIdQuery } from "../hooks/useCarByIdQuery";
-import CarEditModal from "../components/modals/CarEditModal";
 import CarDocumentCreateModal from "../components/modals/CarDocumentCreateModal";
 import CarDocumentEditModal from "../components/modals/CarDocumentEditModal";
 import CarDocumentDeleteModal from "../components/modals/CarDocumentDeleteModal";
@@ -24,7 +21,6 @@ const CarDetailLayout = () => {
   const { id } = useParams();
   const { data: car, isLoading } = useCarByIdQuery(id);
   const { has } = usePermissions();
-  const { openModal } = useModal();
 
   if (isLoading) {
     return (
@@ -48,6 +44,9 @@ const CarDetailLayout = () => {
   }
 
   const tabs = [{ to: `/owner/cars/${id}`, label: "Asosiy", exact: true }];
+  if (has(PERMISSIONS.CARS_UPDATE)) {
+    tabs.push({ to: `/owner/cars/${id}/tahrirlash`, label: "Tahrirlash" });
+  }
   if (has(PERMISSIONS.REPORTS_READ)) {
     tabs.push({ to: `/owner/cars/${id}/moliya`, label: "Moliya" });
   }
@@ -84,14 +83,6 @@ const CarDetailLayout = () => {
           )}
           {car.plateNumber && <PlateNumber value={car.plateNumber} size="md" />}
         </div>
-        {has(PERMISSIONS.CARS_UPDATE) && (
-          <Button
-            size="sm"
-            onClick={() => openModal(MODAL.CAR_EDIT, { car })}
-          >
-            <Pencil size={14} className="mr-1.5" /> Tahrirlash
-          </Button>
-        )}
       </div>
 
       <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-2 bg-background border-b">
@@ -103,9 +94,6 @@ const CarDetailLayout = () => {
 
       <Outlet context={{ car }} />
 
-      <ModalWrapper name={MODAL.CAR_EDIT} title="Mashinani tahrirlash">
-        <CarEditModal />
-      </ModalWrapper>
       <ModalWrapper name={MODAL.CAR_DOC_CREATE} title="Hujjat qo'shish">
         <CarDocumentCreateModal />
       </ModalWrapper>
