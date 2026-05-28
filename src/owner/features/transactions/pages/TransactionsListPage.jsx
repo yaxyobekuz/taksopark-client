@@ -1,20 +1,14 @@
 import { useMemo } from "react";
-import { Plus, ArrowLeftRight } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
 
 import useObjectState from "@/shared/hooks/useObjectState";
-import useModal from "@/shared/hooks/useModal";
-import usePermissions from "@/shared/hooks/usePermissions";
 
-import Button from "@/shared/components/ui/button/Button";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Pagination from "@/shared/components/ui/pagination/Pagination";
-import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
-import PageHeader from "@/shared/components/ui/layout/PageHeader";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
 
-import { MODAL } from "@/shared/constants/modals";
-import { PERMISSIONS } from "@/shared/constants/permissions";
+import { MONTHS } from "@/shared/constants/months";
 import {
   TRANSACTION_TYPES,
   TRANSACTION_TYPE_LABELS,
@@ -25,24 +19,6 @@ import {
 } from "../hooks/useTransactions";
 import TransactionsTable from "../components/TransactionsTable";
 import TransactionsSummaryCards from "../components/TransactionsSummaryCards";
-import CategoryReportSection from "../components/CategoryReportSection";
-import TransactionCreateModal from "../components/modals/TransactionCreateModal";
-import TransactionEditModal from "../components/modals/TransactionEditModal";
-
-const MONTHS = [
-  { value: 1, label: "Yanvar" },
-  { value: 2, label: "Fevral" },
-  { value: 3, label: "Mart" },
-  { value: 4, label: "Aprel" },
-  { value: 5, label: "May" },
-  { value: 6, label: "Iyun" },
-  { value: 7, label: "Iyul" },
-  { value: 8, label: "Avgust" },
-  { value: 9, label: "Sentabr" },
-  { value: 10, label: "Oktabr" },
-  { value: 11, label: "Noyabr" },
-  { value: 12, label: "Dekabr" },
-];
 
 const pad = (n) => String(n).padStart(2, "0");
 
@@ -54,8 +30,6 @@ const TransactionsListPage = () => {
     month: now.getMonth() + 1,
     year: now.getFullYear(),
   });
-  const { openModal } = useModal();
-  const { has } = usePermissions();
 
   const yearOptions = useMemo(() => {
     const max = new Date().getFullYear();
@@ -93,21 +67,9 @@ const TransactionsListPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader
-        title="Kirim-Chiqim"
-        description={meta.total ? `Jami ${meta.total} ta` : ""}
-        actions={
-          has(PERMISSIONS.TRANSACTIONS_CREATE) && (
-            <Button onClick={() => openModal(MODAL.TRANSACTION_CREATE)}>
-              <Plus size={16} className="mr-1.5" /> Yangi tranzaksiya
-            </Button>
-          )
-        }
-      />
-
       <TransactionsSummaryCards summary={summary} />
 
-      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
+      <div className="-mx-4 px-4 py-3 bg-background border-b">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <SelectField
             label="Turi"
@@ -155,23 +117,6 @@ const TransactionsListPage = () => {
         hasPrevPage={page > 1}
         onPageChange={(p) => setField("page", p)}
       />
-
-      <CategoryReportSection fromDate={fromDate} toDate={toDate} />
-
-      <ModalWrapper
-        name={MODAL.TRANSACTION_CREATE}
-        title="Yangi tranzaksiya"
-        className="max-w-lg"
-      >
-        <TransactionCreateModal />
-      </ModalWrapper>
-      <ModalWrapper
-        name={MODAL.TRANSACTION_EDIT}
-        title="Tranzaksiyani tahrirlash"
-        className="max-w-lg"
-      >
-        <TransactionEditModal />
-      </ModalWrapper>
     </div>
   );
 };

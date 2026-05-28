@@ -8,6 +8,7 @@ import {
   CarsListPage,
   CarDetailLayout,
   CarOverviewPage,
+  CarEditPage,
   CarFinancePage,
 } from "@/owner/features/cars";
 import {
@@ -32,7 +33,11 @@ import {
   DamagesListPage,
 } from "@/owner/features/penalties";
 import { OyliklarListPage } from "@/owner/features/oyliklar";
-import { TransactionsListPage } from "@/owner/features/transactions";
+import {
+  TransactionsLayout,
+  TransactionsListPage,
+  CategoryReportPage,
+} from "@/owner/features/transactions";
 import { CarDocumentTypesPage } from "@/owner/features/carDocumentTypes";
 import { DriverDocumentTypesPage } from "@/owner/features/driverDocumentTypes";
 import { TransactionCategoriesPage } from "@/owner/features/transactionCategories";
@@ -59,6 +64,14 @@ const OwnerRoutes = () => (
       }
     >
       <Route index element={<CarOverviewPage />} />
+      <Route
+        path="tahrirlash"
+        element={
+          <PermissionGuard required={PERMISSIONS.CARS_UPDATE}>
+            <CarEditPage />
+          </PermissionGuard>
+        }
+      />
       <Route
         path="moliya"
         element={
@@ -181,10 +194,13 @@ const OwnerRoutes = () => (
       path="transactions"
       element={
         <PermissionGuard required={PERMISSIONS.TRANSACTIONS_READ}>
-          <TransactionsListPage />
+          <TransactionsLayout />
         </PermissionGuard>
       }
-    />
+    >
+      <Route index element={<TransactionsListPage />} />
+      <Route path="report" element={<CategoryReportPage />} />
+    </Route>
 
     <Route path="reports" element={<Navigate to="/owner/payments/reports" replace />} />
     <Route path="reports/daily-plan" element={<Navigate to="/owner/payments/reports/daily-plan" replace />} />
