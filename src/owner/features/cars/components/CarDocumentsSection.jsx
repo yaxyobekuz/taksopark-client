@@ -20,7 +20,7 @@ const ExpiryBadge = ({ date }) => {
   if (status === "unset") return <Badge variant="outline">Belgilanmagan</Badge>;
   if (status === "expired") {
     const days = -getDaysLeft(date);
-    return <Badge variant="destructive">Muddati o'tgan ({days} kun)</Badge>;
+    return <Badge >Muddati o'tgan ({days} kun)</Badge>;
   }
   if (status === "expiring_soon") {
     return (

@@ -21,7 +21,7 @@ const CarDocumentTypeDeleteModal = ({ close, docType }) => {
         <Button type="button" variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>
           Bekor qilish
         </Button>
-        <Button type="button" variant="destructive" className="flex-1" onClick={handleConfirm} disabled={isPending}>
+        <Button type="button"  className="flex-1" onClick={handleConfirm} disabled={isPending}>
           {isPending ? "O'chirilmoqda..." : "O'chirish"}
         </Button>
       </div>
