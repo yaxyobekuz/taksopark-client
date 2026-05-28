@@ -1,5 +1,5 @@
 // Icons
-import { LogOut, PanelLeft, ChevronRight, ArrowLeftToLine } from "lucide-react";
+import { LogOut, KeyRound, ChevronRight, ArrowLeftToLine } from "lucide-react";
 
 // Router
 import { Link } from "react-router-dom";
@@ -43,10 +43,12 @@ import {
 import useAuth from "@/shared/hooks/useAuth";
 import useLogout from "@/features/auth/hooks/useLogout";
 import usePermissions from "@/shared/hooks/usePermissions";
+import useModal from "@/shared/hooks/useModal";
 import { useIsMobile } from "@/shared/hooks/useMobile";
 
 // Constants
 import { ROLES } from "@/shared/constants/roles";
+import { MODAL } from "@/shared/constants/modals";
 
 // Rol-spec sidebar konfiguratsiyalari
 import { ownerSidebar } from "@/owner";
@@ -54,6 +56,7 @@ import { logoIcon } from "@/shared/assets/icons";
 
 const ROLE_SIDEBAR = {
   [ROLES.OWNER]: ownerSidebar,
+  [ROLES.ADMIN]: ownerSidebar,
 };
 
 const AppSidebar = ({ ...props }) => {
@@ -172,6 +175,7 @@ const Main = () => {
 const Footer = () => {
   const { user } = useAuth();
   const { mutate: logout } = useLogout();
+  const { openModal } = useModal();
   const isMobile = useIsMobile();
 
   if (!user) return null;
@@ -231,6 +235,11 @@ const Footer = () => {
               </DropdownMenuLabel>
 
               <DropdownMenuSeparator />
+
+              <DropdownMenuItem onClick={() => openModal(MODAL.MY_PASSWORD)}>
+                <KeyRound strokeWidth={1.5} />
+                Parolni o'zgartirish
+              </DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => logout()}>
                 <LogOut strokeWidth={1.5} />

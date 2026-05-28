@@ -40,7 +40,7 @@ const Routes = () => (
         <Route
           path="/owner/*"
           element={
-            <RoleGuard roles={ROLES.OWNER}>
+            <RoleGuard roles={[ROLES.OWNER, ROLES.ADMIN]}>
               <OwnerRoutes />
             </RoleGuard>
           }

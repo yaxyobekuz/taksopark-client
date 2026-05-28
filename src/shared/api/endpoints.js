@@ -5,10 +5,18 @@ export const ENDPOINTS = Object.freeze({
     refresh: "/auth/refresh",
     me: "/auth/me",
     registerUser: "/auth/register-user",
+    changePassword: "/auth/change-password",
   },
   users: {
     base: "/users",
     byId: (id) => `/users/${id}`,
+  },
+  admins: {
+    base: "/admins",
+    byId: (id) => `/admins/${id}`,
+    permissions: (id) => `/admins/${id}/permissions`,
+    password: (id) => `/admins/${id}/password`,
+    catalog: "/admins/permission-catalog",
   },
   activityLogs: {
     base: "/activity-logs",

@@ -10,6 +10,7 @@ import {
   Settings,
   FileType,
   Tags,
+  ShieldCheck,
 } from "lucide-react";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
@@ -70,6 +71,12 @@ const ownerSidebar = [
     icon: Settings,
     isActive: false,
     items: [
+      {
+        title: "Adminlar",
+        url: "/owner/admins",
+        permission: PERMISSIONS.ADMINS_READ,
+        icon: ShieldCheck,
+      },
       {
         title: "Mashina hujjat turlari",
         url: "/owner/settings/car-documents",

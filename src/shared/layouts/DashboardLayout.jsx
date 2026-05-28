@@ -9,6 +9,9 @@ import {
 import AppHeader from "@/shared/components/layout/AppHeader";
 import AppSidebar from "@/shared/components/layout/AppSidebar";
 import BottomNavbar from "@/shared/components/ui/navbar/BottomNavbar";
+import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
+import { MODAL } from "@/shared/constants/modals";
+import { MyPasswordModal } from "@/owner/features/admins";
 
 const DashboardLayout = () => (
   <SidebarProvider className="relative z-10">
@@ -20,6 +23,9 @@ const DashboardLayout = () => (
       </div>
       <BottomNavbar />
     </SidebarInset>
+    <ModalWrapper name={MODAL.MY_PASSWORD} title="Parolni o'zgartirish" className="max-w-md">
+      <MyPasswordModal />
+    </ModalWrapper>
   </SidebarProvider>
 );
 

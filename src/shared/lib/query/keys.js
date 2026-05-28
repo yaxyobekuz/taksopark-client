@@ -8,6 +8,12 @@ export const qk = Object.freeze({
     list: (params) => ["users", "list", params],
     one: (id) => ["users", "detail", id],
   },
+  admins: {
+    all: () => ["admins"],
+    list: (params) => ["admins", "list", params],
+    one: (id) => ["admins", "detail", id],
+    catalog: () => ["admins", "catalog"],
+  },
   activityLogs: {
     all: () => ["activityLogs"],
     list: (params) => ["activityLogs", "list", params],

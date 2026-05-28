@@ -5,6 +5,12 @@ export const MODAL = Object.freeze({
   USER_DELETE: "user:delete",
   ACTIVITY_LOG_DETAIL: "activityLog:detail",
 
+  ADMIN_CREATE: "admin:create",
+  ADMIN_EDIT: "admin:edit",
+  ADMIN_DELETE: "admin:delete",
+  ADMIN_PASSWORD: "admin:password",
+  MY_PASSWORD: "me:password",
+
   CAR_CREATE: "car:create",
   CAR_EDIT: "car:edit",
   CAR_DELETE: "car:delete",

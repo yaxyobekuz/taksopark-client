@@ -38,6 +38,7 @@ import {
   TransactionsListPage,
   CategoryReportPage,
 } from "@/owner/features/transactions";
+import { AdminsListPage, AdminDetailPage } from "@/owner/features/admins";
 import { CarDocumentTypesPage } from "@/owner/features/carDocumentTypes";
 import { DriverDocumentTypesPage } from "@/owner/features/driverDocumentTypes";
 import { TransactionCategoriesPage } from "@/owner/features/transactionCategories";
@@ -206,6 +207,22 @@ const OwnerRoutes = () => (
     <Route path="reports/daily-plan" element={<Navigate to="/owner/payments/reports/daily-plan" replace />} />
     <Route path="reports/finance" element={<Navigate to="/owner/payments/reports/finance" replace />} />
 
+    <Route
+      path="admins"
+      element={
+        <PermissionGuard required={PERMISSIONS.ADMINS_READ}>
+          <AdminsListPage />
+        </PermissionGuard>
+      }
+    />
+    <Route
+      path="admins/:id"
+      element={
+        <PermissionGuard required={PERMISSIONS.ADMINS_READ}>
+          <AdminDetailPage />
+        </PermissionGuard>
+      }
+    />
     <Route
       path="settings/car-documents"
       element={
