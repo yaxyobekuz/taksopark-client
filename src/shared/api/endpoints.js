@@ -66,6 +66,7 @@ export const ENDPOINTS = Object.freeze({
     monthlyIncomeExpense: "/reports/monthly-income-expense",
     depositDriversMonthly: "/reports/deposit-drivers-monthly",
     dailyIncomeExpense: "/reports/daily-income-expense",
+    categoryMonthly: "/reports/category-monthly",
   },
   finePayments: {
     base: "/fine-payments",
@@ -81,5 +82,9 @@ export const ENDPOINTS = Object.freeze({
     base: "/transactions",
     byId: (id) => `/transactions/${id}`,
     summary: "/transactions/summary",
+  },
+  transactionCategories: {
+    base: "/transaction-categories",
+    byId: (id) => `/transaction-categories/${id}`,
   },
 });

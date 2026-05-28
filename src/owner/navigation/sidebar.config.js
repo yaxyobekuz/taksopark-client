@@ -9,6 +9,7 @@ import {
   ArrowLeftRight,
   Settings,
   FileType,
+  Tags,
 } from "lucide-react";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
@@ -67,7 +68,7 @@ const ownerSidebar = [
   {
     title: "Sozlamalar",
     icon: Settings,
-    isActive: true,
+    isActive: false,
     items: [
       {
         title: "Mashina hujjat turlari",
@@ -80,6 +81,12 @@ const ownerSidebar = [
         url: "/owner/settings/driver-documents",
         permission: PERMISSIONS.DRIVERS_DOCUMENTS_MANAGE,
         icon: FileType,
+      },
+      {
+        title: "Tranzaksiya kategoriyalari",
+        url: "/owner/settings/transaction-categories",
+        permission: PERMISSIONS.TRANSACTIONS_CATEGORIES_MANAGE,
+        icon: Tags,
       },
     ],
   },

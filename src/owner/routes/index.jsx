@@ -35,6 +35,7 @@ import { OyliklarListPage } from "@/owner/features/oyliklar";
 import { TransactionsListPage } from "@/owner/features/transactions";
 import { CarDocumentTypesPage } from "@/owner/features/carDocumentTypes";
 import { DriverDocumentTypesPage } from "@/owner/features/driverDocumentTypes";
+import { TransactionCategoriesPage } from "@/owner/features/transactionCategories";
 
 const OwnerRoutes = () => (
   <Routes>
@@ -202,6 +203,14 @@ const OwnerRoutes = () => (
       element={
         <PermissionGuard required={PERMISSIONS.DRIVERS_DOCUMENTS_MANAGE}>
           <DriverDocumentTypesPage />
+        </PermissionGuard>
+      }
+    />
+    <Route
+      path="settings/transaction-categories"
+      element={
+        <PermissionGuard required={PERMISSIONS.TRANSACTIONS_CATEGORIES_MANAGE}>
+          <TransactionCategoriesPage />
         </PermissionGuard>
       }
     />

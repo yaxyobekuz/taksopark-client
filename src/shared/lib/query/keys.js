@@ -63,6 +63,7 @@ export const qk = Object.freeze({
     monthlyIncomeExpense: () => ["reports", "monthlyIncomeExpense"],
     depositDriversMonthly: (params) => ["reports", "depositDriversMonthly", params],
     dailyIncomeExpense: (days) => ["reports", "dailyIncomeExpense", days],
+    categoryMonthly: (params) => ["reports", "categoryMonthly", params],
   },
   finePayments: {
     all: () => ["finePayments"],
@@ -76,5 +77,9 @@ export const qk = Object.freeze({
     all: () => ["transactions"],
     list: (params) => ["transactions", "list", params],
     summary: (params) => ["transactions", "summary", params],
+  },
+  transactionCategories: {
+    all: () => ["transactionCategories"],
+    list: (type) => ["transactionCategories", "list", type ?? "all"],
   },
 });

@@ -39,7 +39,9 @@ export const PERMISSIONS = Object.freeze({
 
   TRANSACTIONS_READ: "transactions.read",
   TRANSACTIONS_CREATE: "transactions.create",
+  TRANSACTIONS_UPDATE: "transactions.update",
   TRANSACTIONS_DELETE: "transactions.delete",
+  TRANSACTIONS_CATEGORIES_MANAGE: "transactions.categories.manage",
 
   REPORTS_READ: "reports.read",
 });

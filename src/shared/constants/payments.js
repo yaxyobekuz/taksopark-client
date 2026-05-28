@@ -55,12 +55,3 @@ export const TRANSACTION_SOURCE_LABELS = Object.freeze({
   [TRANSACTION_SOURCES.OYLIK_PAYOUT]: "Oylik to'lovi",
   [TRANSACTION_SOURCES.MANUAL]: "Qo'lda",
 });
-
-export const MANUAL_CATEGORIES = Object.freeze([
-  "Yoqilg'i",
-  "Ta'mirlash",
-  "Oylik to'lash",
-  "Sug'urta",
-  "Boshqa daromad",
-  "Boshqa xarajat",
-]);

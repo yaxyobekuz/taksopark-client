@@ -46,4 +46,9 @@ export const MODAL = Object.freeze({
   OYLIK_PAYOUT_EDIT: "oylik:payoutEdit",
 
   TRANSACTION_CREATE: "transaction:create",
+  TRANSACTION_EDIT: "transaction:edit",
+
+  TX_CATEGORY_CREATE: "txCategory:create",
+  TX_CATEGORY_EDIT: "txCategory:edit",
+  TX_CATEGORY_DELETE: "txCategory:delete",
 });
