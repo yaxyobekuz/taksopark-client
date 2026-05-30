@@ -65,7 +65,13 @@ const DailyTotalTable = ({ data }) => {
                   </td>
                   <td className="p-3">{row.driverName || "-"}</td>
                   <td className="p-3 text-right text-muted-foreground">
-                    {formatMoney(row.expected)}
+                    {row.isRestDay ? (
+                      <span className="inline-flex items-center rounded bg-amber-50 px-1.5 py-0.5 text-xs font-medium text-amber-700">
+                        Dam olish kuni
+                      </span>
+                    ) : (
+                      formatMoney(row.expected)
+                    )}
                   </td>
                   <td className="p-3 text-right font-medium">
                     {formatMoney(row.amount)}

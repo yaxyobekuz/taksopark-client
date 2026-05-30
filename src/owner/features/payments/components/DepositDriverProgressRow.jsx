@@ -4,6 +4,7 @@ import ProgressBar from "@/shared/components/ui/progress/ProgressBar";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { formatMoney } from "@/shared/utils/formatMoney";
+import { TARIFF_LABELS, TARIFF_TEXT_CLASS } from "@/shared/constants/tariffs";
 
 const DepositDriverProgressRow = ({ row }) => {
   const navigate = useNavigate();
@@ -31,6 +32,11 @@ const DepositDriverProgressRow = ({ row }) => {
           <div className="min-w-0">
             <p className="font-medium truncate">
               {row.lastName} {row.firstName}
+              {row.tariff && (
+                <span className={`ml-1.5 text-xs ${TARIFF_TEXT_CLASS[row.tariff] || ""}`}>
+                  {TARIFF_LABELS[row.tariff] || row.tariff}
+                </span>
+              )}
             </p>
             {row.car?.plateNumber && (
               <div className="mt-0.5">
@@ -50,7 +56,12 @@ const DepositDriverProgressRow = ({ row }) => {
 
       <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
         <div>
-          <p className="text-muted-foreground">Kutilayotgan</p>
+          <p className="text-muted-foreground">
+            Kutilayotgan
+            {row.restDays > 0 && (
+              <span className="ml-1 text-amber-600">({row.restDays} dam)</span>
+            )}
+          </p>
           <p className="font-medium">{formatMoney(row.expected)}</p>
         </div>
         <div>

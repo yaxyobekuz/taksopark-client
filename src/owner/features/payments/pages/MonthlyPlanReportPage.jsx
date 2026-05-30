@@ -27,8 +27,8 @@ const MonthlyPlanReportPage = () => {
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        Tanlangan oy bo'yicha har bir depozitli haydovchidan kutilayotgan,
-        to'langan va qarz summalari.
+        Tanlangan oy bo'yicha har bir haydovchidan kutilayotgan, to'langan va
+        qarz summalari.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">

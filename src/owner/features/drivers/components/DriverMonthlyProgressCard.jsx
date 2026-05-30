@@ -86,6 +86,11 @@ const DriverMonthlyProgressCard = ({ driverId }) => {
               {row.percent}%
             </span>
           </div>
+          {row.restDays > 0 && (
+            <p className="text-xs text-amber-600">
+              Bu oyda {row.restDays} dam olish kuni rejadan chiqarildi.
+            </p>
+          )}
         </div>
       )}
     </div>
