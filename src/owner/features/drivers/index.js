@@ -5,6 +5,7 @@ export { default as DriverPaymentsPage } from "./pages/DriverPaymentsPage";
 export { default as DriverFinesPage } from "./pages/DriverFinesPage";
 export { default as DriverDamagesPage } from "./pages/DriverDamagesPage";
 export { default as DriverOyliklarPage } from "./pages/DriverOyliklarPage";
+export { default as DriverWorkDaysPage } from "./pages/DriverWorkDaysPage";
 export {
   useDriversQuery,
   useDriverQuery,

@@ -55,6 +55,9 @@ const DriverDetailLayout = () => {
   }
 
   const tabs = [{ to: `/owner/drivers/${id}`, label: "Asosiy", exact: true }];
+  if (has(PERMISSIONS.REST_DAYS_READ)) {
+    tabs.push({ to: `/owner/drivers/${id}/work-days`, label: "Ish kunlari" });
+  }
   if (has(PERMISSIONS.PAYMENTS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/payments`, label: "To'lovlar" });
   }
