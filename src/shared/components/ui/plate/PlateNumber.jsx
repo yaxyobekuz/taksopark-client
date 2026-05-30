@@ -92,7 +92,7 @@ const PlateNumber = ({ value, size = "md", className = "" }) => {
   return (
     <span
       className={cn(
-        "inline-flex items-stretch font-bold tracking-wider rounded-md bg-white text-gray-900 border-2 border-gray-900 overflow-hidden select-none",
+        "inline-flex items-stretch font-bold tracking-wider rounded-md bg-white text-gray-900 border-2 border-gray-900 overflow-hidden select-none shrink-0 min-w-max",
         sz.wrap,
         className,
       )}
@@ -105,16 +105,16 @@ const PlateNumber = ({ value, size = "md", className = "" }) => {
       >
         {parsed.region}
       </span>
-      <span className={cn("inline-flex items-center justify-center", sz.main)}>
+      <span className={cn("inline-flex items-center justify-center shrink-0", sz.main)}>
         {parsed.main}
       </span>
       <span
         className={cn(
-          "inline-flex flex-col items-center justify-center border-l-2 border-gray-900 bg-white",
+          "flex flex-col items-center justify-center border-l-2 border-gray-900 bg-white shrink-0 min-w-max",
           sz.uz,
         )}
       >
-        <UZFlag className="mb-px" />
+        <UZFlag className="mb-px h-3" />
         <span className="font-semibold text-[#0099b5] leading-none">UZ</span>
       </span>
     </span>
