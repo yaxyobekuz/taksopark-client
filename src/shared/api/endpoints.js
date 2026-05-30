@@ -49,6 +49,11 @@ export const ENDPOINTS = Object.freeze({
     base: "/driver-document-types",
     byId: (id) => `/driver-document-types/${id}`,
   },
+  restDays: {
+    base: "/rest-days",
+    byId: (id) => `/rest-days/${id}`,
+    calendar: "/rest-days/calendar",
+  },
   payments: {
     base: "/payments",
     byId: (id) => `/payments/${id}`,

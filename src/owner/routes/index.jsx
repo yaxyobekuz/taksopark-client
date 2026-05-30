@@ -19,7 +19,9 @@ import {
   DriverFinesPage,
   DriverDamagesPage,
   DriverOyliklarPage,
+  DriverWorkDaysPage,
 } from "@/owner/features/drivers";
+import { RestDaysListPage } from "@/owner/features/restdays";
 import {
   PaymentsLayout,
   PaymentsListPage,
@@ -101,6 +103,14 @@ const OwnerRoutes = () => (
     >
       <Route index element={<DriverOverviewPage />} />
       <Route
+        path="work-days"
+        element={
+          <PermissionGuard required={PERMISSIONS.REST_DAYS_READ}>
+            <DriverWorkDaysPage />
+          </PermissionGuard>
+        }
+      />
+      <Route
         path="payments"
         element={
           <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
@@ -134,6 +144,15 @@ const OwnerRoutes = () => (
       />
       <Route path="cycles" element={<Navigate to="../oyliklar" replace />} />
     </Route>
+
+    <Route
+      path="rest-days"
+      element={
+        <PermissionGuard required={PERMISSIONS.REST_DAYS_READ}>
+          <RestDaysListPage />
+        </PermissionGuard>
+      }
+    />
 
     <Route
       path="payments"

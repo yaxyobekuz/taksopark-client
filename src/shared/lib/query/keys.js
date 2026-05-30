@@ -41,6 +41,11 @@ export const qk = Object.freeze({
     balance: (id) => ["drivers", "balance", id],
     warnings: () => ["drivers", "warnings"],
   },
+  restDays: {
+    all: () => ["restDays"],
+    list: (params) => ["restDays", "list", params],
+    calendar: (params) => ["restDays", "calendar", params],
+  },
   payments: {
     all: () => ["payments"],
     list: (params) => ["payments", "list", params],

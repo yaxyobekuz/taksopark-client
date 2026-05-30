@@ -6,6 +6,7 @@ import {
   BadgeDollarSign,
   AlertTriangle,
   CalendarRange,
+  CalendarOff,
   ArrowLeftRight,
   Settings,
   FileType,
@@ -26,6 +27,12 @@ const ownerSidebar = [
         url: "/owner/drivers",
         permission: PERMISSIONS.DRIVERS_READ,
         icon: Users,
+      },
+      {
+        title: "Dam olish kunlari",
+        url: "/owner/rest-days",
+        permission: PERMISSIONS.REST_DAYS_READ,
+        icon: CalendarOff,
       },
       {
         title: "Mashinalar",

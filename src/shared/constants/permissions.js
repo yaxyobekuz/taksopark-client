@@ -15,6 +15,9 @@ export const PERMISSIONS = Object.freeze({
   DRIVERS_END_TRIAL: "drivers.end_trial",
   DRIVERS_DOCUMENTS_MANAGE: "drivers.documents.manage",
 
+  REST_DAYS_READ: "rest_days.read",
+  REST_DAYS_MANAGE: "rest_days.manage",
+
   CARS_READ: "cars.read",
   CARS_CREATE: "cars.create",
   CARS_UPDATE: "cars.update",
