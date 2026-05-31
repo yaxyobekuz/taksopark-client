@@ -1,5 +1,5 @@
 // Icons
-import { LogOut, KeyRound, ChevronRight, ArrowLeftToLine } from "lucide-react";
+import { LogOut, KeyRound, ChevronRight, ArrowLeftToLine, Search } from "lucide-react";
 
 // Router
 import { Link } from "react-router-dom";
@@ -72,6 +72,7 @@ const AppSidebar = ({ ...props }) => {
 
 const Header = () => {
   const { toggleSidebar } = useSidebar();
+  const { openModal } = useModal();
 
   return (
     <SidebarHeader>
@@ -94,6 +95,20 @@ const Header = () => {
               <span className="truncate font-semibold">Taksopark</span>
             </div>
             <ArrowLeftToLine className="ml-auto" size={24} strokeWidth={1.5} />
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            tooltip="Tezkor qidiruv"
+            onClick={() => openModal(MODAL.GLOBAL_SEARCH)}
+            className="border text-muted-foreground"
+          >
+            <Search strokeWidth={1.5} />
+            <span>Qidiruv</span>
+            <kbd className="ml-auto hidden items-center gap-0.5 rounded border bg-white px-1.5 text-[10px] font-medium group-data-[collapsible=icon]:hidden sm:flex">
+              Ctrl K
+            </kbd>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
