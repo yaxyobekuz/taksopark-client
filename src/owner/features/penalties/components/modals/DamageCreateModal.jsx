@@ -39,9 +39,12 @@ const DamageCreateModal = ({ close, presetDriverId }) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <SelectField
         label="Haydovchi"
+        searchable
+        placeholder="Tanlang"
+        searchPlaceholder="Ism yoki mashina raqami..."
         value={driverId}
         onChange={(v) => setField("driverId", v)}
-        options={[{ value: "", label: "Tanlang" }, ...driverOptions]}
+        options={driverOptions}
         required
         disabled={isPending || !!presetDriverId}
       />
