@@ -5,6 +5,7 @@ export { default as MonthlyPlanReportPage } from "./pages/MonthlyPlanReportPage"
 export { default as FinanceReportPage } from "./pages/FinanceReportPage";
 export { default as MonthlyIncomeExpenseChart } from "./components/MonthlyIncomeExpenseChart";
 export { default as DailyIncomeExpenseChart } from "./components/DailyIncomeExpenseChart";
+export { default as PaymentCreateModal } from "./components/modals/PaymentCreateModal";
 export { usePaymentsQuery } from "./hooks/usePaymentsQuery";
 export { usePaymentCreate, usePaymentUpdate, usePaymentDelete } from "./hooks/usePaymentMutations";
 export {

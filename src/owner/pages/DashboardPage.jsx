@@ -6,14 +6,24 @@ import {
   ArrowUpCircle,
   CalendarClock,
   BarChart3,
-  LineChart as LineChartIcon,
+  LineChartIcon,
   Scale,
-  Car as CarIcon,
+  CarIcon,
+  UserPlus,
+  CalendarPlus,
+  Ambulance,
+  BanknoteArrowDown,
 } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import Card from "@/shared/components/ui/card/Card";
+import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
+import QuickAddFab from "@/shared/components/ui/fab/QuickAddFab";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import Tooltip from "@/shared/components/ui/tooltip/Tooltip";
+import useModal from "@/shared/hooks/useModal";
+import usePermissions from "@/shared/hooks/usePermissions";
+import { MODAL } from "@/shared/constants/modals";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
@@ -22,10 +32,15 @@ import {
   useDailyIncomeExpenseQuery,
   MonthlyIncomeExpenseChart,
   DailyIncomeExpenseChart,
+  PaymentCreateModal,
 } from "@/owner/features/payments";
-import { useDriverWarningsQuery } from "@/owner/features/drivers";
+import {
+  useDriverWarningsQuery,
+  DriverCreateModal,
+} from "@/owner/features/drivers";
 import { useTransactionsSummaryQuery } from "@/owner/features/transactions";
-import { useCarsExpiringQuery } from "@/owner/features/cars";
+import { useCarsExpiringQuery, CarCreateModal } from "@/owner/features/cars";
+import { RestDayCreateModal } from "@/owner/features/restdays";
 import { getDaysLeft } from "@/owner/features/cars/utils/expiryStatus";
 
 const today = new Date().toISOString().slice(0, 10);
@@ -135,6 +150,8 @@ const DriverWarningItem = ({ driver, meta, accentClassName = "" }) => {
 };
 
 const DashboardPage = () => {
+  const { openModal } = useModal();
+  const { has } = usePermissions();
   const { data: warnings } = useDriverWarningsQuery();
   const { data: todaySummary } = useTransactionsSummaryQuery({
     fromDate: today,
@@ -159,6 +176,37 @@ const DashboardPage = () => {
   const depositLow = warnings?.depositLow || [];
   const depositEmpty = warnings?.depositEmpty || [];
   const noPayment = warnings?.noPayment2Days || [];
+
+  const quickActions = [
+    {
+      key: "payment",
+      label: "To'lov",
+      icon: BanknoteArrowDown,
+      permission: PERMISSIONS.PAYMENTS_CREATE,
+      onClick: () => openModal(MODAL.PAYMENT_CREATE),
+    },
+    {
+      key: "driver",
+      label: "Haydovchi",
+      icon: UserPlus,
+      permission: PERMISSIONS.DRIVERS_CREATE,
+      onClick: () => openModal(MODAL.DRIVER_CREATE),
+    },
+    {
+      key: "car",
+      label: "Mashina",
+      icon: Ambulance,
+      permission: PERMISSIONS.CARS_CREATE,
+      onClick: () => openModal(MODAL.CAR_CREATE),
+    },
+    {
+      key: "rest-day",
+      label: "Dam olish kuni",
+      icon: CalendarPlus,
+      permission: PERMISSIONS.REST_DAYS_MANAGE,
+      onClick: () => openModal(MODAL.REST_DAY_CREATE),
+    },
+  ].filter((a) => has(a.permission));
 
   return (
     <div className="space-y-8">
@@ -308,9 +356,7 @@ const DashboardPage = () => {
                           expired ? "text-red-600" : "text-amber-700"
                         }`}
                       >
-                        {expired
-                          ? `${-days} kun o'tgan`
-                          : `${days} kun qoldi`}
+                        {expired ? `${-days} kun o'tgan` : `${days} kun qoldi`}
                       </span>
                       {car.plateNumber && (
                         <PlateNumber value={car.plateNumber} size="sm" />
@@ -359,6 +405,21 @@ const DashboardPage = () => {
           </div>
         </Card>
       </div>
+
+      <ModalWrapper name={MODAL.PAYMENT_CREATE} title="To'lov qo'shish">
+        <PaymentCreateModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.DRIVER_CREATE} title="Yangi haydovchi qo'shish">
+        <DriverCreateModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.CAR_CREATE} title="Yangi mashina qo'shish">
+        <CarCreateModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.REST_DAY_CREATE} title="Yangi dam olish kuni">
+        <RestDayCreateModal />
+      </ModalWrapper>
+
+      <QuickAddFab actions={quickActions} />
     </div>
   );
 };

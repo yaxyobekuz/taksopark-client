@@ -1,4 +1,5 @@
 export { default as RestDaysListPage } from "./pages/RestDaysListPage";
+export { default as RestDayCreateModal } from "./components/modals/RestDayCreateModal";
 export {
   useRestdaysQuery,
   useRestdayCalendarQuery,
