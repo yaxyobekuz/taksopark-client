@@ -29,12 +29,6 @@ const ownerSidebar = [
         icon: Users,
       },
       {
-        title: "Dam olish kunlari",
-        url: "/owner/rest-days",
-        permission: PERMISSIONS.REST_DAYS_READ,
-        icon: CalendarOff,
-      },
-      {
         title: "Mashinalar",
         url: "/owner/cars",
         permission: PERMISSIONS.CARS_READ,
@@ -45,6 +39,12 @@ const ownerSidebar = [
         url: "/owner/penalties",
         permission: PERMISSIONS.FINES_READ,
         icon: AlertTriangle,
+      },
+      {
+        title: "Dam olish kunlari",
+        url: "/owner/rest-days",
+        permission: PERMISSIONS.REST_DAYS_READ,
+        icon: CalendarOff,
       },
     ],
   },
