@@ -7,4 +7,9 @@ export { useCarsQuery } from "./hooks/useCarsQuery";
 export { useCarByIdQuery } from "./hooks/useCarByIdQuery";
 export { useCarsExpiringQuery } from "./hooks/useCarsExpiringQuery";
 export { useCarFinanceQuery } from "./hooks/useCarFinanceQuery";
-export { useCarCreate, useCarUpdate, useCarDelete } from "./hooks/useCarMutations";
+export {
+  useCarCreate,
+  useCarUpdate,
+  useCarDelete,
+  useCarRestore,
+} from "./hooks/useCarMutations";

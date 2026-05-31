@@ -1,18 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, RotateCcw } from "lucide-react";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
+import { useCarRestore } from "../hooks/useCarMutations";
 
 const stop = (e) => e.stopPropagation();
 
-const CarsTable = ({ items = [] }) => {
+const CarsTable = ({ items = [], isArchived = false }) => {
   const navigate = useNavigate();
   const { openModal } = useModal();
   const { has } = usePermissions();
+  const carRestore = useCarRestore();
 
   if (!items.length) {
     return <p className="text-sm text-muted-foreground p-4">Mashina yo'q</p>;
@@ -68,16 +70,27 @@ const CarsTable = ({ items = [] }) => {
                       <Pencil size={16} />
                     </button>
                   )}
-                  {has(PERMISSIONS.CARS_DELETE) && (
-                    <button
-                      type="button"
-                      onClick={() => openModal(MODAL.CAR_DELETE, { car })}
-                      className="text-muted-foreground hover:text-red-600"
-                      title="O'chirish"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  )}
+                  {has(PERMISSIONS.CARS_DELETE) &&
+                    (isArchived ? (
+                      <button
+                        type="button"
+                        onClick={() => carRestore.mutate(car._id)}
+                        disabled={carRestore.isPending}
+                        className="text-muted-foreground hover:text-green-600 disabled:opacity-50"
+                        title="Tiklash"
+                      >
+                        <RotateCcw size={16} />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => openModal(MODAL.CAR_DELETE, { car })}
+                        className="text-muted-foreground hover:text-red-600"
+                        title="O'chirish"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    ))}
                 </div>
               </td>
             </tr>

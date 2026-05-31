@@ -43,3 +43,15 @@ export const useCarDelete = () => {
     onError,
   });
 };
+
+export const useCarRestore = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => carsAPI.update(id, { isActive: true }).then((r) => r.data.data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.cars.all() });
+      toast.success("Mashina tiklandi");
+    },
+    onError,
+  });
+};

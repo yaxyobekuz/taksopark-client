@@ -6,6 +6,7 @@ import usePermissions from "@/shared/hooks/usePermissions";
 
 import Button from "@/shared/components/ui/button/Button";
 import InputField from "@/shared/components/ui/input/InputField";
+import TabsButtons from "@/shared/components/ui/tabs/TabsButtons";
 import Pagination from "@/shared/components/ui/pagination/Pagination";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import ConfirmDialog from "@/shared/components/ui/dialog/ConfirmDialog";
@@ -21,19 +22,28 @@ import CarsTable from "../components/CarsTable";
 import CarCreateModal from "../components/modals/CarCreateModal";
 import CarEditModal from "../components/modals/CarEditModal";
 
+const STATUS_TABS = [
+  { value: "active", label: "Faol" },
+  { value: "archived", label: "Arxiv" },
+];
+
 const CarsListPage = () => {
-  const { page, search, setField, setFields } = useObjectState({
+  const { page, search, status, setField, setFields } = useObjectState({
     page: 1,
     search: "",
+    status: "active",
   });
   const { openModal } = useModal();
   const { has } = usePermissions();
   const carDelete = useCarDelete();
 
+  const isArchived = status === "archived";
+
   const { data, isLoading } = useCarsQuery({
     page,
     limit: 20,
     search: search || undefined,
+    isActive: isArchived ? "false" : "true",
   });
   const items = data?.data || [];
   const meta = data?.meta || { pages: 1, total: 0 };
@@ -52,12 +62,17 @@ const CarsListPage = () => {
         }
       />
 
-      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b">
+      <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b space-y-2">
         <InputField
           type="search"
           placeholder="Qidirish (raqam, model, VIN)..."
           value={search}
           onChange={(e) => setFields({ search: e.target.value, page: 1 })}
+        />
+        <TabsButtons
+          items={STATUS_TABS}
+          value={status}
+          onChange={(v) => setFields({ status: v, page: 1 })}
         />
       </div>
 
@@ -72,14 +87,16 @@ const CarsListPage = () => {
       ) : items.length === 0 ? (
         <EmptyState
           icon={CarIcon}
-          title="Mashina topilmadi"
+          title={isArchived ? "Arxivlangan mashina yo'q" : "Mashina topilmadi"}
           description={
             search
               ? "Boshqa qidiruv so'zini sinab ko'ring"
-              : "Birinchi mashinani qo'shing"
+              : isArchived
+                ? "O'chirilgan mashinalar shu yerda ko'rinadi"
+                : "Birinchi mashinani qo'shing"
           }
           action={
-            has(PERMISSIONS.CARS_CREATE) && !search ? (
+            has(PERMISSIONS.CARS_CREATE) && !search && !isArchived ? (
               <Button onClick={() => openModal(MODAL.CAR_CREATE)}>
                 <Plus size={16} className="mr-1.5" /> Yangi mashina
               </Button>
@@ -87,7 +104,7 @@ const CarsListPage = () => {
           }
         />
       ) : (
-        <CarsTable items={items} />
+        <CarsTable items={items} isArchived={isArchived} />
       )}
 
       <Pagination
