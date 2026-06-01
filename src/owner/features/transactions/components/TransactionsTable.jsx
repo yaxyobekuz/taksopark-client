@@ -9,6 +9,7 @@ import {
   TRANSACTION_TYPES,
   TRANSACTION_SOURCE_LABELS,
   TRANSACTION_SOURCES,
+  TRANSACTION_WALLET_LABELS,
 } from "@/shared/constants/payments";
 import { useTransactionDelete } from "../hooks/useTransactions";
 
@@ -25,6 +26,7 @@ const TransactionsTable = ({ items = [] }) => {
         <thead>
           <tr>
             <th className="text-left p-3">Sana</th>
+            <th className="text-left p-3">Hamyon</th>
             <th className="text-left p-3">Turi</th>
             <th className="text-left p-3">Manba</th>
             <th className="text-left p-3">Kategoriya</th>
@@ -40,6 +42,7 @@ const TransactionsTable = ({ items = [] }) => {
             return (
               <tr key={t._id} className="border-t">
                 <td className="p-3">{formatDateUZ(t.date)}</td>
+                <td className="p-3 text-xs">{TRANSACTION_WALLET_LABELS[t.wallet] || "-"}</td>
                 <td className="p-3">
                   <span className={`inline-flex items-center gap-1 ${isIncome ? "text-green-700" : "text-red-700"}`}>
                     {isIncome ? <ArrowDownCircle size={14} /> : <ArrowUpCircle size={14} />}

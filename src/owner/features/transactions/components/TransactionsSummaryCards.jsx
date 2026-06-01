@@ -2,9 +2,14 @@ import { ArrowDownCircle, ArrowUpCircle, Wallet } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 
 const TransactionsSummaryCards = ({ summary }) => {
-  const income = summary?.income || 0;
-  const expense = summary?.expense || 0;
-  const balance = summary?.balance || 0;
+  const byWallet = summary?.byWallet || {};
+  let income = 0;
+  let expense = 0;
+  for (const w of Object.values(byWallet)) {
+    income += w.in || 0;
+    expense += w.out || 0;
+  }
+  const balance = income - expense;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

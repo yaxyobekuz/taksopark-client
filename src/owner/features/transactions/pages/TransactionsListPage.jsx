@@ -12,6 +12,8 @@ import { MONTHS } from "@/shared/constants/months";
 import {
   TRANSACTION_TYPES,
   TRANSACTION_TYPE_LABELS,
+  TRANSACTION_WALLETS,
+  TRANSACTION_WALLET_LABELS,
 } from "@/shared/constants/payments";
 import {
   useTransactionsQuery,
@@ -24,9 +26,10 @@ const pad = (n) => String(n).padStart(2, "0");
 
 const TransactionsListPage = () => {
   const now = new Date();
-  const { page, type, month, year, setField, setFields } = useObjectState({
+  const { page, type, wallet, month, year, setField, setFields } = useObjectState({
     page: 1,
     type: "",
+    wallet: "",
     month: now.getMonth() + 1,
     year: now.getFullYear(),
   });
@@ -47,11 +50,16 @@ const TransactionsListPage = () => {
     page,
     limit: 20,
     type: type || undefined,
+    wallet: wallet || undefined,
     fromDate,
     toDate,
   };
   const { data, isLoading } = useTransactionsQuery(params);
-  const { data: summary } = useTransactionsSummaryQuery({ fromDate, toDate });
+  const { data: summary } = useTransactionsSummaryQuery({
+    fromDate,
+    toDate,
+    wallet: wallet || undefined,
+  });
 
   const items = data?.data || [];
   const meta = data?.meta || { pages: 1, total: 0 };
@@ -65,12 +73,26 @@ const TransactionsListPage = () => {
     },
   ];
 
+  const walletOptions = [
+    { value: "", label: "Hamma hamyon" },
+    ...Object.values(TRANSACTION_WALLETS).map((w) => ({
+      value: w,
+      label: TRANSACTION_WALLET_LABELS[w],
+    })),
+  ];
+
   return (
     <div className="space-y-4">
       <TransactionsSummaryCards summary={summary} />
 
       <div className="-mx-4 px-4 py-3 bg-background border-b">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+          <SelectField
+            label="Hamyon"
+            value={wallet}
+            onChange={(v) => setFields({ wallet: v, page: 1 })}
+            options={walletOptions}
+          />
           <SelectField
             label="Turi"
             value={type}
