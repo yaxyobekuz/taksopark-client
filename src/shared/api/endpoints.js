@@ -102,4 +102,9 @@ export const ENDPOINTS = Object.freeze({
     base: "/transaction-categories",
     byId: (id) => `/transaction-categories/${id}`,
   },
+  financeReport: {
+    overview: "/finance-report/overview",
+    integrity: "/finance-report/integrity",
+    walletRecent: (wallet) => `/finance-report/wallets/${wallet}/recent`,
+  },
 });

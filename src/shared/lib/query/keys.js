@@ -93,4 +93,10 @@ export const qk = Object.freeze({
     all: () => ["transactionCategories"],
     list: (type) => ["transactionCategories", "list", type ?? "all"],
   },
+  financeReport: {
+    all: () => ["financeReport"],
+    overview: (params) => ["financeReport", "overview", params],
+    walletRecent: (wallet, limit) => ["financeReport", "walletRecent", wallet, limit],
+    integrity: () => ["financeReport", "integrity"],
+  },
 });

@@ -52,4 +52,6 @@ export const PERMISSIONS = Object.freeze({
   TRANSACTIONS_CATEGORIES_MANAGE: "transactions.categories.manage",
 
   REPORTS_READ: "reports.read",
+
+  FINANCE_REPORT_READ: "finance_report.read",
 });

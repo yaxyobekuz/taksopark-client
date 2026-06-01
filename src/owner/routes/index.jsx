@@ -27,8 +27,12 @@ import {
   PaymentsListPage,
   DailyPlanReportPage,
   MonthlyPlanReportPage,
-  FinanceReportPage,
+  FinanceReportPage as PaymentsFinanceReportPage,
 } from "@/owner/features/payments";
+import {
+  FinanceReportPage,
+  WalletDetailPage,
+} from "@/owner/features/financeReport";
 import {
   PenaltiesLayout,
   FinesListPage,
@@ -174,7 +178,7 @@ const OwnerRoutes = () => (
         <Route index element={<Navigate to="daily-plan" replace />} />
         <Route path="daily-plan" element={<DailyPlanReportPage />} />
         <Route path="monthly-plan" element={<MonthlyPlanReportPage />} />
-        <Route path="finance" element={<FinanceReportPage />} />
+        <Route path="finance" element={<PaymentsFinanceReportPage />} />
       </Route>
     </Route>
 
@@ -221,6 +225,23 @@ const OwnerRoutes = () => (
       <Route index element={<TransactionsListPage />} />
       <Route path="report" element={<CategoryReportPage />} />
     </Route>
+
+    <Route
+      path="finance-report"
+      element={
+        <PermissionGuard required={PERMISSIONS.FINANCE_REPORT_READ}>
+          <FinanceReportPage />
+        </PermissionGuard>
+      }
+    />
+    <Route
+      path="finance-report/:wallet"
+      element={
+        <PermissionGuard required={PERMISSIONS.FINANCE_REPORT_READ}>
+          <WalletDetailPage />
+        </PermissionGuard>
+      }
+    />
 
     <Route path="reports" element={<Navigate to="/owner/payments/reports" replace />} />
     <Route path="reports/daily-plan" element={<Navigate to="/owner/payments/reports/daily-plan" replace />} />
