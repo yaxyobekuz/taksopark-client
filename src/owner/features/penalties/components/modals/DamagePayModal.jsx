@@ -45,7 +45,6 @@ const DamagePayModal = ({ close, damage }) => {
       label: PAYMENT_SOURCE_LABELS.deposit + (depositDisabled ? " (faqat depozitli tarif)" : ` (mavjud: ${formatMoney(depositRemaining)})`),
       disabled: depositDisabled,
     },
-    { value: PAYMENT_SOURCES.SYSTEM, label: PAYMENT_SOURCE_LABELS.system },
   ];
 
   const insufficient = isDeposit && Number(amount) > depositRemaining;
