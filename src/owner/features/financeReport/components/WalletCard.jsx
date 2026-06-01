@@ -26,7 +26,6 @@ const WalletCard = ({ wallet, data }) => {
   const opening = data?.openingBalance ?? 0;
   const incTotal = data?.in ?? 0;
   const outTotal = data?.out ?? 0;
-  const net = data?.net ?? 0;
 
   return (
     <button
@@ -44,20 +43,21 @@ const WalletCard = ({ wallet, data }) => {
         </h3>
 
         <div>
-          <div className="text-xs text-muted-foreground">Davr oxiri</div>
+          <div className="text-xs text-muted-foreground">Joriy balans</div>
           <div
             className={cn(
               "text-2xl font-bold",
-              net >= 0 ? "text-gray-900" : "text-red-600",
+              closing >= 0 ? "text-gray-900" : "text-red-600",
             )}
           >
-            {formatMoney(closing)}
+            {closing < 0 && "−"}
+            {formatMoney(Math.abs(closing))}
           </div>
         </div>
 
         <div className="grid grid-cols-3 gap-2 text-xs">
           <div>
-            <div className="text-muted-foreground">Boshlanish</div>
+            <div className="text-muted-foreground">Avvalgi qoldiq</div>
             <div className="font-medium">{formatMoney(opening)}</div>
           </div>
           <div>

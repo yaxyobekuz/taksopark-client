@@ -1,13 +1,10 @@
-import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import useObjectState from "@/shared/hooks/useObjectState";
-import SelectField from "@/shared/components/ui/select/SelectField";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
 import Pagination from "@/shared/components/ui/pagination/Pagination";
 import BackLink from "@/shared/components/ui/link/BackLink";
 import { ArrowLeftRight } from "lucide-react";
-import { MONTHS } from "@/shared/constants/months";
 import {
   TRANSACTION_DIRECTIONS,
   TRANSACTION_SOURCE_LABELS,
@@ -19,39 +16,21 @@ import { formatDateUZ } from "@/shared/utils/date.utils";
 import { useTransactionsQuery } from "@/owner/features/transactions/hooks/useTransactions";
 import { useFinanceOverviewQuery } from "../hooks/useFinanceReport";
 
-const pad = (n) => String(n).padStart(2, "0");
-
 const WalletDetailPage = () => {
   const { wallet } = useParams();
   const isValidWallet = Object.values(TRANSACTION_WALLETS).includes(wallet);
 
-  const now = new Date();
-  const { page, month, year, setField, setFields } = useObjectState({
-    page: 1,
-    month: now.getMonth() + 1,
-    year: now.getFullYear(),
-  });
+  const { page, setField } = useObjectState({ page: 1 });
 
-  const yearOptions = useMemo(() => {
-    const max = new Date().getFullYear();
-    const list = [];
-    for (let y = max; y >= max - 5; y--) list.push({ value: y, label: String(y) });
-    return list;
-  }, []);
-
-  const fromDate = `${year}-${pad(month)}-01`;
-  const lastDay = new Date(year, month, 0).getDate();
-  const toDate = `${year}-${pad(month)}-${pad(lastDay)}`;
-
-  const { data: overview } = useFinanceOverviewQuery({ fromDate, toDate });
+  // Umumiy balans (barcha vaqt) uchun fromDate yubormaymiz.
+  const { data: overview } = useFinanceOverviewQuery({});
   const stat = overview?.wallets?.[wallet];
 
+  // Tranzaksiyalar — barcha vaqt, sahifalashtirish bilan.
   const { data, isLoading } = useTransactionsQuery({
     page,
     limit: 20,
     wallet,
-    fromDate,
-    toDate,
   });
 
   const items = data?.data || [];
@@ -77,46 +56,25 @@ const WalletDetailPage = () => {
       </div>
 
       {stat && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <div className="rounded-md border bg-white p-3">
-            <div className="text-xs text-muted-foreground">Davr boshi</div>
-            <div className="font-semibold">{formatMoney(stat.openingBalance)}</div>
-          </div>
-          <div className="rounded-md border bg-white p-3">
-            <div className="text-xs text-muted-foreground">Kirim</div>
+            <div className="text-xs text-muted-foreground">Jami kirim</div>
             <div className="font-semibold text-emerald-700">
               +{formatMoney(stat.in)}
             </div>
           </div>
           <div className="rounded-md border bg-white p-3">
-            <div className="text-xs text-muted-foreground">Chiqim</div>
+            <div className="text-xs text-muted-foreground">Jami chiqim</div>
             <div className="font-semibold text-red-700">
               −{formatMoney(stat.out)}
             </div>
           </div>
           <div className="rounded-md border bg-white p-3">
-            <div className="text-xs text-muted-foreground">Davr oxiri</div>
+            <div className="text-xs text-muted-foreground">Joriy balans</div>
             <div className="font-semibold">{formatMoney(stat.closingBalance)}</div>
           </div>
         </div>
       )}
-
-      <div className="-mx-4 px-4 py-3 bg-background border-b">
-        <div className="grid grid-cols-2 gap-2 max-w-md">
-          <SelectField
-            label="Oy"
-            value={month}
-            onChange={(v) => setFields({ month: Number(v), page: 1 })}
-            options={MONTHS}
-          />
-          <SelectField
-            label="Yil"
-            value={year}
-            onChange={(v) => setFields({ year: Number(v), page: 1 })}
-            options={yearOptions}
-          />
-        </div>
-      </div>
 
       {isLoading ? (
         <div className="overflow-x-auto rounded-lg border bg-white">
@@ -130,7 +88,7 @@ const WalletDetailPage = () => {
         <EmptyState
           icon={ArrowLeftRight}
           title="Tranzaksiya yo'q"
-          description="Tanlangan davrda bu hamyonda harakat yo'q"
+          description="Bu hamyonda hech qanday harakat yo'q"
         />
       ) : (
         <div className="overflow-x-auto rounded-lg border bg-white">
@@ -152,11 +110,7 @@ const WalletDetailPage = () => {
                   <tr key={t._id} className="border-t">
                     <td className="p-3">{formatDateUZ(t.date)}</td>
                     <td className="p-3">
-                      <span
-                        className={
-                          isIn ? "text-emerald-700" : "text-red-700"
-                        }
-                      >
+                      <span className={isIn ? "text-emerald-700" : "text-red-700"}>
                         {isIn ? "Kirim" : "Chiqim"}
                       </span>
                     </td>
