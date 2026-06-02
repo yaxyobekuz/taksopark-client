@@ -157,13 +157,11 @@ const DashboardPage = () => {
                 label="Haydovchilar"
                 value={activeDrivers}
                 icon={Users}
-                tone="info"
               />
               <StatCard
                 label="Mashinalar"
                 value={activeCars}
                 icon={Car}
-                tone="info"
               />
             </>
           )}
@@ -243,7 +241,7 @@ const DashboardPage = () => {
                 label="Bu oy sof foyda"
                 value={thisMonth.profit}
                 isMoney
-                tone={thisMonth.profit >= 0 ? "positive" : "negative"}
+                tone={thisMonth.profit >= 0 ? "" : "negative"}
                 icon={Scale}
               />
             </>
