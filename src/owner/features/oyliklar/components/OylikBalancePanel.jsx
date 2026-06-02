@@ -41,6 +41,12 @@ const OylikBalancePanel = ({ oylik, compact = false }) => {
         )}
         {!compact && (
           <>
+            {oylik.overpay > 0 && (
+              <div>
+                <p className="text-xs text-muted-foreground">Ortiqcha to'lov (bonus)</p>
+                <p className="font-semibold text-emerald-600">+{formatMoney(oylik.overpay)}</p>
+              </div>
+            )}
             <div>
               <p className="text-xs text-muted-foreground">Jarima</p>
               <p>{formatMoney(oylik.finesTotal)}</p>

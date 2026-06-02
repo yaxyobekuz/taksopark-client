@@ -128,6 +128,16 @@ const DriverOverviewPage = () => {
           value: formatMoney(oylik.planDeficit),
         }
       : null,
+    tariff === TARIFFS.NO_DEPOSIT && oylik && oylik.overpay > 0
+      ? {
+          label: "Ortiqcha to'lov (bonus)",
+          value: (
+            <span className="font-semibold text-emerald-600">
+              +{formatMoney(oylik.overpay)}
+            </span>
+          ),
+        }
+      : null,
     tariff === TARIFFS.NO_DEPOSIT && oylik
       ? {
           label: "Hisoblangan cashback",

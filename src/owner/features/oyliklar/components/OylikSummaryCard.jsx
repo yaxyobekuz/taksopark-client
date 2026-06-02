@@ -4,8 +4,9 @@ import { formatDateUZ } from "@/shared/utils/date.utils";
 const OylikSummaryCard = ({ oylik }) => {
   if (!oylik) return null;
   const planDeficit = Math.max(0, oylik.expectedPlanTotal - oylik.paidTotal);
+  const overpay = Math.max(0, oylik.paidTotal - oylik.expectedPlanTotal);
   const deductions = planDeficit + oylik.finesTotal + oylik.damagesTotal;
-  const earnedPayout = Math.max(0, oylik.salary - deductions);
+  const earnedPayout = Math.max(0, oylik.salary - deductions + overpay);
   const remainingPayout = Math.max(0, earnedPayout - (oylik.paidOut || 0));
   // Server-computed virtuals from Oylik schema
   const isLate = oylik.isLate || false;
@@ -52,6 +53,12 @@ const OylikSummaryCard = ({ oylik }) => {
               <p>{formatMoney(planDeficit)}</p>
             </div>
           </>
+        )}
+        {overpay > 0 && (
+          <div>
+            <p className="text-xs text-muted-foreground">Ortiqcha to'lov (bonus)</p>
+            <p className="font-semibold text-emerald-600">+{formatMoney(overpay)}</p>
+          </div>
         )}
         <div>
           <p className="text-xs text-muted-foreground">Jarima</p>

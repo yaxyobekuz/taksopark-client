@@ -9,8 +9,9 @@ import { formatDateUZ } from "@/shared/utils/date.utils";
 
 const computeRow = (o) => {
   const planDeficit = Math.max(0, o.expectedPlanTotal - o.paidTotal);
+  const overpay = Math.max(0, o.paidTotal - o.expectedPlanTotal);
   const deductions = planDeficit + o.finesTotal + o.damagesTotal;
-  const earnedPayout = Math.max(0, o.salary - deductions);
+  const earnedPayout = Math.max(0, o.salary - deductions + overpay);
   const remainingPayout = Math.max(0, earnedPayout - (o.paidOut || 0));
   return { earnedPayout, remainingPayout, isLate: o.isLate || false };
 };
