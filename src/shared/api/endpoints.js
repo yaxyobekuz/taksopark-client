@@ -37,11 +37,6 @@ export const ENDPOINTS = Object.freeze({
   drivers: {
     base: "/drivers",
     byId: (id) => `/drivers/${id}`,
-    balance: (id) => `/drivers/${id}/balance`,
-    endTrial: (id) => `/drivers/${id}/end-trial`,
-    changeTariff: (id) => `/drivers/${id}/change-tariff`,
-    deposit: (id) => `/drivers/${id}/deposit`,
-    warnings: "/drivers/warnings",
     documents: (id) => `/drivers/${id}/documents`,
     documentById: (id, docId) => `/drivers/${id}/documents/${docId}`,
   },
@@ -54,10 +49,6 @@ export const ENDPOINTS = Object.freeze({
     byId: (id) => `/rest-days/${id}`,
     calendar: "/rest-days/calendar",
   },
-  payments: {
-    base: "/payments",
-    byId: (id) => `/payments/${id}`,
-  },
   fines: {
     base: "/fines",
     byId: (id) => `/fines/${id}`,
@@ -65,46 +56,5 @@ export const ENDPOINTS = Object.freeze({
   damages: {
     base: "/damages",
     byId: (id) => `/damages/${id}`,
-  },
-  oyliklar: {
-    base: "/oyliklar",
-    byId: (id) => `/oyliklar/${id}`,
-    currentForDriver: (driverId) => `/oyliklar/driver/${driverId}/current`,
-    statementForDriver: (driverId) => `/oyliklar/driver/${driverId}/statement`,
-    payouts: (id) => `/oyliklar/${id}/payouts`,
-    payoutById: (id, payoutId) => `/oyliklar/${id}/payouts/${payoutId}`,
-  },
-  reports: {
-    dailyPlanTotal: "/reports/daily-plan-total",
-    finance: "/reports/finance",
-    minYear: "/reports/min-year",
-    monthlyIncomeExpense: "/reports/monthly-income-expense",
-    depositDriversMonthly: "/reports/deposit-drivers-monthly",
-    dailyIncomeExpense: "/reports/daily-income-expense",
-    categoryMonthly: "/reports/category-monthly",
-  },
-  finePayments: {
-    base: "/fine-payments",
-    byId: (id) => `/fine-payments/${id}`,
-    byFine: (fineId) => `/fine-payments/by-fine/${fineId}`,
-  },
-  damagePayments: {
-    base: "/damage-payments",
-    byId: (id) => `/damage-payments/${id}`,
-    byDamage: (damageId) => `/damage-payments/by-damage/${damageId}`,
-  },
-  transactions: {
-    base: "/transactions",
-    byId: (id) => `/transactions/${id}`,
-    summary: "/transactions/summary",
-  },
-  transactionCategories: {
-    base: "/transaction-categories",
-    byId: (id) => `/transaction-categories/${id}`,
-  },
-  financeReport: {
-    overview: "/finance-report/overview",
-    integrity: "/finance-report/integrity",
-    walletRecent: (wallet) => `/finance-report/wallets/${wallet}/recent`,
   },
 });

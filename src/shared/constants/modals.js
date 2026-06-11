@@ -36,33 +36,14 @@ export const MODAL = Object.freeze({
   DRIVER_CREATE: "driver:create",
   DRIVER_EDIT: "driver:edit",
   DRIVER_DELETE: "driver:delete",
-  DRIVER_END_TRIAL: "driver:endTrial",
-  DRIVER_CHANGE_TARIFF: "driver:changeTariff",
   DRIVER_CHANGE_CAR: "driver:changeCar",
-  DRIVER_DEPOSIT: "driver:deposit",
 
   REST_DAY_CREATE: "restDay:create",
   REST_DAY_DELETE: "restDay:delete",
 
-  PAYMENT_CREATE: "payment:create",
-  PAYMENT_EDIT: "payment:edit",
-  PAYMENT_DELETE: "payment:delete",
-
   FINE_CREATE: "fine:create",
   FINE_DELETE: "fine:delete",
-  FINE_PAY: "fine:pay",
 
   DAMAGE_CREATE: "damage:create",
   DAMAGE_DELETE: "damage:delete",
-  DAMAGE_PAY: "damage:pay",
-
-  OYLIK_PAYOUT: "oylik:payout",
-  OYLIK_PAYOUT_EDIT: "oylik:payoutEdit",
-
-  TRANSACTION_CREATE: "transaction:create",
-  TRANSACTION_EDIT: "transaction:edit",
-
-  TX_CATEGORY_CREATE: "txCategory:create",
-  TX_CATEGORY_EDIT: "txCategory:edit",
-  TX_CATEGORY_DELETE: "txCategory:delete",
 });

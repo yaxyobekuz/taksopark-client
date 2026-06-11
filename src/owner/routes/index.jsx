@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import PermissionGuard from "@/shared/components/guards/PermissionGuard";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -9,45 +9,24 @@ import {
   CarDetailLayout,
   CarOverviewPage,
   CarEditPage,
-  CarFinancePage,
 } from "@/owner/features/cars";
 import {
   DriversListPage,
   DriverDetailLayout,
   DriverOverviewPage,
-  DriverPaymentsPage,
   DriverFinesPage,
   DriverDamagesPage,
-  DriverOyliklarPage,
   DriverWorkDaysPage,
 } from "@/owner/features/drivers";
 import { RestDaysListPage } from "@/owner/features/restdays";
-import {
-  PaymentsLayout,
-  PaymentsListPage,
-  DailyPlanReportPage,
-  MonthlyPlanReportPage,
-  FinanceReportPage as PaymentsFinanceReportPage,
-} from "@/owner/features/payments";
-import {
-  FinanceReportPage,
-  WalletDetailPage,
-} from "@/owner/features/financeReport";
 import {
   PenaltiesLayout,
   FinesListPage,
   DamagesListPage,
 } from "@/owner/features/penalties";
-import { OyliklarListPage } from "@/owner/features/oyliklar";
-import {
-  TransactionsLayout,
-  TransactionsListPage,
-  CategoryReportPage,
-} from "@/owner/features/transactions";
 import { AdminsListPage, AdminDetailPage } from "@/owner/features/admins";
 import { CarDocumentTypesPage } from "@/owner/features/carDocumentTypes";
 import { DriverDocumentTypesPage } from "@/owner/features/driverDocumentTypes";
-import { TransactionCategoriesPage } from "@/owner/features/transactionCategories";
 
 const OwnerRoutes = () => (
   <Routes>
@@ -79,14 +58,6 @@ const OwnerRoutes = () => (
           </PermissionGuard>
         }
       />
-      <Route
-        path="moliya"
-        element={
-          <PermissionGuard required={PERMISSIONS.REPORTS_READ}>
-            <CarFinancePage />
-          </PermissionGuard>
-        }
-      />
     </Route>
 
     <Route
@@ -115,14 +86,6 @@ const OwnerRoutes = () => (
         }
       />
       <Route
-        path="payments"
-        element={
-          <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
-            <DriverPaymentsPage />
-          </PermissionGuard>
-        }
-      />
-      <Route
         path="fines"
         element={
           <PermissionGuard required={PERMISSIONS.FINES_READ}>
@@ -138,15 +101,6 @@ const OwnerRoutes = () => (
           </PermissionGuard>
         }
       />
-      <Route
-        path="oyliklar"
-        element={
-          <PermissionGuard required={PERMISSIONS.OYLIKLAR_READ}>
-            <DriverOyliklarPage />
-          </PermissionGuard>
-        }
-      />
-      <Route path="cycles" element={<Navigate to="../oyliklar" replace />} />
     </Route>
 
     <Route
@@ -157,30 +111,6 @@ const OwnerRoutes = () => (
         </PermissionGuard>
       }
     />
-
-    <Route
-      path="payments"
-      element={
-        <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
-          <PaymentsLayout />
-        </PermissionGuard>
-      }
-    >
-      <Route index element={<PaymentsListPage />} />
-      <Route
-        path="reports"
-        element={
-          <PermissionGuard required={PERMISSIONS.REPORTS_READ}>
-            <Outlet />
-          </PermissionGuard>
-        }
-      >
-        <Route index element={<Navigate to="daily-plan" replace />} />
-        <Route path="daily-plan" element={<DailyPlanReportPage />} />
-        <Route path="monthly-plan" element={<MonthlyPlanReportPage />} />
-        <Route path="finance" element={<PaymentsFinanceReportPage />} />
-      </Route>
-    </Route>
 
     <Route
       path="penalties"
@@ -203,49 +133,6 @@ const OwnerRoutes = () => (
 
     <Route path="fines" element={<Navigate to="/owner/penalties" replace />} />
     <Route path="damages" element={<Navigate to="/owner/penalties/damages" replace />} />
-
-    <Route
-      path="oyliklar"
-      element={
-        <PermissionGuard required={PERMISSIONS.OYLIKLAR_READ}>
-          <OyliklarListPage />
-        </PermissionGuard>
-      }
-    />
-    <Route path="cycles" element={<Navigate to="/owner/oyliklar" replace />} />
-
-    <Route
-      path="transactions"
-      element={
-        <PermissionGuard required={PERMISSIONS.TRANSACTIONS_READ}>
-          <TransactionsLayout />
-        </PermissionGuard>
-      }
-    >
-      <Route index element={<TransactionsListPage />} />
-      <Route path="report" element={<CategoryReportPage />} />
-    </Route>
-
-    <Route
-      path="finance-report"
-      element={
-        <PermissionGuard required={PERMISSIONS.FINANCE_REPORT_READ}>
-          <FinanceReportPage />
-        </PermissionGuard>
-      }
-    />
-    <Route
-      path="finance-report/:wallet"
-      element={
-        <PermissionGuard required={PERMISSIONS.FINANCE_REPORT_READ}>
-          <WalletDetailPage />
-        </PermissionGuard>
-      }
-    />
-
-    <Route path="reports" element={<Navigate to="/owner/payments/reports" replace />} />
-    <Route path="reports/daily-plan" element={<Navigate to="/owner/payments/reports/daily-plan" replace />} />
-    <Route path="reports/finance" element={<Navigate to="/owner/payments/reports/finance" replace />} />
 
     <Route
       path="admins"
@@ -276,14 +163,6 @@ const OwnerRoutes = () => (
       element={
         <PermissionGuard required={PERMISSIONS.DRIVERS_DOCUMENTS_MANAGE}>
           <DriverDocumentTypesPage />
-        </PermissionGuard>
-      }
-    />
-    <Route
-      path="settings/transaction-categories"
-      element={
-        <PermissionGuard required={PERMISSIONS.TRANSACTIONS_CATEGORIES_MANAGE}>
-          <TransactionCategoriesPage />
         </PermissionGuard>
       }
     />

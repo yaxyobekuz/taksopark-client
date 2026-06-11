@@ -1,17 +1,11 @@
 import {
   LayoutDashboard,
-  Wallet,
   Car,
   Users,
-  BadgeDollarSign,
   AlertTriangle,
-  CalendarRange,
   CalendarOff,
-  ArrowLeftRight,
-  PieChart,
   Settings,
   FileType,
-  Tags,
   ShieldCheck,
 } from "lucide-react";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -50,37 +44,6 @@ const ownerSidebar = [
     ],
   },
   {
-    title: "Moliya",
-    icon: Wallet,
-    isActive: true,
-    items: [
-      {
-        title: "To'lovlar",
-        url: "/owner/payments",
-        permission: PERMISSIONS.PAYMENTS_READ,
-        icon: BadgeDollarSign,
-      },
-      {
-        title: "Hamyonlar",
-        url: "/owner/finance-report",
-        permission: PERMISSIONS.FINANCE_REPORT_READ,
-        icon: PieChart,
-      },
-      {
-        title: "Tranzaktsiyalar",
-        url: "/owner/transactions",
-        permission: PERMISSIONS.TRANSACTIONS_READ,
-        icon: ArrowLeftRight,
-      },
-      {
-        title: "Oyliklar",
-        url: "/owner/oyliklar",
-        permission: PERMISSIONS.OYLIKLAR_READ,
-        icon: CalendarRange,
-      },
-    ],
-  },
-  {
     title: "Sozlamalar",
     icon: Settings,
     isActive: false,
@@ -102,12 +65,6 @@ const ownerSidebar = [
         url: "/owner/settings/driver-documents",
         permission: PERMISSIONS.DRIVERS_DOCUMENTS_MANAGE,
         icon: FileType,
-      },
-      {
-        title: "Tranzaksiya kategoriyalari",
-        url: "/owner/settings/transaction-categories",
-        permission: PERMISSIONS.TRANSACTIONS_CATEGORIES_MANAGE,
-        icon: Tags,
       },
     ],
   },
