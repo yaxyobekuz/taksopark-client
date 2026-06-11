@@ -20,7 +20,6 @@ import { useFinesQuery } from "../hooks/useFinesQuery";
 import { useFineDelete } from "../hooks/useFineMutations";
 import FinesTable from "../components/FinesTable";
 import FineCreateModal from "../components/modals/FineCreateModal";
-import FinePayModal from "../components/modals/FinePayModal";
 
 const FinesListPage = () => {
   const [searchParams] = useSearchParams();
@@ -109,7 +108,7 @@ const FinesListPage = () => {
       <ConfirmDialog
         name={MODAL.FINE_DELETE}
         title="Jarimani o'chirish"
-        description="Jarima o'chiriladi. Depozit yoki tsikl summasi qaytariladi."
+        description="Jarima o'chiriladi. Davom etishni xohlaysizmi?"
         confirmLabel="O'chirish"
         tone="danger"
         onConfirm={({ fine }, { close }) =>
@@ -125,13 +124,6 @@ const FinesListPage = () => {
           })
         }
       />
-      <ModalWrapper
-        name={MODAL.FINE_PAY}
-        title="Jarimani to'lash"
-        className="max-w-xl"
-      >
-        <FinePayModal />
-      </ModalWrapper>
     </div>
   );
 };

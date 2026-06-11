@@ -8,8 +8,6 @@ const onError = (err) => toast.error(err?.response?.data?.message || "Xatolik yu
 const invalidate = (qc) => {
   qc.invalidateQueries({ queryKey: qk.fines.all() });
   qc.invalidateQueries({ queryKey: qk.drivers.all() });
-  qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
-  qc.invalidateQueries({ queryKey: ["reports"] });
 };
 
 export const useFineCreate = () => {

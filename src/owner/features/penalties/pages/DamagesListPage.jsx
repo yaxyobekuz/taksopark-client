@@ -20,7 +20,6 @@ import { useDamagesQuery } from "../hooks/useDamagesQuery";
 import { useDamageDelete } from "../hooks/useDamageMutations";
 import DamagesTable from "../components/DamagesTable";
 import DamageCreateModal from "../components/modals/DamageCreateModal";
-import DamagePayModal from "../components/modals/DamagePayModal";
 
 const DamagesListPage = () => {
   const [searchParams] = useSearchParams();
@@ -109,7 +108,7 @@ const DamagesListPage = () => {
       <ConfirmDialog
         name={MODAL.DAMAGE_DELETE}
         title="Zararni o'chirish"
-        description="Zarar yozuvi o'chiriladi va hisob qaytadan hisoblanadi."
+        description="Zarar yozuvi o'chiriladi. Davom etishni xohlaysizmi?"
         confirmLabel="O'chirish"
         tone="danger"
         onConfirm={({ damage }, { close }) =>
@@ -125,13 +124,6 @@ const DamagesListPage = () => {
           })
         }
       />
-      <ModalWrapper
-        name={MODAL.DAMAGE_PAY}
-        title="Zararni to'lash"
-        className="max-w-xl"
-      >
-        <DamagePayModal />
-      </ModalWrapper>
     </div>
   );
 };
