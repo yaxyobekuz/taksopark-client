@@ -5,6 +5,7 @@ import InputOtp from "./InputOtp";
 import InputTel from "./InputTel";
 import InputSearch from "./InputSearch";
 import InputPrice from "./InputPrice";
+import InputFile from "./InputFile";
 import {
   Field,
   FieldLabel,
@@ -17,6 +18,7 @@ const InputComponent = ({ ...props }) => {
   if (props.type === "tel") return <InputTel {...props} />;
   if (props.type === "search") return <InputSearch {...props} />;
   if (props.type === "price") return <InputPrice {...props} />;
+  if (props.type === "file") return <InputFile {...props} />;
   return <Input {...props} />;
 };
 
