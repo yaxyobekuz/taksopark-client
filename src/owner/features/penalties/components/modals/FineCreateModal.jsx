@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Paperclip } from "lucide-react";
 import useObjectState from "@/shared/hooks/useObjectState";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
@@ -72,26 +71,18 @@ const FineCreateModal = ({ close, presetDriverId }) => {
         disabled={isPending}
       />
 
-      <div>
-        <label className="text-sm font-medium flex items-center gap-2">
-          <Paperclip size={14} /> Hujjat yoki rasm <span className="text-primary">*</span>
-        </label>
-        <input
-          type="file"
-          multiple
-          accept="image/*,application/pdf"
-          onChange={(e) => setFiles(Array.from(e.target.files || []))}
-          disabled={isPending}
-          required
-          className="block w-full text-sm mt-1"
-        />
-        {files.length > 0 && (
-          <p className="text-xs text-muted-foreground mt-1">{files.length} ta fayl tanlandi</p>
-        )}
-        {files.length === 0 && (
-          <p className="text-xs text-muted-foreground mt-1">Jarima qarori yoki rasm yuklang (max 5 MB)</p>
-        )}
-      </div>
+      <InputField
+        label="Hujjat yoki rasm"
+        type="file"
+        multiple
+        accept="image/*,application/pdf"
+        maxSizeMB={5}
+        files={files}
+        onChange={setFiles}
+        description="Jarima qarori yoki rasm yuklang"
+        required
+        disabled={isPending}
+      />
 
       <div className="flex gap-2">
         <Button type="button" variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>
