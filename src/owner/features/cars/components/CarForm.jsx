@@ -7,9 +7,6 @@ import InputImage from "@/shared/components/ui/input/InputImage";
 const emptyState = (car) => ({
   plateNumber: car?.plateNumber || "",
   model: car?.model || "",
-  dailyPaymentDeposit: car?.dailyPaymentDeposit ?? "",
-  dailyPaymentNoDeposit: car?.dailyPaymentNoDeposit ?? "",
-  monthlyCashback: car?.monthlyCashback ?? "",
   notes: car?.notes || "",
   photoFile: null,
 });
@@ -18,9 +15,6 @@ const CarForm = ({ car, isPending, submitLabel = "Saqlash", onSubmit, onCancel }
   const {
     plateNumber,
     model,
-    dailyPaymentDeposit,
-    dailyPaymentNoDeposit,
-    monthlyCashback,
     notes,
     photoFile,
     setField,
@@ -35,7 +29,6 @@ const CarForm = ({ car, isPending, submitLabel = "Saqlash", onSubmit, onCancel }
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!model.trim()) return;
-    if (dailyPaymentDeposit === "" || dailyPaymentNoDeposit === "" || monthlyCashback === "") return;
     onSubmit(state);
   };
 
@@ -61,33 +54,6 @@ const CarForm = ({ car, isPending, submitLabel = "Saqlash", onSubmit, onCancel }
         value={plateNumber}
         onChange={(e) => setField("plateNumber", e.target.value)}
         placeholder="01A001AA"
-        disabled={isPending}
-      />
-      <InputField
-        label="Depozitli kunlik to'lov (UZS)"
-        type="price"
-        value={dailyPaymentDeposit}
-        onChange={(e) => setField("dailyPaymentDeposit", e.target.value)}
-        placeholder="500 000"
-        required
-        disabled={isPending}
-      />
-      <InputField
-        label="Depozitsiz kunlik to'lov (UZS)"
-        type="price"
-        value={dailyPaymentNoDeposit}
-        onChange={(e) => setField("dailyPaymentNoDeposit", e.target.value)}
-        placeholder="560 000"
-        required
-        disabled={isPending}
-      />
-      <InputField
-        label="Oylik cashback (UZS)"
-        type="price"
-        value={monthlyCashback}
-        onChange={(e) => setField("monthlyCashback", e.target.value)}
-        placeholder="5 500 000"
-        required
         disabled={isPending}
       />
       <InputField

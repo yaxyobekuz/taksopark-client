@@ -24,5 +24,4 @@ export const carsAPI = {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   remove: (id) => http.delete(ENDPOINTS.cars.byId(id)),
-  finance: (params) => http.get(ENDPOINTS.reports.finance, { params }),
 };

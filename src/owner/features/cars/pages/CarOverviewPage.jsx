@@ -6,12 +6,6 @@ import KeyValueList from "@/shared/components/ui/data/KeyValueList";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { formatPhone } from "@/shared/utils/formatPhone";
 import { formatDateUz } from "@/shared/utils/formatDate";
-import { formatMoney } from "@/shared/utils/formatMoney";
-import {
-  TARIFF_LABELS,
-  TARIFFS,
-  TARIFF_TEXT_CLASS,
-} from "@/shared/constants/tariffs";
 import {
   DRIVER_STATUS_LABELS,
   DRIVER_STATUS_BADGE_CLASS,
@@ -65,13 +59,6 @@ const DriverPanel = ({ driver }) => {
               {DRIVER_STATUS_LABELS[driver.status] || driver.status}
             </span>
           </div>
-          <p
-            className={`text-xs mt-0.5 ${
-              TARIFF_TEXT_CLASS[driver.tariff] || "text-muted-foreground"
-            }`}
-          >
-            {TARIFF_LABELS[driver.tariff] || driver.tariff}
-          </p>
         </div>
       </div>
 
@@ -98,14 +85,6 @@ const DriverPanel = ({ driver }) => {
             </span>
           </div>
         )}
-        {driver.tariff === TARIFFS.DEPOSIT && (
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-muted-foreground">Depozit qoldig'i</span>
-            <span className="font-medium">
-              {formatMoney(driver.depositRemaining)}
-            </span>
-          </div>
-        )}
       </div>
     </Link>
   );
@@ -123,18 +102,6 @@ const CarOverviewPage = () => {
               columns={2}
               items={[
                 { label: "Model", value: car.model },
-                {
-                  label: "Depozitli kunlik to'lov",
-                  value: formatMoney(car.dailyPaymentDeposit),
-                },
-                {
-                  label: "Depozitsiz kunlik to'lov",
-                  value: formatMoney(car.dailyPaymentNoDeposit),
-                },
-                {
-                  label: "Oylik cashback",
-                  value: formatMoney(car.monthlyCashback),
-                },
                 { label: "Izoh", value: car.notes || "-", fullWidth: true },
               ]}
             />

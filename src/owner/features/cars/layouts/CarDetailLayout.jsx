@@ -47,9 +47,6 @@ const CarDetailLayout = () => {
   if (has(PERMISSIONS.CARS_UPDATE)) {
     tabs.push({ to: `/owner/cars/${id}/tahrirlash`, label: "Tahrirlash" });
   }
-  if (has(PERMISSIONS.REPORTS_READ)) {
-    tabs.push({ to: `/owner/cars/${id}/moliya`, label: "Moliya" });
-  }
 
   return (
     <div className="space-y-4">
