@@ -7,10 +7,9 @@ import { useIsMobile } from "@/shared/hooks/useMobile";
 
 import Button from "@/shared/components/ui/button/Button";
 import InputField from "@/shared/components/ui/input/InputField";
-import SelectField from "@/shared/components/ui/select/SelectField";
+import TabsButtons from "@/shared/components/ui/tabs/TabsButtons";
 import Pagination from "@/shared/components/ui/pagination/Pagination";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
-import ConfirmDialog from "@/shared/components/ui/dialog/ConfirmDialog";
 import PageHeader from "@/shared/components/ui/layout/PageHeader";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import FilterChips from "@/shared/components/ui/data/FilterChips";
@@ -20,43 +19,38 @@ import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import {
-  DRIVER_STATUS_FILTER_OPTIONS,
-  DRIVER_STATUS_LABELS,
+  DRIVER_STATUS,
+  DRIVER_STATUS_TABS,
+  DRIVER_STATUS_TAB_ALL,
 } from "@/shared/constants/drivers";
 
 import { useDriversQuery } from "../hooks/useDriversQuery";
-import { useDriverDelete } from "../hooks/useDriverMutations";
 import DriversTable from "../components/DriversTable";
 import DriverCard from "../components/DriverCard";
 import DriverCreateModal from "../components/modals/DriverCreateModal";
 import DriverEditModal from "../components/modals/DriverEditModal";
+import DriverArchiveModal from "../components/modals/DriverArchiveModal";
 
 const DriversListPage = () => {
   const { page, search, status, setField, setFields } = useObjectState({
     page: 1,
     search: "",
-    status: "",
+    status: DRIVER_STATUS.ACTIVE,
   });
   const { openModal } = useModal();
   const { has } = usePermissions();
   const isMobile = useIsMobile();
-  const driverDelete = useDriverDelete();
 
   const { data, isLoading } = useDriversQuery({
     page,
     limit: 20,
     search: search || undefined,
-    status: status || undefined,
+    status: status === DRIVER_STATUS_TAB_ALL ? undefined : status,
   });
   const items = data?.data || [];
   const meta = data?.meta || { pages: 1, total: 0 };
 
   const chips = [
-    status && {
-      key: "status",
-      label: `Holat: ${DRIVER_STATUS_LABELS[status] || status}`,
-      onRemove: () => setFields({ status: "", page: 1 }),
-    },
     search && {
       key: "search",
       label: `Qidiruv: "${search}"`,
@@ -81,19 +75,17 @@ const DriversListPage = () => {
       />
 
       <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b space-y-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <InputField
-            type="search"
-            placeholder="Qidirish (ism, telefon)..."
-            value={search}
-            onChange={(e) => setFields({ search: e.target.value, page: 1 })}
-          />
-          <SelectField
-            value={status}
-            onChange={(v) => setFields({ status: v, page: 1 })}
-            options={DRIVER_STATUS_FILTER_OPTIONS}
-          />
-        </div>
+        <TabsButtons
+          items={DRIVER_STATUS_TABS}
+          value={status}
+          onChange={(v) => setFields({ status: v, page: 1 })}
+        />
+        <InputField
+          type="search"
+          placeholder="Qidirish (ism, telefon)..."
+          value={search}
+          onChange={(e) => setFields({ search: e.target.value, page: 1 })}
+        />
         {hasFilters && (
           <FilterChips
             items={chips}
@@ -165,25 +157,13 @@ const DriversListPage = () => {
       >
         <DriverEditModal />
       </ModalWrapper>
-      <ConfirmDialog
+      <ModalWrapper
         name={MODAL.DRIVER_DELETE}
         title="Haydovchini arxivlash"
-        description="Haydovchi arxivlanadi va mashina bilan bog'lanish bekor qilinadi. Davom etishni xohlaysizmi?"
-        confirmLabel="Arxivlash"
-        tone="danger"
-        onConfirm={({ driver }, { close }) =>
-          new Promise((resolve) => {
-            if (!driver?._id) return resolve();
-            driverDelete.mutate(driver._id, {
-              onSuccess: () => {
-                close();
-                resolve();
-              },
-              onError: () => resolve(),
-            });
-          })
-        }
-      />
+        className="max-w-md"
+      >
+        <DriverArchiveModal />
+      </ModalWrapper>
     </div>
   );
 };
