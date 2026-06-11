@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import {
-  AlertTriangle,
   CalendarClock,
   CheckCircle2,
   Car as CarIcon,
@@ -16,38 +15,10 @@ import {
 } from "@/shared/components/shadcn/sheet";
 import { Skeleton } from "@/shared/components/shadcn/skeleton";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
-import Tooltip from "@/shared/components/ui/tooltip/Tooltip";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
-import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { getDaysLeft } from "@/owner/features/cars/utils/expiryStatus";
-
-const initialsOf = (first = "", last = "") =>
-  `${(first[0] || "").toUpperCase()}${(last[0] || "").toUpperCase()}` || "?";
-
-const DriverAvatar = ({ driver, size = 36 }) => {
-  const src = buildFileUrl(driver?.photoUrl);
-  const cls = "rounded-full object-cover border shrink-0 bg-white";
-  if (src) {
-    return (
-      <img
-        src={src}
-        alt=""
-        style={{ width: size, height: size }}
-        className={cls}
-      />
-    );
-  }
-  return (
-    <div
-      style={{ width: size, height: size }}
-      className="flex items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 border"
-    >
-      {initialsOf(driver?.firstName, driver?.lastName)}
-    </div>
-  );
-};
 
 const CarAvatar = ({ car, size = 28 }) => {
   const src = buildFileUrl(car?.photoUrl);
@@ -67,61 +38,6 @@ const CarAvatar = ({ car, size = 28 }) => {
       className="flex items-center justify-center rounded-md bg-muted text-muted-foreground shrink-0 border"
     >
       <CarIcon size={Math.round(size * 0.55)} />
-    </div>
-  );
-};
-
-const CarTooltipContent = ({ car }) => (
-  <div className="flex items-center gap-2 max-w-[260px]">
-    <CarAvatar car={car} size={40} />
-    <div className="flex flex-col gap-1 min-w-0">
-      <span className="font-medium truncate">{car?.model || "Mashina"}</span>
-      {car?.plateNumber && <PlateNumber value={car.plateNumber} size="sm" />}
-    </div>
-  </div>
-);
-
-const DriverWarningItem = ({ driver, meta, accentClassName = "" }) => {
-  const hasCar = !!driver?.car;
-  return (
-    <div className="flex items-center justify-between gap-3 py-2 rounded-md hover:bg-muted/60 transition-colors">
-      <Link
-        to={`/owner/drivers/${driver._id}`}
-        className="flex items-center gap-2.5 min-w-0 group"
-      >
-        <DriverAvatar driver={driver} />
-        <div className="flex flex-col min-w-0">
-          <span className="text-sm font-medium text-foreground truncate group-hover:text-primary">
-            {driver.firstName} {driver.lastName}
-          </span>
-          {driver.phone && (
-            <span className="text-xs text-muted-foreground truncate">
-              {driver.phone}
-            </span>
-          )}
-        </div>
-      </Link>
-
-      <div className="flex items-center gap-3 shrink-0">
-        {meta && (
-          <span className={`text-xs font-medium ${accentClassName}`}>
-            {meta}
-          </span>
-        )}
-        {hasCar ? (
-          <Tooltip content={<CarTooltipContent car={driver.car} />}>
-            <Link
-              to={`/owner/cars/${driver.car._id}`}
-              className="shrink-0"
-              aria-label={driver.car.model || "Mashina"}
-            >
-              <CarAvatar car={driver.car} />
-            </Link>
-          </Tooltip>
-        ) : (
-          <span className="text-xs text-muted-foreground">Mashinasiz</span>
-        )}
-      </div>
     </div>
   );
 };
@@ -150,18 +66,11 @@ const LoadingRows = () => (
 const NotificationsPanel = ({
   open,
   onOpenChange,
-  warnings,
   expiringCars = [],
   isLoading = false,
 }) => {
-  const depositLow = warnings?.depositLow || [];
-  const depositEmpty = warnings?.depositEmpty || [];
-  const noPayment = warnings?.noPayment2Days || [];
-
-  const hasDriverWarnings =
-    depositEmpty.length > 0 || depositLow.length > 0 || noPayment.length > 0;
   const hasCarWarnings = expiringCars.length > 0;
-  const isEmpty = !isLoading && !hasDriverWarnings && !hasCarWarnings;
+  const isEmpty = !isLoading && !hasCarWarnings;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -185,64 +94,6 @@ const NotificationsPanel = ({
               title="Hammasi joyida"
               description="Hozircha diqqat talab qiluvchi ogohlantirishlar yo'q"
             />
-          )}
-
-          {!isLoading && hasDriverWarnings && (
-            <div className="divide-y rounded-lg">
-              {depositEmpty.length > 0 && (
-                <div className="p-2">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-1">
-                    Depoziti tugagan ({depositEmpty.length})
-                  </p>
-                  <div className="divide-y">
-                    {depositEmpty.map((d) => (
-                      <DriverWarningItem
-                        key={d._id}
-                        driver={d}
-                        meta={formatMoney(d.depositRemaining)}
-                        accentClassName="text-red-600"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {depositLow.length > 0 && (
-                <div className="p-2">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 mb-1">
-                    Depoziti kam ({depositLow.length})
-                  </p>
-                  <div className="divide-y">
-                    {depositLow.map((d) => (
-                      <DriverWarningItem
-                        key={d._id}
-                        driver={d}
-                        meta={formatMoney(d.depositRemaining)}
-                        accentClassName="text-amber-700"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {noPayment.length > 0 && (
-                <div className="p-2">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-orange-700 mb-1">
-                    2 kundan beri to'lov qilmadi ({noPayment.length})
-                  </p>
-                  <div className="divide-y">
-                    {noPayment.map((w) => (
-                      <DriverWarningItem
-                        key={w.driver._id}
-                        driver={w.driver}
-                        meta={`${w.daysSince} kun`}
-                        accentClassName="text-orange-700"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
           )}
 
           {!isLoading && hasCarWarnings && (

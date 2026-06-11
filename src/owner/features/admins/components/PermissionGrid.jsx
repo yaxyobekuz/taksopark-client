@@ -8,12 +8,8 @@ const GROUP_LABELS = {
   audit: "Audit",
   drivers: "Haydovchilar",
   cars: "Mashinalar",
-  payments: "Kunlik to'lovlar",
   fines: "Jarimalar",
   damages: "Zararlar",
-  oyliklar: "Oyliklar",
-  transactions: "Kirim-chiqim",
-  reports: "Hisobotlar",
   general: "Boshqa",
 };
 
