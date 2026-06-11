@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Archive } from "lucide-react";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
@@ -84,7 +84,7 @@ const DriversTable = ({ items = [] }) => {
                       className="text-muted-foreground hover:text-red-600"
                       title="Arxivlash"
                     >
-                      <Trash2 size={16} />
+                      <Archive size={16} />
                     </button>
                   )}
                 </div>

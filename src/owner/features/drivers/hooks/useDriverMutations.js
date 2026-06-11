@@ -52,7 +52,7 @@ export const useDriverChangeCar = () => {
 export const useDriverDelete = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id) => driversAPI.remove(id),
+    mutationFn: ({ id, endDate }) => driversAPI.remove(id, { endDate }),
     onSuccess: () => {
       invalidateAll(qc);
       toast.success("Haydovchi arxivlandi");

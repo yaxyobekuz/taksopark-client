@@ -22,5 +22,5 @@ export const driversAPI = {
     http.patch(ENDPOINTS.drivers.byId(id), buildFormData(body, photoFile), {
       headers: { "Content-Type": "multipart/form-data" },
     }),
-  remove: (id) => http.delete(ENDPOINTS.drivers.byId(id)),
+  remove: (id, body) => http.delete(ENDPOINTS.drivers.byId(id), { data: body }),
 };

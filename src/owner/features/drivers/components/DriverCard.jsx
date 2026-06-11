@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, Pencil, Trash2 } from "lucide-react";
+import { ChevronRight, Pencil, Archive } from "lucide-react";
 
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
@@ -95,7 +95,7 @@ const DriverCard = ({ driver }) => {
                 className="p-1.5 text-muted-foreground hover:text-red-600"
                 aria-label="Arxivlash"
               >
-                <Trash2 size={14} />
+                <Archive size={14} />
               </button>
             )}
           </div>
