@@ -14,6 +14,18 @@ const invalidateAll = (qc) => {
   qc.invalidateQueries({ queryKey: qk.transactions.all() });
 };
 
+// Mashina almashtirilganda unga bog'liq barcha ma'lumotlar (kunlik to'lov narxi,
+// balans, oylik cashback, eski/yangi mashina kartochkalari, hisobotlar) yangilanadi
+const invalidateCarChange = (qc) => {
+  qc.invalidateQueries({ queryKey: qk.drivers.all() });
+  qc.invalidateQueries({ queryKey: qk.cars.all() });
+  qc.invalidateQueries({ queryKey: qk.payments.all() });
+  qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
+  qc.invalidateQueries({ queryKey: qk.transactions.all() });
+  qc.invalidateQueries({ queryKey: ["reports"] });
+  qc.invalidateQueries({ queryKey: qk.financeReport.all() });
+};
+
 export const useDriverCreate = () => {
   const qc = useQueryClient();
   return useMutation({
@@ -33,6 +45,19 @@ export const useDriverUpdate = () => {
     onSuccess: () => {
       invalidateAll(qc);
       toast.success("Haydovchi yangilandi");
+    },
+    onError,
+  });
+};
+
+export const useDriverChangeCar = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, carId }) =>
+      driversAPI.update(id, { carId: carId || null }).then((r) => r.data.data),
+    onSuccess: () => {
+      invalidateCarChange(qc);
+      toast.success("Mashina almashtirildi");
     },
     onError,
   });

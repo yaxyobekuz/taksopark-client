@@ -38,6 +38,7 @@ export const MODAL = Object.freeze({
   DRIVER_DELETE: "driver:delete",
   DRIVER_END_TRIAL: "driver:endTrial",
   DRIVER_CHANGE_TARIFF: "driver:changeTariff",
+  DRIVER_CHANGE_CAR: "driver:changeCar",
   DRIVER_DEPOSIT: "driver:deposit",
 
   REST_DAY_CREATE: "restDay:create",

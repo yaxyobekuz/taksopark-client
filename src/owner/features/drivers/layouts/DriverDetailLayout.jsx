@@ -1,5 +1,5 @@
 import { Link, Outlet, useParams } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, ArrowLeftRight, Wallet } from "lucide-react";
+import { ArrowLeft, ShieldCheck, ArrowLeftRight, Wallet, Car } from "lucide-react";
 
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
@@ -22,6 +22,7 @@ import {
 import { useDriverQuery } from "../hooks/useDriversQuery";
 import DriverEndTrialModal from "../components/modals/DriverEndTrialModal";
 import DriverChangeTariffModal from "../components/modals/DriverChangeTariffModal";
+import DriverChangeCarModal from "../components/modals/DriverChangeCarModal";
 import DriverDepositModal from "../components/modals/DriverDepositModal";
 import DriverDocumentCreateModal from "../components/modals/DriverDocumentCreateModal";
 import DriverDocumentEditModal from "../components/modals/DriverDocumentEditModal";
@@ -160,6 +161,16 @@ const DriverDetailLayout = () => {
             <Button
               size="sm"
               variant="outline"
+              onClick={() => openModal(MODAL.DRIVER_CHANGE_CAR, { driver })}
+            >
+              <Car size={14} className="mr-1.5" />
+              Mashinani almashtirish
+            </Button>
+          )}
+          {has(PERMISSIONS.DRIVERS_UPDATE) && (
+            <Button
+              size="sm"
+              variant="outline"
               onClick={() => openModal(MODAL.DRIVER_CHANGE_TARIFF, { driver })}
             >
               <ArrowLeftRight size={14} className="mr-1.5" />
@@ -191,6 +202,13 @@ const DriverDetailLayout = () => {
         className="max-w-md"
       >
         <DriverChangeTariffModal />
+      </ModalWrapper>
+      <ModalWrapper
+        name={MODAL.DRIVER_CHANGE_CAR}
+        title="Mashinani almashtirish"
+        className="max-w-md"
+      >
+        <DriverChangeCarModal />
       </ModalWrapper>
       <ModalWrapper
         name={MODAL.DRIVER_DEPOSIT}
