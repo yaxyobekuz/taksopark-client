@@ -20,10 +20,6 @@ import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import {
-  TARIFF_OPTIONS,
-  TARIFF_LABELS,
-} from "@/shared/constants/tariffs";
-import {
   DRIVER_STATUS_FILTER_OPTIONS,
   DRIVER_STATUS_LABELS,
 } from "@/shared/constants/drivers";
@@ -36,10 +32,9 @@ import DriverCreateModal from "../components/modals/DriverCreateModal";
 import DriverEditModal from "../components/modals/DriverEditModal";
 
 const DriversListPage = () => {
-  const { page, search, tariff, status, setField, setFields } = useObjectState({
+  const { page, search, status, setField, setFields } = useObjectState({
     page: 1,
     search: "",
-    tariff: "",
     status: "",
   });
   const { openModal } = useModal();
@@ -51,18 +46,12 @@ const DriversListPage = () => {
     page,
     limit: 20,
     search: search || undefined,
-    tariff: tariff || undefined,
     status: status || undefined,
   });
   const items = data?.data || [];
   const meta = data?.meta || { pages: 1, total: 0 };
 
   const chips = [
-    tariff && {
-      key: "tariff",
-      label: `Tarif: ${TARIFF_LABELS[tariff] || tariff}`,
-      onRemove: () => setFields({ tariff: "", page: 1 }),
-    },
     status && {
       key: "status",
       label: `Holat: ${DRIVER_STATUS_LABELS[status] || status}`,
@@ -92,17 +81,12 @@ const DriversListPage = () => {
       />
 
       <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-3 bg-background border-b space-y-2">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <InputField
             type="search"
             placeholder="Qidirish (ism, telefon)..."
             value={search}
             onChange={(e) => setFields({ search: e.target.value, page: 1 })}
-          />
-          <SelectField
-            value={tariff}
-            onChange={(v) => setFields({ tariff: v, page: 1 })}
-            options={[{ value: "", label: "Barcha tariflar" }, ...TARIFF_OPTIONS]}
           />
           <SelectField
             value={status}
@@ -113,9 +97,7 @@ const DriversListPage = () => {
         {hasFilters && (
           <FilterChips
             items={chips}
-            onClearAll={() =>
-              setFields({ search: "", tariff: "", status: "", page: 1 })
-            }
+            onClearAll={() => setFields({ search: "", status: "", page: 1 })}
           />
         )}
       </div>

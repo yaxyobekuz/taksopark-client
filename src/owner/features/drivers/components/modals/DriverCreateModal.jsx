@@ -3,18 +3,15 @@ import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
 import InputImage from "@/shared/components/ui/input/InputImage";
-import { TARIFF_OPTIONS, TARIFFS } from "@/shared/constants/tariffs";
 import { useCarsQuery } from "@/owner/features/cars";
 import { useDriverCreate } from "../../hooks/useDriverMutations";
 
 const DriverCreateModal = ({ close }) => {
-  const { fullName, phone, tariff, carId, startDate, depositInitial, notes, photoFile, setField, state } = useObjectState({
+  const { fullName, phone, carId, startDate, notes, photoFile, setField, state } = useObjectState({
     fullName: "",
     phone: "+998",
-    tariff: TARIFFS.DEPOSIT,
     carId: "",
     startDate: new Date().toISOString().slice(0, 10),
-    depositInitial: "",
     notes: "",
     photoFile: null,
   });
@@ -28,12 +25,9 @@ const DriverCreateModal = ({ close }) => {
 
   const { mutate, isPending } = useDriverCreate();
 
-  const isDeposit = tariff === TARIFFS.DEPOSIT;
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!fullName.trim() || !phone || !startDate) return;
-    if (isDeposit && depositInitial === "") return;
     const parts = fullName.trim().split(/\s+/);
     const lastName = parts.length > 1 ? parts.pop() : "";
     const firstName = parts.join(" ");
@@ -41,10 +35,8 @@ const DriverCreateModal = ({ close }) => {
       firstName,
       lastName,
       phone: state.phone,
-      tariff: state.tariff,
       carId: carId || null,
       startDate: state.startDate,
-      depositInitial: isDeposit ? Number(depositInitial) : 0,
       notes: state.notes,
       photoFile,
     };
@@ -76,20 +68,11 @@ const DriverCreateModal = ({ close }) => {
         disabled={isPending}
       />
       <SelectField
-        label="Tarif"
-        value={tariff}
-        onChange={(v) => setField("tariff", v)}
-        options={TARIFF_OPTIONS}
-        required
-        disabled={isPending}
-      />
-      <SelectField
         label="Mashina"
         value={carId}
         onChange={(v) => setField("carId", v)}
         options={[{ value: "", label: "- Tanlanmagan -" }, ...carOptions]}
         disabled={isPending}
-        description={tariff === TARIFFS.DEPOSIT ? "Depozitli tarif uchun majburiy" : ""}
       />
       <InputField
         label="Ish boshlash sanasi"
@@ -99,17 +82,6 @@ const DriverCreateModal = ({ close }) => {
         required
         disabled={isPending}
       />
-      {isDeposit && (
-        <InputField
-          label="Boshlang'ich depozit (UZS)"
-          type="price"
-          value={depositInitial}
-          onChange={(e) => setField("depositInitial", e.target.value)}
-          placeholder="2 500 000"
-          required
-          disabled={isPending}
-        />
-      )}
       <InputField
         label="Izoh"
         type="textarea"

@@ -3,7 +3,6 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
 import { useCarsQuery } from "@/owner/features/cars";
-import { TARIFFS } from "@/shared/constants/tariffs";
 import { useDriverChangeCar } from "../../hooks/useDriverMutations";
 
 const DriverChangeCarModal = ({ close, driver }) => {
@@ -20,11 +19,7 @@ const DriverChangeCarModal = ({ close, driver }) => {
     label: `${c.plateNumber || "-"} - ${c.model}`,
   }));
 
-  // Depozit tarifida mashina majburiy - bo'shatib qo'yib bo'lmaydi
-  const isDeposit = driver?.tariff === TARIFFS.DEPOSIT;
-  const options = isDeposit
-    ? carOptions
-    : [{ value: "", label: "- Biriktirilmagan -" }, ...carOptions];
+  const options = [{ value: "", label: "- Biriktirilmagan -" }, ...carOptions];
 
   const { mutate, isPending } = useDriverChangeCar();
 
@@ -51,11 +46,6 @@ const DriverChangeCarModal = ({ close, driver }) => {
         options={options}
         disabled={isPending}
       />
-
-      <div className="rounded bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
-        Mashina almashtirilgach kunlik to'lov narxi, balans va oylik cashback
-        yangi mashina shartlari bo'yicha hisoblanadi.
-      </div>
 
       <div className="flex gap-2">
         <Button

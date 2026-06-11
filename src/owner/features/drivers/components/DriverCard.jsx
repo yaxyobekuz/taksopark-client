@@ -6,15 +6,9 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import {
-  TARIFF_LABELS,
-  TARIFFS,
-  TARIFF_TEXT_CLASS,
-} from "@/shared/constants/tariffs";
-import {
   DRIVER_STATUS_LABELS,
   DRIVER_STATUS_BADGE_CLASS,
 } from "@/shared/constants/drivers";
-import { formatMoney } from "@/shared/utils/formatMoney";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 
@@ -60,10 +54,6 @@ const DriverCard = ({ driver }) => {
           </div>
           <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
             <span className="truncate">{driver.phone || "-"}</span>
-            <span>·</span>
-            <span className={TARIFF_TEXT_CLASS[driver.tariff]}>
-              {TARIFF_LABELS[driver.tariff] || driver.tariff}
-            </span>
           </div>
         </div>
 
@@ -84,11 +74,6 @@ const DriverCard = ({ driver }) => {
         </div>
 
         <div className="flex items-center gap-3">
-          {driver.tariff === TARIFFS.DEPOSIT && (
-            <span className="font-medium">
-              {formatMoney(driver.depositRemaining)}
-            </span>
-          )}
           <div
             className="flex items-center gap-1"
             onClick={(e) => e.stopPropagation()}

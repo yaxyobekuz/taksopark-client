@@ -1,5 +1,5 @@
 import { Link, Outlet, useParams } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, ArrowLeftRight, Wallet, Car } from "lucide-react";
+import { ArrowLeft, Car } from "lucide-react";
 
 import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
@@ -13,17 +13,9 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
-import {
-  TARIFFS,
-  TARIFF_LABELS,
-  TARIFF_TEXT_CLASS,
-} from "@/shared/constants/tariffs";
 
 import { useDriverQuery } from "../hooks/useDriversQuery";
-import DriverEndTrialModal from "../components/modals/DriverEndTrialModal";
-import DriverChangeTariffModal from "../components/modals/DriverChangeTariffModal";
 import DriverChangeCarModal from "../components/modals/DriverChangeCarModal";
-import DriverDepositModal from "../components/modals/DriverDepositModal";
 import DriverDocumentCreateModal from "../components/modals/DriverDocumentCreateModal";
 import DriverDocumentEditModal from "../components/modals/DriverDocumentEditModal";
 import DriverDocumentDeleteModal from "../components/modals/DriverDocumentDeleteModal";
@@ -59,17 +51,11 @@ const DriverDetailLayout = () => {
   if (has(PERMISSIONS.REST_DAYS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/work-days`, label: "Ish kunlari" });
   }
-  if (has(PERMISSIONS.PAYMENTS_READ)) {
-    tabs.push({ to: `/owner/drivers/${id}/payments`, label: "To'lovlar" });
-  }
   if (has(PERMISSIONS.FINES_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/fines`, label: "Jarimalar" });
   }
   if (has(PERMISSIONS.DAMAGES_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/damages`, label: "Zararlar" });
-  }
-  if (has(PERMISSIONS.OYLIKLAR_READ) && driver.tariff === TARIFFS.NO_DEPOSIT) {
-    tabs.push({ to: `/owner/drivers/${id}/oyliklar`, label: "Oyliklar" });
   }
 
   return (
@@ -112,10 +98,6 @@ const DriverDetailLayout = () => {
               </a>
             )}
             <span>·</span>
-            <span className={TARIFF_TEXT_CLASS[driver.tariff]}>
-              {TARIFF_LABELS[driver.tariff]}
-            </span>
-            <span>·</span>
             {driver.car ? (
               <Link
                 to={`/owner/cars/${driver.car._id}`}
@@ -134,29 +116,6 @@ const DriverDetailLayout = () => {
           </div>
         </div>
         <div className="flex flex-wrap gap-2 shrink-0">
-          {has(PERMISSIONS.DRIVERS_END_TRIAL) &&
-            driver.tariff === TARIFFS.NO_DEPOSIT && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => openModal(MODAL.DRIVER_END_TRIAL, { driver })}
-              >
-                <ShieldCheck size={14} className="mr-1.5" />
-                {driver.trialEndedAt
-                  ? "Sinov sanasini o'zgartirish"
-                  : "Sinovni tugatish"}
-              </Button>
-            )}
-          {has(PERMISSIONS.DRIVERS_UPDATE) && driver.tariff === TARIFFS.DEPOSIT && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => openModal(MODAL.DRIVER_DEPOSIT, { driver })}
-            >
-              <Wallet size={14} className="mr-1.5" />
-              Depozit
-            </Button>
-          )}
           {has(PERMISSIONS.DRIVERS_UPDATE) && (
             <Button
               size="sm"
@@ -165,16 +124,6 @@ const DriverDetailLayout = () => {
             >
               <Car size={14} className="mr-1.5" />
               Mashinani almashtirish
-            </Button>
-          )}
-          {has(PERMISSIONS.DRIVERS_UPDATE) && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => openModal(MODAL.DRIVER_CHANGE_TARIFF, { driver })}
-            >
-              <ArrowLeftRight size={14} className="mr-1.5" />
-              Tarifni o'zgartirish
             </Button>
           )}
         </div>
@@ -190,32 +139,11 @@ const DriverDetailLayout = () => {
       <Outlet context={{ driver }} />
 
       <ModalWrapper
-        name={MODAL.DRIVER_END_TRIAL}
-        title="Sinov muddatini tugatish"
-        className="max-w-md"
-      >
-        <DriverEndTrialModal />
-      </ModalWrapper>
-      <ModalWrapper
-        name={MODAL.DRIVER_CHANGE_TARIFF}
-        title="Tarifni o'zgartirish"
-        className="max-w-md"
-      >
-        <DriverChangeTariffModal />
-      </ModalWrapper>
-      <ModalWrapper
         name={MODAL.DRIVER_CHANGE_CAR}
         title="Mashinani almashtirish"
         className="max-w-md"
       >
         <DriverChangeCarModal />
-      </ModalWrapper>
-      <ModalWrapper
-        name={MODAL.DRIVER_DEPOSIT}
-        title="Depozitni boshqarish"
-        className="max-w-md"
-      >
-        <DriverDepositModal />
       </ModalWrapper>
       <ModalWrapper name={MODAL.DRIVER_DOC_CREATE} title="Hujjat qo'shish">
         <DriverDocumentCreateModal />

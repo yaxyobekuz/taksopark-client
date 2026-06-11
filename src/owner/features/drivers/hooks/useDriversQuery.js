@@ -14,16 +14,3 @@ export const useDriverQuery = (id) =>
     queryFn: () => driversAPI.getById(id).then((r) => r.data.data),
     enabled: !!id,
   });
-
-export const useDriverBalanceQuery = (id) =>
-  useQuery({
-    queryKey: qk.drivers.balance(id),
-    queryFn: () => driversAPI.getBalance(id).then((r) => r.data.data),
-    enabled: !!id,
-  });
-
-export const useDriverWarningsQuery = () =>
-  useQuery({
-    queryKey: qk.drivers.warnings(),
-    queryFn: () => driversAPI.warnings().then((r) => r.data.data),
-  });

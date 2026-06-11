@@ -1,55 +1,18 @@
-import { Link, useOutletContext, useParams } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { Car as CarIcon, CheckCircle2, XCircle } from "lucide-react";
 
 import DetailSection from "@/shared/components/ui/layout/DetailSection";
 import KeyValueList from "@/shared/components/ui/data/KeyValueList";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
-import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { formatDateUZ } from "@/shared/utils/date.utils";
-import { formatMoney } from "@/shared/utils/formatMoney";
-import {
-  TARIFFS,
-  TARIFF_LABELS,
-  TARIFF_TEXT_CLASS,
-} from "@/shared/constants/tariffs";
-import { useDriverBalanceQuery } from "../hooks/useDriversQuery";
 import { useCarByIdQuery } from "@/owner/features/cars";
-import WarningBadge from "../components/WarningBadge";
 import DriverDocumentsSection from "../components/DriverDocumentsSection";
 
-const PHASE_LABELS = {
-  deposit: "Depozit",
-  salary: "Oylik cashback",
-};
-
 const DriverOverviewPage = () => {
-  const { id } = useParams();
   const { driver } = useOutletContext();
-  const { data: balance, isLoading: balanceLoading } = useDriverBalanceQuery(id);
   const { data: fullCar } = useCarByIdQuery(driver.car?._id);
   const car = fullCar || driver.car;
-
-  const tariff = balance?.tariff ?? driver.tariff;
-  const phase = balance?.phase;
-  const deposit = balance?.deposit;
-  const oylik = balance?.oylik;
-  const totalDebt = balance?.totalDebt ?? driver.totalDebt ?? 0;
-  const warnings = balance?.warnings || [];
-
-  const tariffNode = tariff ? (
-    <span className={TARIFF_TEXT_CLASS[tariff] || "font-medium"}>
-      {TARIFF_LABELS[tariff] || tariff}
-    </span>
-  ) : (
-    "-"
-  );
-
-  const phaseLabel = phase?.phase
-    ? phase.phase === "trial"
-      ? `Sinov (${phase.trialDaysLeft} kun qoldi)`
-      : PHASE_LABELS[phase.phase]
-    : null;
 
   const items = [
     {
@@ -62,108 +25,6 @@ const DriverOverviewPage = () => {
       label: "Ish boshlagan",
       value: driver.startDate ? formatDateUZ(driver.startDate) : "-",
     },
-    { label: "Tarif", value: tariffNode },
-    phaseLabel ? { label: "Holat", value: phaseLabel } : null,
-    driver.trialEndedAt
-      ? {
-          label: "Sinov tugagan",
-          value: formatDateUZ(driver.trialEndedAt),
-        }
-      : null,
-    tariff === TARIFFS.DEPOSIT && deposit
-      ? {
-          label: "Boshlang'ich depozit",
-          value: formatMoney(deposit.initial),
-        }
-      : null,
-    tariff === TARIFFS.DEPOSIT && deposit
-      ? {
-          label: "Qolgan depozit",
-          value: (
-            <span className="font-semibold text-primary">
-              {formatMoney(deposit.remaining)}
-            </span>
-          ),
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik
-      ? {
-          label: "Joriy oylik davri",
-          value: `${formatDateUZ(oylik.startDate)} - ${formatDateUZ(oylik.endDate)}`,
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik
-      ? {
-          label: "Oylik muddati",
-          value: (
-            <span>
-              {formatDateUZ(oylik.dueDate)}
-              {oylik.isLate && (
-                <span className="ml-2 px-1.5 py-0.5 rounded bg-red-50 text-red-700 font-semibold text-xs">
-                  {oylik.lateDays} kun kechikkan
-                </span>
-              )}
-            </span>
-          ),
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik
-      ? { label: "Oylik cashback", value: formatMoney(oylik.salary) }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik && oylik.expectedPlanTotal > 0
-      ? {
-          label: "Yig'ilgan to'lov",
-          value: formatMoney(oylik.paidTotal),
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik && oylik.expectedPlanTotal > 0
-      ? {
-          label: "Oylik reja",
-          value: formatMoney(oylik.expectedPlanTotal),
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik && oylik.expectedPlanTotal > 0
-      ? {
-          label: "Plan qoldig'i",
-          value: formatMoney(oylik.planDeficit),
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik && oylik.overpay > 0
-      ? {
-          label: "Ortiqcha to'lov (bonus)",
-          value: (
-            <span className="font-semibold text-emerald-600">
-              +{formatMoney(oylik.overpay)}
-            </span>
-          ),
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik
-      ? {
-          label: "Hisoblangan cashback",
-          value: (
-            <span className="font-semibold text-primary">
-              {formatMoney(oylik.earnedPayout)}
-            </span>
-          ),
-        }
-      : null,
-    tariff === TARIFFS.NO_DEPOSIT && oylik
-      ? {
-          label: "To'lanadigan qoldiq",
-          value: formatMoney(oylik.remainingPayout),
-        }
-      : null,
-    totalDebt > 0
-      ? {
-          label: "Umumiy qarz",
-          value: (
-            <span className="font-semibold text-red-700">
-              {formatMoney(totalDebt)}
-            </span>
-          ),
-        }
-      : null,
     driver.notes
       ? { label: "Izoh", value: driver.notes, fullWidth: true }
       : null,
@@ -172,20 +33,7 @@ const DriverOverviewPage = () => {
   return (
     <div className="space-y-4">
       <DetailSection title="Umumiy ma'lumot" defaultOpen>
-        {balanceLoading ? (
-          <SkeletonCard count={1} />
-        ) : (
-          <div className="space-y-3">
-            <KeyValueList columns={2} items={items} />
-            {warnings.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-1">
-                {warnings.map((w) => (
-                  <WarningBadge key={w.code} code={w.code} />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        <KeyValueList columns={2} items={items} />
       </DetailSection>
 
       <DetailSection title="Hujjatlar" defaultOpen>

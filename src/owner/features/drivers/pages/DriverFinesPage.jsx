@@ -19,7 +19,6 @@ import { useFinesQuery } from "@/owner/features/penalties/hooks/useFinesQuery";
 import { useFineDelete } from "@/owner/features/penalties/hooks/useFineMutations";
 import FinesTable from "@/owner/features/penalties/components/FinesTable";
 import FineCreateModal from "@/owner/features/penalties/components/modals/FineCreateModal";
-import FinePayModal from "@/owner/features/penalties/components/modals/FinePayModal";
 
 const DriverFinesPage = () => {
   const { id } = useParams();
@@ -96,13 +95,10 @@ const DriverFinesPage = () => {
       <ModalWrapper name={MODAL.FINE_CREATE} title="Yangi jarima" className="max-w-xl">
         <FineCreateModal />
       </ModalWrapper>
-      <ModalWrapper name={MODAL.FINE_PAY} title="Jarimani to'lash" className="max-w-xl">
-        <FinePayModal />
-      </ModalWrapper>
       <ConfirmDialog
         name={MODAL.FINE_DELETE}
         title="Jarimani o'chirish"
-        description="Jarima o'chiriladi. Depozit yoki tsikl summasi qaytariladi."
+        description="Jarima o'chiriladi. Davom etishni xohlaysizmi?"
         confirmLabel="O'chirish"
         tone="danger"
         onConfirm={({ fine }, { close }) =>

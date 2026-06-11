@@ -10,20 +10,6 @@ const onError = (err) => {
 const invalidateAll = (qc) => {
   qc.invalidateQueries({ queryKey: qk.drivers.all() });
   qc.invalidateQueries({ queryKey: qk.cars.all() });
-  qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
-  qc.invalidateQueries({ queryKey: qk.transactions.all() });
-};
-
-// Mashina almashtirilganda unga bog'liq barcha ma'lumotlar (kunlik to'lov narxi,
-// balans, oylik cashback, eski/yangi mashina kartochkalari, hisobotlar) yangilanadi
-const invalidateCarChange = (qc) => {
-  qc.invalidateQueries({ queryKey: qk.drivers.all() });
-  qc.invalidateQueries({ queryKey: qk.cars.all() });
-  qc.invalidateQueries({ queryKey: qk.payments.all() });
-  qc.invalidateQueries({ queryKey: qk.oyliklar.all() });
-  qc.invalidateQueries({ queryKey: qk.transactions.all() });
-  qc.invalidateQueries({ queryKey: ["reports"] });
-  qc.invalidateQueries({ queryKey: qk.financeReport.all() });
 };
 
 export const useDriverCreate = () => {
@@ -56,47 +42,8 @@ export const useDriverChangeCar = () => {
     mutationFn: ({ id, carId }) =>
       driversAPI.update(id, { carId: carId || null }).then((r) => r.data.data),
     onSuccess: () => {
-      invalidateCarChange(qc);
+      invalidateAll(qc);
       toast.success("Mashina almashtirildi");
-    },
-    onError,
-  });
-};
-
-export const useDriverEndTrial = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, endDate }) =>
-      driversAPI.endTrial(id, { endDate }).then((r) => r.data.data),
-    onSuccess: () => {
-      invalidateAll(qc);
-      toast.success("Sinov muddati belgilandi");
-    },
-    onError,
-  });
-};
-
-export const useDriverChangeTariff = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, ...body }) =>
-      driversAPI.changeTariff(id, body).then((r) => r.data.data),
-    onSuccess: () => {
-      invalidateAll(qc);
-      toast.success("Tarif o'zgartirildi");
-    },
-    onError,
-  });
-};
-
-export const useDriverAdjustDeposit = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, ...body }) =>
-      driversAPI.adjustDeposit(id, body).then((r) => r.data.data),
-    onSuccess: () => {
-      invalidateAll(qc);
-      toast.success("Depozit yangilandi");
     },
     onError,
   });

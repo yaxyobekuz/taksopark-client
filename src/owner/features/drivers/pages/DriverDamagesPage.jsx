@@ -19,7 +19,6 @@ import { useDamagesQuery } from "@/owner/features/penalties/hooks/useDamagesQuer
 import { useDamageDelete } from "@/owner/features/penalties/hooks/useDamageMutations";
 import DamagesTable from "@/owner/features/penalties/components/DamagesTable";
 import DamageCreateModal from "@/owner/features/penalties/components/modals/DamageCreateModal";
-import DamagePayModal from "@/owner/features/penalties/components/modals/DamagePayModal";
 
 const DriverDamagesPage = () => {
   const { id } = useParams();
@@ -96,13 +95,10 @@ const DriverDamagesPage = () => {
       <ModalWrapper name={MODAL.DAMAGE_CREATE} title="Yangi zarar" className="max-w-xl">
         <DamageCreateModal />
       </ModalWrapper>
-      <ModalWrapper name={MODAL.DAMAGE_PAY} title="Zararni to'lash" className="max-w-xl">
-        <DamagePayModal />
-      </ModalWrapper>
       <ConfirmDialog
         name={MODAL.DAMAGE_DELETE}
         title="Zararni o'chirish"
-        description="Zarar yozuvi o'chiriladi va hisob qaytadan hisoblanadi."
+        description="Zarar yozuvi o'chiriladi. Davom etishni xohlaysizmi?"
         confirmLabel="O'chirish"
         tone="danger"
         onConfirm={({ damage }, { close }) =>

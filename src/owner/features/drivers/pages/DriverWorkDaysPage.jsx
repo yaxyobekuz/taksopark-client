@@ -5,13 +5,11 @@ import useObjectState from "@/shared/hooks/useObjectState";
 import usePermissions from "@/shared/hooks/usePermissions";
 
 import SelectField from "@/shared/components/ui/select/SelectField";
-import ProgressBar from "@/shared/components/ui/progress/ProgressBar";
 import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { months as MONTHS } from "@/shared/utils/date.utils";
-import { formatMoney } from "@/shared/utils/formatMoney";
 
 const WEEKDAYS_UZ = [
   "yakshanba",
@@ -94,10 +92,6 @@ const DriverWorkDaysPage = () => {
             const dayNum = dayUTC.getUTCDate();
             const isPastOrToday = d.dateKey <= todayKey;
 
-            const plan = d.payment?.expectedPlan || d.dailyPlan || 0;
-            const paid = d.payment?.amount || 0;
-            const progress = plan > 0 ? (paid / plan) * 100 : 0;
-
             return (
               <div
                 key={d.dateKey}
@@ -130,13 +124,10 @@ const DriverWorkDaysPage = () => {
                   </>
                 ) : (
                   <>
-                    <div className="space-y-1">
-                      <ProgressBar value={progress} />
-                      <p className="text-xs text-muted-foreground">
-                        {formatMoney(paid)} / {formatMoney(plan)}
-                      </p>
-                    </div>
-                    {canManage && paid === 0 && isPastOrToday && (
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
+                      <CalendarCheck size={14} /> Ish kuni
+                    </span>
+                    {canManage && isPastOrToday && (
                       <button
                         type="button"
                         disabled={restdayCreate.isPending}
