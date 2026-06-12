@@ -3,7 +3,7 @@ import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 
-// Balansga ta'sir qilgan barcha harakatlar (statement) — sana, izoh, summa va
+// Balansga ta'sir qilgan barcha harakatlar (statement) - sana, izoh, summa va
 // yugurib boruvchi balans bilan. reversible yozuvlarda bekor qilish tugmasi.
 const LedgerList = ({ ledger = [], canManage, onReverse, reversing }) => {
   if (!ledger.length) return <EmptyState title="Harakat yo'q" />;

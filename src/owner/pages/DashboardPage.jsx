@@ -58,17 +58,18 @@ const DashboardPage = () => {
 
   const totalWarnings = expiringCars.length;
 
-  // Moliya umumiy ko'rsatkichlari (joriy oy) — faqat ruxsat bo'lsa yuklanadi.
+  // Moliya umumiy ko'rsatkichlari (joriy oy) - faqat ruxsat bo'lsa yuklanadi.
   const canFinance = has(PERMISSIONS.PAYMENTS_READ);
   const now = new Date();
   const { data: finance, isLoading: financeLoading } = useOverviewQuery(
     { year: now.getFullYear(), month: now.getMonth() + 1 },
     { enabled: canFinance },
   );
-  const flow = finance?.flow || { totals: { income: 0, expense: 0 }, series: [] };
-  const netDebt = finance?.netDebt || 0;
+  const flow = finance?.flow || { series: [] };
+  const profit = finance?.profit?.month || { revenue: 0, cashbackExpense: 0, net: 0 };
+  const debtTotal = finance?.debtors?.total || 0;
   const depositTotal = finance?.deposit?.total || 0;
-  const cashbackOwed = finance?.cashback?.available || 0;
+  const cashbackOwed = finance?.cashback?.outstanding || 0;
 
   const quickActions = [
     {

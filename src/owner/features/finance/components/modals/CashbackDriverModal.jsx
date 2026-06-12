@@ -66,7 +66,7 @@ const CashbackDriverModal = ({ driver }) => {
 
       {accountDebt > 0 && (
         <p className="text-xs text-amber-700 bg-amber-50 rounded p-2">
-          Haydovchining qarzi bor ({formatMoney(accountDebt)}) — keshbek avval qarzni
+          Haydovchining qarzi bor ({formatMoney(accountDebt)}) - keshbek avval qarzni
           qoplaydi, shuning uchun to'lash mumkin bo'lgan summa cheklangan.
         </p>
       )}

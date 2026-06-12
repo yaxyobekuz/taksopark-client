@@ -19,7 +19,7 @@ const compact = (n) => {
   return String(v);
 };
 
-// Kunlik to'lov kirim (to'lov) va chiqim (reversal) — kun bo'yicha line chart.
+// Kunlik to'lov kirim (to'lov) va chiqim (reversal) - kun bo'yicha line chart.
 const PaymentsFlowChart = ({ series = [] }) => {
   const data = series.map((d) => ({
     day: d.day,

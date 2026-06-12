@@ -37,7 +37,7 @@ const AccountBreakdown = ({ account }) => {
         {debits.length ? (
           debits.map(([label, value]) => <Line key={label} label={label} value={value} sign="−" />)
         ) : (
-          <p className="py-1 text-sm text-muted-foreground">—</p>
+          <p className="py-1 text-sm text-muted-foreground">-</p>
         )}
       </div>
       <div className="px-3 py-2">
@@ -45,7 +45,7 @@ const AccountBreakdown = ({ account }) => {
         {credits.length ? (
           credits.map(([label, value]) => <Line key={label} label={label} value={value} sign="+" />)
         ) : (
-          <p className="py-1 text-sm text-muted-foreground">—</p>
+          <p className="py-1 text-sm text-muted-foreground">-</p>
         )}
       </div>
       <div className="flex items-center justify-between px-3 py-2 font-semibold">
