@@ -13,6 +13,7 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
+import { driverStatusBadge } from "@/shared/constants/drivers";
 
 import { useDriverQuery } from "../hooks/useDriversQuery";
 import DriverChangeCarModal from "../components/modals/DriverChangeCarModal";
@@ -48,6 +49,9 @@ const DriverDetailLayout = () => {
   }
 
   const tabs = [{ to: `/owner/drivers/${id}`, label: "Asosiy", exact: true }];
+  if (has(PERMISSIONS.WORK_PERIODS_READ)) {
+    tabs.push({ to: `/owner/drivers/${id}/work-periods`, label: "Ish davrlari" });
+  }
   if (has(PERMISSIONS.REST_DAYS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/work-days`, label: "Ish kunlari" });
   }
@@ -85,9 +89,19 @@ const DriverDetailLayout = () => {
             );
           })()}
           <div className="min-w-0">
-          <h1 className="text-lg sm:text-xl font-semibold truncate">
-            {driver.firstName} {driver.lastName}
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg sm:text-xl font-semibold truncate">
+              {driver.firstName} {driver.lastName}
+            </h1>
+            {(() => {
+              const status = driverStatusBadge(driver);
+              return (
+                <span className={`text-[11px] px-1.5 py-0.5 rounded shrink-0 ${status.className}`}>
+                  {status.label}
+                </span>
+              );
+            })()}
+          </div>
           <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5 mt-0.5">
             {driver.phone && (
               <a

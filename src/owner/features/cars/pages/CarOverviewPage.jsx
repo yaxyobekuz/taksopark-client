@@ -5,11 +5,7 @@ import DetailSection from "@/shared/components/ui/layout/DetailSection";
 import KeyValueList from "@/shared/components/ui/data/KeyValueList";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { formatPhone } from "@/shared/utils/formatPhone";
-import { formatDateUz } from "@/shared/utils/formatDate";
-import {
-  DRIVER_STATUS_LABELS,
-  DRIVER_STATUS_BADGE_CLASS,
-} from "@/shared/constants/drivers";
+import { driverStatusBadge } from "@/shared/constants/drivers";
 import CarDocumentsSection from "../components/CarDocumentsSection";
 
 const DriverPanel = ({ driver }) => {
@@ -52,11 +48,10 @@ const DriverPanel = ({ driver }) => {
             </p>
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded shrink-0 ${
-                DRIVER_STATUS_BADGE_CLASS[driver.status] ||
-                "bg-gray-100 text-gray-600"
+                driverStatusBadge(driver).className
               }`}
             >
-              {DRIVER_STATUS_LABELS[driver.status] || driver.status}
+              {driverStatusBadge(driver).label}
             </span>
           </div>
         </div>
@@ -75,14 +70,6 @@ const DriverPanel = ({ driver }) => {
             >
               {formatPhone(driver.phone)}
             </a>
-          </div>
-        )}
-        {driver.startDate && (
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-muted-foreground">Boshlangan</span>
-            <span className="font-medium">
-              {formatDateUz(driver.startDate)}
-            </span>
           </div>
         )}
       </div>

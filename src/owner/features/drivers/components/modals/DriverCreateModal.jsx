@@ -7,11 +7,10 @@ import { useCarsQuery } from "@/owner/features/cars";
 import { useDriverCreate } from "../../hooks/useDriverMutations";
 
 const DriverCreateModal = ({ close }) => {
-  const { fullName, phone, carId, startDate, notes, photoFile, setField, state } = useObjectState({
+  const { fullName, phone, carId, notes, photoFile, setField, state } = useObjectState({
     fullName: "",
     phone: "+998",
     carId: "",
-    startDate: new Date().toISOString().slice(0, 10),
     notes: "",
     photoFile: null,
   });
@@ -27,7 +26,7 @@ const DriverCreateModal = ({ close }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!fullName.trim() || !phone || !startDate) return;
+    if (!fullName.trim() || !phone) return;
     const parts = fullName.trim().split(/\s+/);
     const lastName = parts.length > 1 ? parts.pop() : "";
     const firstName = parts.join(" ");
@@ -36,7 +35,6 @@ const DriverCreateModal = ({ close }) => {
       lastName,
       phone: state.phone,
       carId: carId || null,
-      startDate: state.startDate,
       notes: state.notes,
       photoFile,
     };
@@ -75,14 +73,6 @@ const DriverCreateModal = ({ close }) => {
         disabled={isPending}
       />
       <InputField
-        label="Ish boshlash sanasi"
-        type="date"
-        value={startDate}
-        onChange={(e) => setField("startDate", e.target.value)}
-        required
-        disabled={isPending}
-      />
-      <InputField
         label="Izoh"
         type="textarea"
         value={notes}
@@ -90,6 +80,10 @@ const DriverCreateModal = ({ close }) => {
         placeholder="Passport, guvohnoma, manzil va boshqa ma'lumotlar"
         disabled={isPending}
       />
+      <p className="text-xs text-muted-foreground">
+        Ish boshlash sanasi va tarif haydovchi sahifasidagi "Ish davrlari"
+        tabida birinchi davr qo'shilganda belgilanadi.
+      </p>
       <div className="flex gap-2">
         <Button type="button" variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>
           Bekor qilish

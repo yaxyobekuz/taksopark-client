@@ -19,7 +19,7 @@ import SkeletonTableRow from "@/shared/components/ui/skeleton/SkeletonTableRow";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import {
-  DRIVER_STATUS,
+  DRIVER_WORK_STATUS,
   DRIVER_STATUS_TABS,
   DRIVER_STATUS_TAB_ALL,
 } from "@/shared/constants/drivers";
@@ -29,13 +29,12 @@ import DriversTable from "../components/DriversTable";
 import DriverCard from "../components/DriverCard";
 import DriverCreateModal from "../components/modals/DriverCreateModal";
 import DriverEditModal from "../components/modals/DriverEditModal";
-import DriverArchiveModal from "../components/modals/DriverArchiveModal";
 
 const DriversListPage = () => {
   const { page, search, status, setField, setFields } = useObjectState({
     page: 1,
     search: "",
-    status: DRIVER_STATUS.ACTIVE,
+    status: DRIVER_WORK_STATUS.WORKING,
   });
   const { openModal } = useModal();
   const { has } = usePermissions();
@@ -89,7 +88,7 @@ const DriversListPage = () => {
         {hasFilters && (
           <FilterChips
             items={chips}
-            onClearAll={() => setFields({ search: "", status: "", page: 1 })}
+            onClearAll={() => setFields({ search: "", status: DRIVER_STATUS_TAB_ALL, page: 1 })}
           />
         )}
       </div>
@@ -156,13 +155,6 @@ const DriversListPage = () => {
         className="max-w-xl"
       >
         <DriverEditModal />
-      </ModalWrapper>
-      <ModalWrapper
-        name={MODAL.DRIVER_DELETE}
-        title="Haydovchini arxivlash"
-        className="max-w-md"
-      >
-        <DriverArchiveModal />
       </ModalWrapper>
     </div>
   );

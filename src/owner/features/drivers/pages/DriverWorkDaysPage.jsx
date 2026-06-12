@@ -30,7 +30,7 @@ import {
 } from "@/owner/features/restdays/hooks/useRestdayMutations";
 
 const startYear = (driver) =>
-  driver?.startDate ? new Date(driver.startDate).getFullYear() : new Date().getFullYear();
+  driver?.firstWorkDate ? new Date(driver.firstWorkDate).getFullYear() : new Date().getFullYear();
 
 const DriverWorkDaysPage = () => {
   const { id } = useParams();

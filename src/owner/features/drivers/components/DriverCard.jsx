@@ -1,14 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, Pencil, Archive } from "lucide-react";
+import { ChevronRight, Pencil } from "lucide-react";
 
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
-import {
-  DRIVER_STATUS_LABELS,
-  DRIVER_STATUS_BADGE_CLASS,
-} from "@/shared/constants/drivers";
+import { driverStatusBadge } from "@/shared/constants/drivers";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 
@@ -43,14 +40,14 @@ const DriverCard = ({ driver }) => {
             <p className="font-medium text-sm truncate">
               {driver.firstName} {driver.lastName}
             </p>
-            <span
-              className={`text-[10px] px-1.5 py-0.5 rounded shrink-0 ${
-                DRIVER_STATUS_BADGE_CLASS[driver.status] ||
-                "bg-gray-100 text-gray-600"
-              }`}
-            >
-              {DRIVER_STATUS_LABELS[driver.status] || driver.status}
-            </span>
+            {(() => {
+              const status = driverStatusBadge(driver);
+              return (
+                <span className={`text-[10px] px-1.5 py-0.5 rounded shrink-0 ${status.className}`}>
+                  {status.label}
+                </span>
+              );
+            })()}
           </div>
           <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
             <span className="truncate">{driver.phone || "-"}</span>
@@ -86,16 +83,6 @@ const DriverCard = ({ driver }) => {
                 aria-label="Tahrirlash"
               >
                 <Pencil size={14} />
-              </button>
-            )}
-            {has(PERMISSIONS.DRIVERS_DELETE) && (
-              <button
-                type="button"
-                onClick={() => openModal(MODAL.DRIVER_DELETE, { driver })}
-                className="p-1.5 text-muted-foreground hover:text-red-600"
-                aria-label="Arxivlash"
-              >
-                <Archive size={14} />
               </button>
             )}
           </div>

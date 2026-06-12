@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Pencil, Archive } from "lucide-react";
+import { Pencil } from "lucide-react";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
-import { DRIVER_STATUS_LABELS, DRIVER_STATUS_BADGE_CLASS } from "@/shared/constants/drivers";
+import { driverStatusBadge } from "@/shared/constants/drivers";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 
@@ -57,13 +57,14 @@ const DriversTable = ({ items = [] }) => {
               <td className="p-3">{d.phone}</td>
               <td className="p-3">{d.car?.plateNumber ? <PlateNumber value={d.car.plateNumber} size="sm" /> : "-"}</td>
               <td className="p-3">
-                <span
-                  className={`text-xs px-2 py-1 rounded ${
-                    DRIVER_STATUS_BADGE_CLASS[d.status] || "bg-gray-100 text-gray-600"
-                  }`}
-                >
-                  {DRIVER_STATUS_LABELS[d.status] || d.status}
-                </span>
+                {(() => {
+                  const status = driverStatusBadge(d);
+                  return (
+                    <span className={`text-xs px-2 py-1 rounded ${status.className}`}>
+                      {status.label}
+                    </span>
+                  );
+                })()}
               </td>
               <td className="p-3" onClick={stop}>
                 <div className="flex justify-end gap-2">
@@ -75,16 +76,6 @@ const DriversTable = ({ items = [] }) => {
                       title="Tahrirlash"
                     >
                       <Pencil size={16} />
-                    </button>
-                  )}
-                  {has(PERMISSIONS.DRIVERS_DELETE) && (
-                    <button
-                      type="button"
-                      onClick={() => openModal(MODAL.DRIVER_DELETE, { driver: d })}
-                      className="text-muted-foreground hover:text-red-600"
-                      title="Arxivlash"
-                    >
-                      <Archive size={16} />
                     </button>
                   )}
                 </div>

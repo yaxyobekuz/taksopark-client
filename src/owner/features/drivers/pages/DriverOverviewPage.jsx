@@ -6,6 +6,7 @@ import KeyValueList from "@/shared/components/ui/data/KeyValueList";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { formatDateUZ } from "@/shared/utils/date.utils";
+import { driverStatusBadge } from "@/shared/constants/drivers";
 import { useCarByIdQuery } from "@/owner/features/cars";
 import DriverDocumentsSection from "../components/DriverDocumentsSection";
 
@@ -13,6 +14,7 @@ const DriverOverviewPage = () => {
   const { driver } = useOutletContext();
   const { data: fullCar } = useCarByIdQuery(driver.car?._id);
   const car = fullCar || driver.car;
+  const status = driverStatusBadge(driver);
 
   const items = [
     {
@@ -23,7 +25,11 @@ const DriverOverviewPage = () => {
     },
     {
       label: "Ish boshlagan",
-      value: driver.startDate ? formatDateUZ(driver.startDate) : "-",
+      value: driver.firstWorkDate ? formatDateUZ(driver.firstWorkDate) : "-",
+    },
+    {
+      label: "Holat",
+      value: status.label,
     },
     driver.notes
       ? { label: "Izoh", value: driver.notes, fullWidth: true }

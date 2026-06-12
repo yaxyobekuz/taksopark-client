@@ -4,10 +4,7 @@ export { default as DriverOverviewPage } from "./pages/DriverOverviewPage";
 export { default as DriverFinesPage } from "./pages/DriverFinesPage";
 export { default as DriverDamagesPage } from "./pages/DriverDamagesPage";
 export { default as DriverWorkDaysPage } from "./pages/DriverWorkDaysPage";
+export { default as DriverWorkPeriodsPage } from "./pages/DriverWorkPeriodsPage";
 export { default as DriverCreateModal } from "./components/modals/DriverCreateModal";
 export { useDriversQuery, useDriverQuery } from "./hooks/useDriversQuery";
-export {
-  useDriverCreate,
-  useDriverUpdate,
-  useDriverDelete,
-} from "./hooks/useDriverMutations";
+export { useDriverCreate, useDriverUpdate } from "./hooks/useDriverMutations";
