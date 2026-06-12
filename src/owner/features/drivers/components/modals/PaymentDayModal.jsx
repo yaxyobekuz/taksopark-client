@@ -12,6 +12,7 @@ import { usePaymentCreate, usePaymentReverse } from "../../hooks/usePaymentMutat
 import { planStatus, paidFromTransactions } from "../../utils/payment.utils";
 
 const TX_LABELS = { payment: "To'lov", reversal: "Bekor qilingan" };
+const SOURCE_LABELS = { deposit: "Depozitdan", cashback: "Keshbekdan" };
 
 const PaymentDayModal = ({ close, plan, canManage }) => {
   const [amount, setAmount] = useState("");
@@ -111,6 +112,7 @@ const PaymentDayModal = ({ close, plan, canManage }) => {
             {transactions.map((t) => {
               const isReversed = reversedIds.has(String(t._id));
               const isReversal = t.type === "reversal";
+              const fromSource = t.source && t.source !== "driver";
               return (
                 <div
                   key={t._id}
@@ -123,7 +125,7 @@ const PaymentDayModal = ({ close, plan, canManage }) => {
                       {isReversal ? "−" : ""}
                       {formatMoney(t.amount)}
                       <span className="ml-2 text-[11px] text-muted-foreground">
-                        {TX_LABELS[t.type] || t.type}
+                        {fromSource ? SOURCE_LABELS[t.source] : TX_LABELS[t.type] || t.type}
                       </span>
                     </p>
                     <p className="text-[11px] text-muted-foreground">
@@ -131,7 +133,7 @@ const PaymentDayModal = ({ close, plan, canManage }) => {
                       {t.note ? ` · ${t.note}` : ""}
                     </p>
                   </div>
-                  {canManage && !isReversal && !isReversed && (
+                  {canManage && !isReversal && !isReversed && !fromSource && (
                     <button
                       type="button"
                       onClick={() => reverse.mutate({ id: t._id })}
