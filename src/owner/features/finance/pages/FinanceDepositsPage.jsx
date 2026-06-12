@@ -1,4 +1,5 @@
 import PageHeader from "@/shared/components/ui/layout/PageHeader";
+import Button from "@/shared/components/ui/button/Button";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
@@ -37,6 +38,7 @@ const FinanceDepositsPage = () => {
               <tr className="text-left text-muted-foreground">
                 <th className="p-3 font-medium">Haydovchi</th>
                 <th className="p-3 font-medium text-right">Balans</th>
+                <th className="p-3 font-medium text-right">Amallar</th>
               </tr>
             </thead>
             <tbody>
@@ -48,6 +50,15 @@ const FinanceDepositsPage = () => {
                 >
                   <td className="p-3 font-medium">{driverName(r.driver)}</td>
                   <td className="p-3 text-right tabular-nums">{formatMoney(r.balance)}</td>
+                  <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => openModal(MODAL.DEPOSIT_DRIVER, { driver: r.driver })}
+                    >
+                      Ochish
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>

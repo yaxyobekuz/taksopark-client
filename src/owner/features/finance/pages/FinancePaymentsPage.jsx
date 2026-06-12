@@ -1,8 +1,11 @@
+import { Plus } from "lucide-react";
+
 import useObjectState from "@/shared/hooks/useObjectState";
 import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 
 import PageHeader from "@/shared/components/ui/layout/PageHeader";
+import Button from "@/shared/components/ui/button/Button";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
@@ -15,6 +18,8 @@ import { formatDateUZ } from "@/shared/utils/date.utils";
 import { PaymentDayModal, planStatus } from "@/owner/features/drivers";
 
 import MonthSelect from "../components/MonthSelect";
+import AddPaymentModal from "../components/modals/AddPaymentModal";
+import QuickPaymentModal from "../components/modals/QuickPaymentModal";
 import { useDailyPaymentsQuery } from "../hooks/useFinanceQueries";
 
 const driverName = (d) => `${d.firstName} ${d.lastName || ""}`.trim();
@@ -36,7 +41,17 @@ const FinancePaymentsPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader title="Kunlik to'lovlar" description="Tanlangan oy bo'yicha haydovchilarning kunlik to'lov planlari" />
+      <PageHeader
+        title="Kunlik to'lovlar"
+        description="Tanlangan oy bo'yicha haydovchilarning kunlik to'lov planlari"
+        actions={
+          canManage && (
+            <Button onClick={() => openModal(MODAL.PAYMENT_ADD, { year, month })}>
+              <Plus size={16} className="mr-1.5" /> To'lov qo'shish
+            </Button>
+          )
+        }
+      />
       <MonthSelect year={year} month={month} onChange={setFields} />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -60,11 +75,13 @@ const FinancePaymentsPage = () => {
                 <th className="p-3 font-medium text-right">To'langan</th>
                 <th className="p-3 font-medium text-right">Qarz</th>
                 <th className="p-3 font-medium">Holat</th>
+                {canManage && <th className="p-3 font-medium text-right">Amallar</th>}
               </tr>
             </thead>
             <tbody>
               {rows.map((p) => {
                 const status = planStatus(p);
+                const payable = !p.isRestDay && !p.priceMissing && p.debt > 0;
                 return (
                   <tr
                     key={p._id}
@@ -81,6 +98,19 @@ const FinancePaymentsPage = () => {
                         {status.label}
                       </span>
                     </td>
+                    {canManage && (
+                      <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
+                        {payable && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openModal(MODAL.PAYMENT_QUICK, { plan: p })}
+                          >
+                            <Plus size={14} className="mr-1" /> To'lov
+                          </Button>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 );
               })}
@@ -91,6 +121,12 @@ const FinancePaymentsPage = () => {
 
       <ModalWrapper name={MODAL.PAYMENT_DAY} title="Kunlik to'lov" className="max-w-md">
         <PaymentDayModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.PAYMENT_ADD} title="To'lov qo'shish" className="max-w-md">
+        <AddPaymentModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.PAYMENT_QUICK} title="To'lov qo'shish" className="max-w-md">
+        <QuickPaymentModal />
       </ModalWrapper>
     </div>
   );

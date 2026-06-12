@@ -1,4 +1,5 @@
 import PageHeader from "@/shared/components/ui/layout/PageHeader";
+import Button from "@/shared/components/ui/button/Button";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import SkeletonCard from "@/shared/components/ui/skeleton/SkeletonCard";
@@ -41,6 +42,7 @@ const FinanceCashbacksPage = () => {
                 <th className="p-3 font-medium text-right">Hisoblangan</th>
                 <th className="p-3 font-medium text-right">To'langan</th>
                 <th className="p-3 font-medium text-right">Qoldiq</th>
+                <th className="p-3 font-medium text-right">Amallar</th>
               </tr>
             </thead>
             <tbody>
@@ -54,6 +56,15 @@ const FinanceCashbacksPage = () => {
                   <td className="p-3 text-right tabular-nums">{formatMoney(r.accrued)}</td>
                   <td className="p-3 text-right tabular-nums">{formatMoney(r.paidOut)}</td>
                   <td className="p-3 text-right tabular-nums">{formatMoney(r.available)}</td>
+                  <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => openModal(MODAL.CASHBACK_DRIVER, { driver: r.driver })}
+                    >
+                      Ochish
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -50,7 +50,7 @@ const ownerSidebar = [
   {
     title: "Moliya",
     icon: Wallet,
-    isActive: false,
+    isActive: true,
     items: [
       {
         title: "Hisobotlar",
