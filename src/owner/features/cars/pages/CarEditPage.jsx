@@ -18,9 +18,10 @@ const CarEditPage = () => {
 
   return (
     <DetailSection title="Mashinani tahrirlash" defaultOpen collapsible={false}>
-      <div className="max-w-xl">
+      <div className="max-w-3xl">
         <CarForm
           car={car}
+          columns={2}
           isPending={isPending}
           submitLabel="Saqlash"
           onSubmit={handleSubmit}
