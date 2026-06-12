@@ -149,36 +149,45 @@ const DashboardPage = () => {
       {canFinance && (
         <div className="space-y-4">
           {financeLoading ? (
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-              <SkeletonStatCard count={5} />
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              <SkeletonStatCard count={6} />
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
               <StatCard
-                label="Bu oy kirim"
-                hint="Kunlik to'lovlar"
-                value={flow.totals.income}
+                label="Bu oy tushum"
+                hint="Kunlik ijara to'lovlari"
+                value={profit.revenue}
                 isMoney
                 tone="positive"
                 icon={ArrowDownCircle}
               />
               <StatCard
-                label="Bu oy chiqim"
-                hint="Tuzatuvchi qaytarishlar"
-                value={flow.totals.expense}
+                label="Bu oy keshbek chiqim"
+                hint="Haydovchilarga berilgan keshbek"
+                value={profit.cashbackExpense}
                 isMoney
                 tone="negative"
                 icon={ArrowUpCircle}
               />
               <StatCard
-                label="Umumiy qarz"
-                value={netDebt}
+                label="Bu oy sof foyda"
+                hint="Tushum − keshbek chiqim"
+                value={profit.net}
                 isMoney
-                tone="negative"
+                tone={profit.net >= 0 ? "positive" : "negative"}
+                icon={TrendingUp}
+              />
+              <StatCard
+                label="Haydovchilar ijara qarzi"
+                value={debtTotal}
+                isMoney
+                tone={debtTotal > 0 ? "negative" : "default"}
                 icon={AlertCircle}
               />
               <StatCard
-                label="Umumiy depozit"
+                label="Depozit (garov)"
+                hint="Haydovchilar puli"
                 value={depositTotal}
                 isMoney
                 tone="info"
