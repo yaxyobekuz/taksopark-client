@@ -1,12 +1,55 @@
 import { Link, useOutletContext } from "react-router-dom";
-import { User, Phone } from "lucide-react";
+import { User, Phone, CircleDollarSign } from "lucide-react";
 
 import DetailSection from "@/shared/components/ui/layout/DetailSection";
 import KeyValueList from "@/shared/components/ui/data/KeyValueList";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import { formatPhone } from "@/shared/utils/formatPhone";
+import { formatMoney } from "@/shared/utils/formatMoney";
+import { formatDateUZ } from "@/shared/utils/date.utils";
 import { driverStatusBadge } from "@/shared/constants/drivers";
+import { useCarPricesQuery, periodState } from "@/owner/features/carPrices";
 import CarDocumentsSection from "../components/CarDocumentsSection";
+
+// Mashinaning bugun amaldagi to'lov narxi (faol narx davri).
+const CarPricePanel = ({ price, carId }) => {
+  if (!price) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center gap-2 py-4">
+        <div className="flex items-center justify-center size-12 rounded-full bg-muted text-muted-foreground">
+          <CircleDollarSign size={20} strokeWidth={1.5} />
+        </div>
+        <p className="text-sm font-medium">Narx belgilanmagan</p>
+        <p className="text-xs text-muted-foreground">
+          Bu mashina uchun hozir amalda bo'lgan to'lov narxi yo'q
+        </p>
+        <Link
+          to={`/owner/cars/${carId}/narxlar`}
+          className="text-xs text-primary hover:underline"
+        >
+          To'lov narxlarini sozlash
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <KeyValueList
+      columns={2}
+      items={[
+        { label: "Depozitli tarif (kunlik)", value: formatMoney(price.dailyRateDeposit) },
+        { label: "Keshbekli tarif (kunlik)", value: formatMoney(price.dailyRateCashback) },
+        { label: "Oylik keshbek", value: formatMoney(price.monthlyCashback) },
+        {
+          label: "Amal qilmoqda",
+          value: `${formatDateUZ(price.startDate)} - ${
+            price.endDate ? formatDateUZ(price.endDate) : "hozir"
+          }`,
+        },
+      ]}
+    />
+  );
+};
 
 const DriverPanel = ({ driver }) => {
   if (!driver) {
@@ -80,6 +123,10 @@ const DriverPanel = ({ driver }) => {
 const CarOverviewPage = () => {
   const { car } = useOutletContext();
 
+  // Faol narxni "To'lov narxlari" tabi bilan bir xil manbadan (DERIVED) aniqlaymiz.
+  const { data: prices = [] } = useCarPricesQuery(car._id);
+  const activePrice = prices.find((p) => periodState(p) === "active") || null;
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -100,6 +147,22 @@ const CarOverviewPage = () => {
           </DetailSection>
         </div>
       </div>
+
+      <DetailSection
+        title="To'lov narxlari"
+        icon={CircleDollarSign}
+        defaultOpen
+        actions={
+          <Link
+            to={`/owner/cars/${car._id}/narxlar`}
+            className="text-xs text-primary hover:underline"
+          >
+            Barchasi
+          </Link>
+        }
+      >
+        <CarPricePanel price={activePrice} carId={car._id} />
+      </DetailSection>
 
       <DetailSection title="Hujjatlar" defaultOpen>
         <CarDocumentsSection carId={car._id} documents={car.documents || []} />
