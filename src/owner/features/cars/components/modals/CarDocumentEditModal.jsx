@@ -41,7 +41,7 @@ const CarDocumentEditModal = ({ close, carId, document }) => {
       <p className="text-sm">
         Hujjat turi:{" "}
         <span className="font-semibold">
-          {document?.documentType?.name || "—"}
+          {document?.documentType?.name || "-"}
         </span>
       </p>
       <InputField

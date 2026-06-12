@@ -74,7 +74,7 @@ const DriverDocumentsSection = ({ driverId, documents = [] }) => {
             <div className="min-w-0 space-y-2 flex-1">
               <div>
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {doc.documentType?.name || "—"}
+                  {doc.documentType?.name || "-"}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {doc.expiryDate
