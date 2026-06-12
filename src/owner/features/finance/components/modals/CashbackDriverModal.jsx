@@ -3,6 +3,7 @@ import { useState } from "react";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
+import Card from "@/shared/components/ui/card/Card";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -102,39 +103,41 @@ const CashbackDriverModal = ({ driver }) => {
         </form>
       )}
 
-      <div className="space-y-2">
-        <p className="text-xs font-semibold text-muted-foreground">Keshbek oylari</p>
-        {months.length === 0 ? (
-          <EmptyState title="Keshbek oyi yo'q" />
-        ) : (
-          <div className="space-y-1.5">
-            {months.map((m) => (
-              <div key={new Date(m.monthStart).toISOString()} className="flex items-center justify-between gap-2 rounded-md border p-2 text-sm">
-                <div className="min-w-0">
-                  <p className="font-medium">{monthRange(m)}</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {m.isComplete ? "Yakunlangan" : "Joriy"} · {m.daysInMonth} kun
-                  </p>
+      <Card title="Keshbek oylari">
+        <div className="mt-3">
+          {months.length === 0 ? (
+            <EmptyState title="Keshbek oyi yo'q" />
+          ) : (
+            <div className="space-y-1.5">
+              {months.map((m) => (
+                <div key={new Date(m.monthStart).toISOString()} className="flex items-center justify-between gap-2 rounded-md border p-2 text-sm">
+                  <div className="min-w-0">
+                    <p className="font-medium">{monthRange(m)}</p>
+                    <p className="text-[11px] text-muted-foreground">
+                      {m.isComplete ? "Yakunlangan" : "Joriy"} · {m.daysInMonth} kun
+                    </p>
+                  </div>
+                  <div className="text-right text-xs shrink-0">
+                    <p>Hisoblangan: {formatMoney(m.accrued)}</p>
+                    <p className="text-muted-foreground">Qoldiq: {formatMoney(m.available)}</p>
+                  </div>
                 </div>
-                <div className="text-right text-xs shrink-0">
-                  <p>Hisoblangan: {formatMoney(m.accrued)}</p>
-                  <p className="text-muted-foreground">Qoldiq: {formatMoney(m.available)}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </Card>
 
-      <div className="space-y-2">
-        <p className="text-xs font-semibold text-muted-foreground">Harakatlar tarixi</p>
-        <LedgerList
-          ledger={ledger}
-          canManage={canManage}
-          reversing={reverse.isPending}
-          onReverse={(e) => reverse.mutate(e.txId)}
-        />
-      </div>
+      <Card title="Harakatlar tarixi">
+        <div className="mt-3">
+          <LedgerList
+            ledger={ledger}
+            canManage={canManage}
+            reversing={reverse.isPending}
+            onReverse={(e) => reverse.mutate(e.txId)}
+          />
+        </div>
+      </Card>
     </div>
   );
 };

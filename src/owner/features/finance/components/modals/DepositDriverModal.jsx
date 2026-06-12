@@ -3,6 +3,7 @@ import { useState } from "react";
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
+import Card from "@/shared/components/ui/card/Card";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
@@ -91,15 +92,16 @@ const DepositDriverModal = ({ driver }) => {
         </form>
       )}
 
-      <div className="space-y-2">
-        <p className="text-xs font-semibold text-muted-foreground">Harakatlar tarixi</p>
-        <LedgerList
-          ledger={ledger}
-          canManage={canManage}
-          reversing={reverse.isPending}
-          onReverse={(e) => reverse.mutate(e.txId)}
-        />
-      </div>
+      <Card title="Harakatlar tarixi">
+        <div className="mt-3">
+          <LedgerList
+            ledger={ledger}
+            canManage={canManage}
+            reversing={reverse.isPending}
+            onReverse={(e) => reverse.mutate(e.txId)}
+          />
+        </div>
+      </Card>
     </div>
   );
 };
