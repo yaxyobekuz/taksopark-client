@@ -47,6 +47,20 @@ export const qk = Object.freeze({
     all: () => ["workPeriods"],
     list: (driverId) => ["workPeriods", "list", driverId],
   },
+  payments: {
+    all: () => ["payments"],
+    month: (params) => ["payments", "month", params],
+    planTx: (planId) => ["payments", "planTx", planId],
+  },
+  finance: {
+    all: () => ["finance"],
+    overview: (params) => ["finance", "overview", params],
+    dailyPayments: (params) => ["finance", "dailyPayments", params],
+    cashbacks: () => ["finance", "cashbacks"],
+    cashbackDriver: (id) => ["finance", "cashbacks", id],
+    deposits: () => ["finance", "deposits"],
+    depositDriver: (id) => ["finance", "deposits", id],
+  },
   restDays: {
     all: () => ["restDays"],
     list: (params) => ["restDays", "list", params],

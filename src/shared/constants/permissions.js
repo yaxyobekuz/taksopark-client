@@ -37,4 +37,7 @@ export const PERMISSIONS = Object.freeze({
   DAMAGES_CREATE: "damages.create",
   DAMAGES_UPDATE: "damages.update",
   DAMAGES_DELETE: "damages.delete",
+
+  PAYMENTS_READ: "payments.read",
+  PAYMENTS_MANAGE: "payments.manage",
 });

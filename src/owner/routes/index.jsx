@@ -19,8 +19,15 @@ import {
   DriverDamagesPage,
   DriverWorkDaysPage,
   DriverWorkPeriodsPage,
+  DriverPaymentsPage,
 } from "@/owner/features/drivers";
 import { RestDaysListPage } from "@/owner/features/restdays";
+import {
+  FinancePaymentsPage,
+  FinanceReportsPage,
+  FinanceCashbacksPage,
+  FinanceDepositsPage,
+} from "@/owner/features/finance";
 import {
   PenaltiesLayout,
   FinesListPage,
@@ -96,6 +103,14 @@ const OwnerRoutes = () => (
         }
       />
       <Route
+        path="payments"
+        element={
+          <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
+            <DriverPaymentsPage />
+          </PermissionGuard>
+        }
+      />
+      <Route
         path="work-days"
         element={
           <PermissionGuard required={PERMISSIONS.REST_DAYS_READ}>
@@ -126,6 +141,39 @@ const OwnerRoutes = () => (
       element={
         <PermissionGuard required={PERMISSIONS.REST_DAYS_READ}>
           <RestDaysListPage />
+        </PermissionGuard>
+      }
+    />
+
+    <Route
+      path="finance/reports"
+      element={
+        <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
+          <FinanceReportsPage />
+        </PermissionGuard>
+      }
+    />
+    <Route
+      path="finance/payments"
+      element={
+        <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
+          <FinancePaymentsPage />
+        </PermissionGuard>
+      }
+    />
+    <Route
+      path="finance/cashbacks"
+      element={
+        <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
+          <FinanceCashbacksPage />
+        </PermissionGuard>
+      }
+    />
+    <Route
+      path="finance/deposits"
+      element={
+        <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
+          <FinanceDepositsPage />
         </PermissionGuard>
       }
     />

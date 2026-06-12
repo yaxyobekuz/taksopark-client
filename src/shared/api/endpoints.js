@@ -65,4 +65,22 @@ export const ENDPOINTS = Object.freeze({
     base: "/damages",
     byId: (id) => `/damages/${id}`,
   },
+  payments: {
+    plans: "/payments/plans",
+    planById: (id) => `/payments/plans/${id}`,
+    transactions: "/payments/transactions",
+    reverse: (id) => `/payments/transactions/${id}/reverse`,
+  },
+  finance: {
+    overview: "/finance/overview",
+    dailyPayments: "/finance/daily-payments",
+    cashbacks: "/finance/cashbacks",
+    cashbackDriver: (id) => `/finance/cashbacks/${id}`,
+    cashbackPayout: "/finance/cashbacks/payout",
+    cashbackReverse: (id) => `/finance/cashbacks/transactions/${id}/reverse`,
+    deposits: "/finance/deposits",
+    depositDriver: (id) => `/finance/deposits/${id}`,
+    depositMovement: "/finance/deposits/movement",
+    depositReverse: (id) => `/finance/deposits/transactions/${id}/reverse`,
+  },
 });

@@ -7,6 +7,10 @@ import {
   Settings,
   FileType,
   ShieldCheck,
+  Wallet,
+  FileBarChart,
+  RotateCcw,
+  PiggyBank,
 } from "lucide-react";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
@@ -40,6 +44,37 @@ const ownerSidebar = [
         url: "/owner/rest-days",
         permission: PERMISSIONS.REST_DAYS_READ,
         icon: CalendarOff,
+      },
+    ],
+  },
+  {
+    title: "Moliya",
+    icon: Wallet,
+    isActive: false,
+    items: [
+      {
+        title: "Hisobotlar",
+        url: "/owner/finance/reports",
+        permission: PERMISSIONS.PAYMENTS_READ,
+        icon: FileBarChart,
+      },
+      {
+        title: "Kunlik to'lovlar",
+        url: "/owner/finance/payments",
+        permission: PERMISSIONS.PAYMENTS_READ,
+        icon: Wallet,
+      },
+      {
+        title: "Keshbeklar",
+        url: "/owner/finance/cashbacks",
+        permission: PERMISSIONS.PAYMENTS_READ,
+        icon: RotateCcw,
+      },
+      {
+        title: "Depozitlar",
+        url: "/owner/finance/deposits",
+        permission: PERMISSIONS.PAYMENTS_READ,
+        icon: PiggyBank,
       },
     ],
   },
