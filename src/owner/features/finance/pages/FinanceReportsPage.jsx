@@ -14,9 +14,10 @@ const FinanceReportsPage = () => {
   });
 
   const { data, isLoading } = useOverviewQuery({ year, month });
-  const payments = data?.payments || { planTotal: 0, paidTotal: 0, debtTotal: 0 };
+  const payments = data?.payments || { planTotal: 0, paidTotal: 0 };
   const cashback = data?.cashback || { available: 0 };
   const deposit = data?.deposit || { total: 0 };
+  const netDebt = data?.netDebt || 0;
 
   return (
     <div className="space-y-4">
@@ -31,7 +32,12 @@ const FinanceReportsPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <StatCard label="Oylik reja" value={payments.planTotal} isMoney />
           <StatCard label="To'langan" value={payments.paidTotal} isMoney />
-          <StatCard label="Qarz" value={payments.debtTotal} isMoney />
+          <StatCard
+            label="Sof qarz"
+            hint="Depozit/keshbek bilan qoplangandan keyin"
+            value={netDebt}
+            isMoney
+          />
           <StatCard label="Keshbek qoldig'i" value={cashback.available} isMoney />
           <StatCard label="Depozit balansi" value={deposit.total} isMoney />
         </div>

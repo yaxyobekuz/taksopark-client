@@ -12,6 +12,7 @@ import { formatDateUZ } from "@/shared/utils/date.utils";
 
 import { useCashbackDriverQuery } from "../../hooks/useFinanceQueries";
 import { useCashbackPayout, useCashbackReverse } from "../../hooks/useFinanceMutations";
+import AccountBreakdown from "../AccountBreakdown";
 
 const monthRange = (m) => `${formatDateUZ(m.monthStart)} – ${formatDateUZ(m.monthEnd)}`;
 
@@ -22,6 +23,8 @@ const CashbackDriverModal = ({ driver }) => {
   const { data, isLoading } = useCashbackDriverQuery(driver?._id);
   const months = data?.months || [];
   const totals = data?.totals || { accrued: 0, paidOut: 0, available: 0 };
+  const accountDebt = data?.accountDebt || 0;
+  const account = data?.account || null;
   const transactions = data?.transactions || [];
 
   const payout = useCashbackPayout();
@@ -57,10 +60,19 @@ const CashbackDriverModal = ({ driver }) => {
           <p className="text-sm font-semibold">{formatMoney(totals.paidOut)}</p>
         </div>
         <div className="rounded-lg border p-2">
-          <p className="text-[11px] text-muted-foreground">Qoldiq</p>
+          <p className="text-[11px] text-muted-foreground">To'lash mumkin</p>
           <p className="text-sm font-semibold">{formatMoney(totals.available)}</p>
         </div>
       </div>
+
+      {accountDebt > 0 && (
+        <p className="text-xs text-amber-700 bg-amber-50 rounded p-2">
+          Haydovchining qarzi bor ({formatMoney(accountDebt)}) — keshbek avval qarzni
+          qoplaydi, shuning uchun to'lash mumkin bo'lgan summa cheklangan.
+        </p>
+      )}
+
+      <AccountBreakdown account={account} />
 
       {canManage && payable.length > 0 && (
         <form onSubmit={handlePayout} className="space-y-2 border-t pt-3">

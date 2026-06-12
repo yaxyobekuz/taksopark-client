@@ -18,6 +18,7 @@ const FinanceDepositsPage = () => {
   const { data, isLoading } = useDepositsQuery();
   const rows = data?.rows || [];
   const total = data?.total || 0;
+  const totalDebt = data?.totalDebt || 0;
 
   return (
     <div className="space-y-4">
@@ -25,6 +26,7 @@ const FinanceDepositsPage = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <StatCard label="Jami depozit balansi" value={total} isMoney />
+        <StatCard label="Jami qarz" value={totalDebt} isMoney />
       </div>
 
       {isLoading ? (
@@ -38,6 +40,7 @@ const FinanceDepositsPage = () => {
               <tr className="text-left text-muted-foreground">
                 <th className="p-3 font-medium">Haydovchi</th>
                 <th className="p-3 font-medium text-right">Balans</th>
+                <th className="p-3 font-medium text-right">Qarz</th>
                 <th className="p-3 font-medium text-right">Amallar</th>
               </tr>
             </thead>
@@ -50,6 +53,7 @@ const FinanceDepositsPage = () => {
                 >
                   <td className="p-3 font-medium">{driverName(r.driver)}</td>
                   <td className="p-3 text-right tabular-nums">{formatMoney(r.balance)}</td>
+                  <td className="p-3 text-right tabular-nums">{formatMoney(r.debt || 0)}</td>
                   <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
                     <Button
                       size="sm"
