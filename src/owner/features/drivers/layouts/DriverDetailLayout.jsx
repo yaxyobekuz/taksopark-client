@@ -52,9 +52,6 @@ const DriverDetailLayout = () => {
   if (has(PERMISSIONS.WORK_PERIODS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/work-periods`, label: "Ish davrlari" });
   }
-  if (has(PERMISSIONS.REST_DAYS_READ)) {
-    tabs.push({ to: `/owner/drivers/${id}/work-days`, label: "Ish kunlari" });
-  }
   if (has(PERMISSIONS.PAYMENTS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/payments`, label: "Kunlik to'lovlar" });
   }

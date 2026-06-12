@@ -17,7 +17,6 @@ import {
   DriverOverviewPage,
   DriverFinesPage,
   DriverDamagesPage,
-  DriverWorkDaysPage,
   DriverWorkPeriodsPage,
   DriverPaymentsPage,
 } from "@/owner/features/drivers";
@@ -107,14 +106,6 @@ const OwnerRoutes = () => (
         element={
           <PermissionGuard required={PERMISSIONS.PAYMENTS_READ}>
             <DriverPaymentsPage />
-          </PermissionGuard>
-        }
-      />
-      <Route
-        path="work-days"
-        element={
-          <PermissionGuard required={PERMISSIONS.REST_DAYS_READ}>
-            <DriverWorkDaysPage />
           </PermissionGuard>
         }
       />
