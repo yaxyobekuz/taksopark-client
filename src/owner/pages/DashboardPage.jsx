@@ -7,8 +7,15 @@ import {
   CalendarPlus,
   Ambulance,
   Wallet,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  AlertCircle,
+  PiggyBank,
+  Coins,
+  TrendingUp,
 } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
+import Card from "@/shared/components/ui/card/Card";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import QuickAddFab from "@/shared/components/ui/fab/QuickAddFab";
 import NotificationsPanel from "@/shared/components/ui/panel/NotificationsPanel";
@@ -24,7 +31,11 @@ import {
   CarCreateModal,
 } from "@/owner/features/cars";
 import { RestDayCreateModal } from "@/owner/features/restdays";
-import { AddPaymentModal } from "@/owner/features/finance";
+import {
+  AddPaymentModal,
+  PaymentsFlowChart,
+  useOverviewQuery,
+} from "@/owner/features/finance";
 
 const DashboardPage = () => {
   const { openModal } = useModal();
@@ -46,6 +57,18 @@ const DashboardPage = () => {
   const activeCars = carsData?.meta?.total ?? 0;
 
   const totalWarnings = expiringCars.length;
+
+  // Moliya umumiy ko'rsatkichlari (joriy oy) — faqat ruxsat bo'lsa yuklanadi.
+  const canFinance = has(PERMISSIONS.PAYMENTS_READ);
+  const now = new Date();
+  const { data: finance, isLoading: financeLoading } = useOverviewQuery(
+    { year: now.getFullYear(), month: now.getMonth() + 1 },
+    { enabled: canFinance },
+  );
+  const flow = finance?.flow || { totals: { income: 0, expense: 0 }, series: [] };
+  const netDebt = finance?.netDebt || 0;
+  const depositTotal = finance?.deposit?.total || 0;
+  const cashbackOwed = finance?.cashback?.available || 0;
 
   const quickActions = [
     {
@@ -121,6 +144,67 @@ const DashboardPage = () => {
           )}
         </div>
       </div>
+
+      {canFinance && (
+        <div className="space-y-4">
+          {financeLoading ? (
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+              <SkeletonStatCard count={5} />
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+              <StatCard
+                label="Bu oy kirim"
+                hint="Kunlik to'lovlar"
+                value={flow.totals.income}
+                isMoney
+                tone="positive"
+                icon={ArrowDownCircle}
+              />
+              <StatCard
+                label="Bu oy chiqim"
+                hint="Tuzatuvchi qaytarishlar"
+                value={flow.totals.expense}
+                isMoney
+                tone="negative"
+                icon={ArrowUpCircle}
+              />
+              <StatCard
+                label="Umumiy qarz"
+                value={netDebt}
+                isMoney
+                tone="negative"
+                icon={AlertCircle}
+              />
+              <StatCard
+                label="Umumiy depozit"
+                value={depositTotal}
+                isMoney
+                tone="info"
+                icon={PiggyBank}
+              />
+              <StatCard
+                label="Beriladigan keshbek"
+                value={cashbackOwed}
+                isMoney
+                tone="warn"
+                icon={Coins}
+              />
+            </div>
+          )}
+
+          <Card
+            title="Kunlik to'lovlar oqimi (bu oy)"
+            icon={<TrendingUp size={18} className="text-muted-foreground" />}
+          >
+            {financeLoading ? (
+              <div className="h-64 w-full animate-pulse rounded bg-muted/40" />
+            ) : (
+              <PaymentsFlowChart series={flow.series} />
+            )}
+          </Card>
+        </div>
+      )}
 
       <NotificationsPanel
         open={notifOpen}

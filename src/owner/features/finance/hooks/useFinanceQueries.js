@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { qk } from "@/shared/lib/query/keys";
 import { financeAPI } from "../api/finance.api";
 
-export const useOverviewQuery = (params) =>
+export const useOverviewQuery = (params, options = {}) =>
   useQuery({
     queryKey: qk.finance.overview(params),
     queryFn: () => financeAPI.overview(params).then((r) => r.data.data),
+    ...options,
   });
 
 export const useDailyPaymentsQuery = (params) =>
