@@ -58,7 +58,10 @@ const DriverDetailLayout = () => {
   if (has(PERMISSIONS.PAYMENTS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/payments`, label: "Kunlik to'lovlar" });
   }
-  if (has(PERMISSIONS.PAYMENTS_READ) && tariffs.has(TARIFF.DEPOSIT)) {
+  // Depozit tabi har doim ko'rinadi: har qanday haydovchida (keshbekli ham) ortiqcha
+  // to'lov depozitga tushib, undan kunlik ijara qoplanishi mumkin - bu tranzaksiyalar
+  // ko'rinishi uchun tab tarifga bog'liq emas.
+  if (has(PERMISSIONS.PAYMENTS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/deposit`, label: "Depozit" });
   }
   if (has(PERMISSIONS.PAYMENTS_READ) && tariffs.has(TARIFF.CASHBACK)) {
