@@ -17,6 +17,9 @@ export const MODAL = Object.freeze({
   CAR_EDIT: "car:edit",
   CAR_DELETE: "car:delete",
 
+  CAR_PRICE_FORM: "carPrice:form",
+  CAR_PRICE_DELETE: "carPrice:delete",
+
   CAR_DOC_TYPE_CREATE: "carDocType:create",
   CAR_DOC_TYPE_EDIT: "carDocType:edit",
   CAR_DOC_TYPE_DELETE: "carDocType:delete",
@@ -35,8 +38,10 @@ export const MODAL = Object.freeze({
 
   DRIVER_CREATE: "driver:create",
   DRIVER_EDIT: "driver:edit",
-  DRIVER_DELETE: "driver:delete",
   DRIVER_CHANGE_CAR: "driver:changeCar",
+
+  WORK_PERIOD_FORM: "workPeriod:form",
+  WORK_PERIOD_DELETE: "workPeriod:delete",
 
   REST_DAY_CREATE: "restDay:create",
   REST_DAY_DELETE: "restDay:delete",

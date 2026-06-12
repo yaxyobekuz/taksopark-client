@@ -26,6 +26,10 @@ export const qk = Object.freeze({
     one: (id) => ["cars", "detail", id],
     expiring: (params) => ["cars", "expiring", params],
   },
+  carPrices: {
+    all: () => ["carPrices"],
+    list: (carId) => ["carPrices", "list", carId],
+  },
   carDocumentTypes: {
     all: () => ["carDocumentTypes"],
     list: () => ["carDocumentTypes", "list"],
@@ -38,6 +42,10 @@ export const qk = Object.freeze({
     all: () => ["drivers"],
     list: (params) => ["drivers", "list", params],
     one: (id) => ["drivers", "detail", id],
+  },
+  workPeriods: {
+    all: () => ["workPeriods"],
+    list: (driverId) => ["workPeriods", "list", driverId],
   },
   restDays: {
     all: () => ["restDays"],

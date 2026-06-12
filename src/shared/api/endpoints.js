@@ -30,6 +30,10 @@ export const ENDPOINTS = Object.freeze({
     documents: (id) => `/cars/${id}/documents`,
     documentById: (id, docId) => `/cars/${id}/documents/${docId}`,
   },
+  carPrices: {
+    base: "/car-prices",
+    byId: (id) => `/car-prices/${id}`,
+  },
   carDocumentTypes: {
     base: "/car-document-types",
     byId: (id) => `/car-document-types/${id}`,
@@ -43,6 +47,10 @@ export const ENDPOINTS = Object.freeze({
   driverDocumentTypes: {
     base: "/driver-document-types",
     byId: (id) => `/driver-document-types/${id}`,
+  },
+  workPeriods: {
+    base: "/work-periods",
+    byId: (id) => `/work-periods/${id}`,
   },
   restDays: {
     base: "/rest-days",

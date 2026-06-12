@@ -10,6 +10,7 @@ import {
   CarOverviewPage,
   CarEditPage,
 } from "@/owner/features/cars";
+import { CarPricesPage } from "@/owner/features/carPrices";
 import {
   DriversListPage,
   DriverDetailLayout,
@@ -17,6 +18,7 @@ import {
   DriverFinesPage,
   DriverDamagesPage,
   DriverWorkDaysPage,
+  DriverWorkPeriodsPage,
 } from "@/owner/features/drivers";
 import { RestDaysListPage } from "@/owner/features/restdays";
 import {
@@ -51,6 +53,14 @@ const OwnerRoutes = () => (
     >
       <Route index element={<CarOverviewPage />} />
       <Route
+        path="narxlar"
+        element={
+          <PermissionGuard required={PERMISSIONS.CAR_PRICES_READ}>
+            <CarPricesPage />
+          </PermissionGuard>
+        }
+      />
+      <Route
         path="tahrirlash"
         element={
           <PermissionGuard required={PERMISSIONS.CARS_UPDATE}>
@@ -77,6 +87,14 @@ const OwnerRoutes = () => (
       }
     >
       <Route index element={<DriverOverviewPage />} />
+      <Route
+        path="work-periods"
+        element={
+          <PermissionGuard required={PERMISSIONS.WORK_PERIODS_READ}>
+            <DriverWorkPeriodsPage />
+          </PermissionGuard>
+        }
+      />
       <Route
         path="work-days"
         element={

@@ -11,8 +11,10 @@ export const PERMISSIONS = Object.freeze({
   DRIVERS_READ: "drivers.read",
   DRIVERS_CREATE: "drivers.create",
   DRIVERS_UPDATE: "drivers.update",
-  DRIVERS_DELETE: "drivers.delete",
   DRIVERS_DOCUMENTS_MANAGE: "drivers.documents.manage",
+
+  WORK_PERIODS_READ: "work_periods.read",
+  WORK_PERIODS_MANAGE: "work_periods.manage",
 
   REST_DAYS_READ: "rest_days.read",
   REST_DAYS_MANAGE: "rest_days.manage",
@@ -22,6 +24,9 @@ export const PERMISSIONS = Object.freeze({
   CARS_UPDATE: "cars.update",
   CARS_DELETE: "cars.delete",
   CARS_DOCUMENTS_MANAGE: "cars.documents.manage",
+
+  CAR_PRICES_READ: "car_prices.read",
+  CAR_PRICES_MANAGE: "car_prices.manage",
 
   FINES_READ: "fines.read",
   FINES_CREATE: "fines.create",
