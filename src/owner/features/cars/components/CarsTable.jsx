@@ -5,10 +5,34 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import { MODAL } from "@/shared/constants/modals";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { buildFileUrl } from "@/shared/utils/fileUrl";
+import { formatMoney } from "@/shared/utils/formatMoney";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
 import { useCarRestore } from "../hooks/useCarMutations";
 
 const stop = (e) => e.stopPropagation();
+
+// Mashinaning bugun faol narx davridagi kunlik narxlari (DERIVED holat).
+const ActivePriceCell = ({ price }) => {
+  if (!price) {
+    return (
+      <span className="inline-flex text-xs font-medium px-2 py-0.5 rounded bg-gray-100 text-gray-600">
+        Narx belgilanmagan
+      </span>
+    );
+  }
+  return (
+    <div className="text-xs leading-tight whitespace-nowrap">
+      <div>
+        <span className="text-muted-foreground">Depozit:</span>{" "}
+        <span className="font-medium">{formatMoney(price.dailyRateDeposit)}</span>
+      </div>
+      <div>
+        <span className="text-muted-foreground">Keshbek:</span>{" "}
+        <span className="font-medium">{formatMoney(price.dailyRateCashback)}</span>
+      </div>
+    </div>
+  );
+};
 
 const CarsTable = ({ items = [], isArchived = false }) => {
   const navigate = useNavigate();
@@ -28,6 +52,7 @@ const CarsTable = ({ items = [], isArchived = false }) => {
             <th className="text-left p-3">Model</th>
             <th className="text-left p-3">Davlat raqami</th>
             <th className="text-left p-3">Haydovchi</th>
+            <th className="text-left p-3">Faol narx</th>
             <th className="text-right p-3">Amallar</th>
           </tr>
         </thead>
@@ -57,6 +82,9 @@ const CarsTable = ({ items = [], isArchived = false }) => {
                 {car.currentDriver
                   ? `${car.currentDriver.firstName} ${car.currentDriver.lastName}`
                   : "-"}
+              </td>
+              <td className="p-3">
+                <ActivePriceCell price={car.activePrice} />
               </td>
               <td className="p-3" onClick={stop}>
                 <div className="flex justify-end gap-2">
