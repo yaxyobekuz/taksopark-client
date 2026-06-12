@@ -6,6 +6,7 @@ import {
   UserPlus,
   CalendarPlus,
   Ambulance,
+  Wallet,
 } from "lucide-react";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
@@ -23,6 +24,7 @@ import {
   CarCreateModal,
 } from "@/owner/features/cars";
 import { RestDayCreateModal } from "@/owner/features/restdays";
+import { AddPaymentModal } from "@/owner/features/finance";
 
 const DashboardPage = () => {
   const { openModal } = useModal();
@@ -66,6 +68,13 @@ const DashboardPage = () => {
       icon: CalendarPlus,
       permission: PERMISSIONS.REST_DAYS_MANAGE,
       onClick: () => openModal(MODAL.REST_DAY_CREATE),
+    },
+    {
+      key: "payment",
+      label: "Kunlik to'lov",
+      icon: Wallet,
+      permission: PERMISSIONS.PAYMENTS_MANAGE,
+      onClick: () => openModal(MODAL.PAYMENT_ADD),
     },
   ].filter((a) => has(a.permission));
 
@@ -128,6 +137,9 @@ const DashboardPage = () => {
       </ModalWrapper>
       <ModalWrapper name={MODAL.REST_DAY_CREATE} title="Yangi dam olish kuni">
         <RestDayCreateModal />
+      </ModalWrapper>
+      <ModalWrapper name={MODAL.PAYMENT_ADD} title="Kunlik to'lov qo'shish" className="max-w-md">
+        <AddPaymentModal />
       </ModalWrapper>
 
       <QuickAddFab actions={quickActions} />
