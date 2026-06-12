@@ -23,7 +23,7 @@ const PaymentDayModal = ({ close, plan, canManage }) => {
 
   if (!plan) return null;
 
-  // To'langan/qarz — tranzaksiyalardan jonli hisoblanadi (snapshot eskirmasin).
+  // To'langan/qarz - tranzaksiyalardan jonli hisoblanadi (snapshot eskirmasin).
   const paid = paidFromTransactions(transactions);
   const debt = Math.max(0, (plan.planAmount || 0) - paid);
   const status = planStatus({ ...plan, paidAmount: paid, debt });
@@ -65,12 +65,12 @@ const PaymentDayModal = ({ close, plan, canManage }) => {
 
       {plan.isRestDay && (
         <p className="text-xs text-amber-700 bg-amber-50 rounded p-2">
-          Dam olish kuni — bu kun uchun to'lov majburiyati yo'q.
+          Dam olish kuni - bu kun uchun to'lov majburiyati yo'q.
         </p>
       )}
       {plan.priceMissing && !plan.isRestDay && (
         <p className="text-xs text-muted-foreground bg-gray-50 rounded p-2">
-          Bu kunga mashina narx davri belgilanmagan — to'lov kiritib bo'lmaydi.
+          Bu kunga mashina narx davri belgilanmagan - to'lov kiritib bo'lmaydi.
         </p>
       )}
 

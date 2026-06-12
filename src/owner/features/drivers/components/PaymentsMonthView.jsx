@@ -67,7 +67,7 @@ const PaymentsMonthView = ({ driverId, driver }) => {
   const restDelete = useRestdayDelete();
   const togglePending = restCreate.isPending || restDelete.isPending;
 
-  // Dam olish kuni o'zgarsa kunlik planlar qayta hisoblanadi — to'lov ko'rinishini ham yangilaymiz.
+  // Dam olish kuni o'zgarsa kunlik planlar qayta hisoblanadi - to'lov ko'rinishini ham yangilaymiz.
   const refreshPayments = () => {
     qc.invalidateQueries({ queryKey: qk.payments.all() });
     qc.invalidateQueries({ queryKey: qk.finance.all() });

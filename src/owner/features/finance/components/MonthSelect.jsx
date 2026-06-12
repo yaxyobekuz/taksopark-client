@@ -1,7 +1,7 @@
 import SelectField from "@/shared/components/ui/select/SelectField";
 import { months as MONTHS } from "@/shared/utils/date.utils";
 
-// Yil/oy tanlovchi — moliya sahifalarida umumiy ishlatiladi.
+// Yil/oy tanlovchi - moliya sahifalarida umumiy ishlatiladi.
 const MonthSelect = ({ year, month, onChange }) => {
   const now = new Date();
   const yearOptions = [];

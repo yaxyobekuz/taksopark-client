@@ -1,6 +1,6 @@
 // Kunlik plan holatini (label + rang) DERIVED qiymatlardan aniqlaydi.
 export const planStatus = (plan) => {
-  if (!plan) return { key: "none", label: "—", className: "bg-gray-100 text-gray-600" };
+  if (!plan) return { key: "none", label: "-", className: "bg-gray-100 text-gray-600" };
   if (plan.isRestDay) {
     return { key: "rest", label: "Dam olish", className: "bg-amber-50 text-amber-700" };
   }
@@ -18,7 +18,7 @@ export const planStatus = (plan) => {
   return { key: "unpaid", label: "To'lanmagan", className: "bg-rose-50 text-rose-700" };
 };
 
-// Tranzaksiyalardan to'langan summani hisoblaydi (payment − reversal) — §9.
+// Tranzaksiyalardan to'langan summani hisoblaydi (payment − reversal) - §9.
 export const paidFromTransactions = (transactions = []) =>
   transactions.reduce((sum, t) => {
     if (t.type === "payment") return sum + t.amount;
