@@ -37,7 +37,7 @@ const AddPaymentModal = ({ close }) => {
   let blockMsg = "";
   if (driverId && date && !plansLoading) {
     if (!plan) blockMsg = "Bu kun haydovchining ish davriga to'g'ri kelmaydi";
-    else if (plan.isRestDay) blockMsg = "Dam olish kuni — to'lov majburiyati yo'q";
+    else if (plan.isRestDay) blockMsg = "Dam olish kuni - to'lov majburiyati yo'q";
     else if (plan.priceMissing) blockMsg = "Bu kun uchun narx belgilanmagan";
     else if (plan.debt <= 0) blockMsg = "Bu kun uchun to'lov to'liq amalga oshirilgan";
   }
@@ -57,12 +57,12 @@ const AddPaymentModal = ({ close }) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <SelectField
         label="Haydovchi"
+        searchable
+        placeholder="Haydovchini tanlang"
+        searchPlaceholder="Ism yoki telefon..."
         value={driverId}
         onChange={setDriverId}
-        options={[
-          { value: "", label: "- Haydovchini tanlang -" },
-          ...drivers.map((d) => ({ value: d._id, label: driverLabel(d) })),
-        ]}
+        options={drivers.map((d) => ({ value: d._id, label: driverLabel(d) }))}
       />
 
       <InputField
