@@ -35,16 +35,3 @@ export const useDriverUpdate = () => {
     onError,
   });
 };
-
-export const useDriverChangeCar = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, carId }) =>
-      driversAPI.update(id, { carId: carId || null }).then((r) => r.data.data),
-    onSuccess: () => {
-      invalidateAll(qc);
-      toast.success("Mashina almashtirildi");
-    },
-    onError,
-  });
-};

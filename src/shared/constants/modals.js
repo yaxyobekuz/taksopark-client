@@ -43,6 +43,9 @@ export const MODAL = Object.freeze({
   WORK_PERIOD_FORM: "workPeriod:form",
   WORK_PERIOD_DELETE: "workPeriod:delete",
 
+  CAR_ASSIGNMENT_FORM: "carAssignment:form",
+  CAR_ASSIGNMENT_DELETE: "carAssignment:delete",
+
   PAYMENT_DAY: "payment:day",
   PAYMENT_ADD: "payment:add",
   PAYMENT_QUICK: "payment:quick",

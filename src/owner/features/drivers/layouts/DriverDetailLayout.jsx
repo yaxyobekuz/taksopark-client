@@ -1,7 +1,6 @@
 import { Link, Outlet, useParams } from "react-router-dom";
-import { ArrowLeft, Car } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
-import Button from "@/shared/components/ui/button/Button";
 import TabsLinks from "@/shared/components/ui/tabs/TabsLinks";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import PlateNumber from "@/shared/components/ui/plate/PlateNumber";
@@ -10,13 +9,11 @@ import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 
 import { buildFileUrl } from "@/shared/utils/fileUrl";
 import usePermissions from "@/shared/hooks/usePermissions";
-import useModal from "@/shared/hooks/useModal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
 import { driverStatusBadge } from "@/shared/constants/drivers";
 
 import { useDriverQuery } from "../hooks/useDriversQuery";
-import DriverChangeCarModal from "../components/modals/DriverChangeCarModal";
 import DriverDocumentCreateModal from "../components/modals/DriverDocumentCreateModal";
 import DriverDocumentEditModal from "../components/modals/DriverDocumentEditModal";
 import DriverDocumentDeleteModal from "../components/modals/DriverDocumentDeleteModal";
@@ -25,7 +22,6 @@ const DriverDetailLayout = () => {
   const { id } = useParams();
   const { data: driver, isLoading } = useDriverQuery(id);
   const { has } = usePermissions();
-  const { openModal } = useModal();
 
   if (isLoading) {
     return (
@@ -51,6 +47,9 @@ const DriverDetailLayout = () => {
   const tabs = [{ to: `/owner/drivers/${id}`, label: "Asosiy", exact: true }];
   if (has(PERMISSIONS.WORK_PERIODS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/work-periods`, label: "Ish davrlari" });
+  }
+  if (has(PERMISSIONS.DRIVERS_READ)) {
+    tabs.push({ to: `/owner/drivers/${id}/car-assignments`, label: "Mashina biriktirish" });
   }
   if (has(PERMISSIONS.PAYMENTS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/payments`, label: "Kunlik to'lovlar" });
@@ -129,18 +128,6 @@ const DriverDetailLayout = () => {
           </p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-2 shrink-0">
-          {has(PERMISSIONS.DRIVERS_UPDATE) && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => openModal(MODAL.DRIVER_CHANGE_CAR, { driver })}
-            >
-              <Car size={14} className="mr-1.5" />
-              Mashinani almashtirish
-            </Button>
-          )}
-        </div>
       </div>
 
       <div className="sticky top-12 md:top-0 z-10 -mx-4 px-4 py-2 bg-background border-b">
@@ -152,13 +139,6 @@ const DriverDetailLayout = () => {
 
       <Outlet context={{ driver }} />
 
-      <ModalWrapper
-        name={MODAL.DRIVER_CHANGE_CAR}
-        title="Mashinani almashtirish"
-        className="max-w-md"
-      >
-        <DriverChangeCarModal />
-      </ModalWrapper>
       <ModalWrapper name={MODAL.DRIVER_DOC_CREATE} title="Hujjat qo'shish">
         <DriverDocumentCreateModal />
       </ModalWrapper>

@@ -4,6 +4,7 @@ export { default as DriverOverviewPage } from "./pages/DriverOverviewPage";
 export { default as DriverFinesPage } from "./pages/DriverFinesPage";
 export { default as DriverDamagesPage } from "./pages/DriverDamagesPage";
 export { default as DriverWorkPeriodsPage } from "./pages/DriverWorkPeriodsPage";
+export { default as DriverCarAssignmentsPage } from "./pages/DriverCarAssignmentsPage";
 export { default as DriverPaymentsPage } from "./pages/DriverPaymentsPage";
 export { default as PaymentsMonthView } from "./components/PaymentsMonthView";
 export { default as PaymentDayModal } from "./components/modals/PaymentDayModal";

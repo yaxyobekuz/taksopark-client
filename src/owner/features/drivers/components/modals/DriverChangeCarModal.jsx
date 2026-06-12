@@ -1,70 +1,69 @@
-import { useEffect } from "react";
 import useObjectState from "@/shared/hooks/useObjectState";
 import SelectField from "@/shared/components/ui/select/SelectField";
+import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
 import { useCarsQuery } from "@/owner/features/cars";
-import { useDriverChangeCar } from "../../hooks/useDriverMutations";
+import { useCarChange } from "../../hooks/useCarAssignmentMutations";
 
+// Tezkor "mashinani almashtirish": tanlangan sanadan boshlab yangi mashina biriktiriladi,
+// joriy biriktirish o'sha sanadan oldin yakunlanadi (§2). To'liq tarix - "Mashina biriktirish" tabida.
 const DriverChangeCarModal = ({ close, driver }) => {
   const currentCarId = driver?.car?._id || driver?.car || "";
-  const { carId, setField, setFields } = useObjectState({ carId: currentCarId });
-
-  useEffect(() => {
-    setFields({ carId: driver?.car?._id || driver?.car || "" });
-  }, [driver, setFields]);
+  const { carId, fromDate, setField, state } = useObjectState({
+    carId: "",
+    fromDate: new Date().toISOString().slice(0, 10),
+  });
 
   const { data: carsData } = useCarsQuery({ limit: 500, isActive: "true" });
-  const carOptions = (carsData?.data || []).map((c) => ({
-    value: c._id,
-    label: `${c.plateNumber || "-"} - ${c.model}`,
-  }));
+  const carOptions = (carsData?.data || [])
+    .filter((c) => String(c._id) !== String(currentCarId))
+    .map((c) => ({ value: c._id, label: `${c.plateNumber || "-"} - ${c.model}` }));
 
-  const options = [{ value: "", label: "- Biriktirilmagan -" }, ...carOptions];
+  const { mutate, isPending } = useCarChange(driver?._id);
 
-  const { mutate, isPending } = useDriverChangeCar();
-
-  const changed = String(carId || "") !== String(currentCarId || "");
-
-  const handleConfirm = () => {
-    if (!driver?._id || !changed) return;
-    mutate({ id: driver._id, carId }, { onSuccess: () => close() });
+  const handleConfirm = (e) => {
+    e.preventDefault();
+    if (!driver?._id || !carId || !fromDate) return;
+    mutate(
+      { driverId: driver._id, carId: state.carId, fromDate: state.fromDate },
+      { onSuccess: () => close() },
+    );
   };
 
   return (
-    <div className="space-y-4">
+    <form onSubmit={handleConfirm} className="space-y-4">
       <p className="text-sm text-muted-foreground">
         <span className="font-semibold text-foreground">
           {driver?.firstName} {driver?.lastName}
         </span>{" "}
-        haydovchiga biriktirilgan mashinani almashtirasiz.
+        uchun yangi mashina biriktiriladi. Eski biriktirish tanlangan sanadan oldin yakunlanadi.
       </p>
 
       <SelectField
-        label="Mashina"
+        label="Yangi mashina"
         value={carId}
         onChange={(v) => setField("carId", v)}
-        options={options}
+        options={[{ value: "", label: "- Mashinani tanlang -" }, ...carOptions]}
+        disabled={isPending}
+      />
+      <InputField
+        label="Qaysi sanadan"
+        type="date"
+        value={fromDate}
+        onChange={(e) => setField("fromDate", e.target.value)}
+        required
         disabled={isPending}
       />
 
       <div className="flex gap-2">
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => close()}
-          disabled={isPending}
-        >
+        <Button type="button" variant="outline" className="flex-1" onClick={() => close()} disabled={isPending}>
           Bekor qilish
         </Button>
-        <Button
-          className="flex-1"
-          onClick={handleConfirm}
-          disabled={isPending || !changed}
-        >
+        <Button type="submit" className="flex-1" disabled={isPending || !carId || !fromDate}>
           {isPending ? "Saqlanmoqda..." : "Tasdiqlash"}
         </Button>
       </div>
-    </div>
+    </form>
   );
 };
 

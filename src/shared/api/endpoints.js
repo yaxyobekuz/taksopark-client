@@ -52,6 +52,11 @@ export const ENDPOINTS = Object.freeze({
     base: "/work-periods",
     byId: (id) => `/work-periods/${id}`,
   },
+  carAssignments: {
+    base: "/car-assignments",
+    byId: (id) => `/car-assignments/${id}`,
+    changeCar: "/car-assignments/change-car",
+  },
   restDays: {
     base: "/rest-days",
     byId: (id) => `/rest-days/${id}`,
