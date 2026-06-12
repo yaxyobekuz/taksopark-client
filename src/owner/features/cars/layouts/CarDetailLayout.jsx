@@ -44,6 +44,9 @@ const CarDetailLayout = () => {
   }
 
   const tabs = [{ to: `/owner/cars/${id}`, label: "Asosiy", exact: true }];
+  if (has(PERMISSIONS.CAR_PRICES_READ)) {
+    tabs.push({ to: `/owner/cars/${id}/narxlar`, label: "To'lov narxlari" });
+  }
   if (has(PERMISSIONS.CARS_UPDATE)) {
     tabs.push({ to: `/owner/cars/${id}/tahrirlash`, label: "Tahrirlash" });
   }
