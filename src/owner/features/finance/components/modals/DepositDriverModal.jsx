@@ -1,20 +1,16 @@
 import { useState } from "react";
-import { Undo2 } from "lucide-react";
 
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
 import Button from "@/shared/components/ui/button/Button";
-import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import usePermissions from "@/shared/hooks/usePermissions";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
-import { formatDateUZ } from "@/shared/utils/date.utils";
 
 import { useDepositDriverQuery } from "../../hooks/useFinanceQueries";
 import { useDepositMovement, useDepositReverse } from "../../hooks/useFinanceMutations";
 import AccountBreakdown from "../AccountBreakdown";
-
-const TYPE_LABELS = { in: "Kirim", out: "Chiqim" };
+import LedgerList from "../LedgerList";
 
 const DepositDriverModal = ({ driver }) => {
   const { has } = usePermissions();
@@ -24,7 +20,7 @@ const DepositDriverModal = ({ driver }) => {
   const balance = data?.balance || 0;
   const debt = data?.debt || 0;
   const account = data?.account || null;
-  const transactions = data?.transactions || [];
+  const ledger = data?.ledger || [];
 
   const movement = useDepositMovement();
   const reverse = useDepositReverse();
@@ -32,8 +28,6 @@ const DepositDriverModal = ({ driver }) => {
   const [type, setType] = useState("in");
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
-
-  const reversedIds = new Set(transactions.filter((t) => t.reverses).map((t) => String(t.reverses)));
 
   const handleSubmit = (e) => {
     e.preventDefault();
