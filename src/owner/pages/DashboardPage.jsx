@@ -33,7 +33,7 @@ const DashboardPage = () => {
     useCarsExpiringQuery({ limit: 5, days: 30 });
   const { data: driversData, isLoading: driversLoading } = useDriversQuery({
     limit: 1,
-    status: "active",
+    status: "working",
   });
   const { data: carsData, isLoading: carsLoading } = useCarsQuery({
     limit: 1,

@@ -14,7 +14,7 @@ const DamageCreateModal = ({ close, presetDriverId }) => {
     note: "",
   });
   const [files, setFiles] = useState([]);
-  const { data: driversData } = useDriversQuery({ limit: 500, status: "active" });
+  const { data: driversData } = useDriversQuery({ limit: 500, status: "working" });
   const driverOptions = (driversData?.data || []).map((d) => ({
     value: d._id,
     label: `${d.firstName} ${d.lastName} (${d.car?.plateNumber || "mashina yo'q"})`,

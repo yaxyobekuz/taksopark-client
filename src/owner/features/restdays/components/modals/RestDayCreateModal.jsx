@@ -11,7 +11,7 @@ const RestDayCreateModal = ({ close, presetDriverId }) => {
     date: new Date().toISOString().slice(0, 10),
     note: "",
   });
-  const { data: driversData } = useDriversQuery({ limit: 500, status: "active" });
+  const { data: driversData } = useDriversQuery({ limit: 500, status: "working" });
   const drivers = driversData?.data || [];
   const driverOptions = drivers.map((d) => ({
     value: d._id,

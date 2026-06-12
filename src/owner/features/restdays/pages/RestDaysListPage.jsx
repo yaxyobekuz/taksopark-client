@@ -32,7 +32,7 @@ const RestDaysListPage = () => {
   const { has } = usePermissions();
   const restDayDelete = useRestdayDelete();
 
-  const { data: driversData } = useDriversQuery({ limit: 500, status: "active" });
+  const { data: driversData } = useDriversQuery({ limit: 500, status: "working" });
   const drivers = driversData?.data || [];
   const driverOptions = [
     { value: "", label: "Barcha haydovchilar" },
