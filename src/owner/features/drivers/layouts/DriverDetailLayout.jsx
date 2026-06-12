@@ -12,8 +12,10 @@ import usePermissions from "@/shared/hooks/usePermissions";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { MODAL } from "@/shared/constants/modals";
 import { driverStatusBadge } from "@/shared/constants/drivers";
+import { TARIFF } from "@/shared/constants/tariffs";
 
 import { useDriverQuery } from "../hooks/useDriversQuery";
+import { useWorkPeriodsQuery } from "../hooks/useWorkPeriodsQuery";
 import DriverDocumentCreateModal from "../components/modals/DriverDocumentCreateModal";
 import DriverDocumentEditModal from "../components/modals/DriverDocumentEditModal";
 import DriverDocumentDeleteModal from "../components/modals/DriverDocumentDeleteModal";
@@ -21,7 +23,9 @@ import DriverDocumentDeleteModal from "../components/modals/DriverDocumentDelete
 const DriverDetailLayout = () => {
   const { id } = useParams();
   const { data: driver, isLoading } = useDriverQuery(id);
+  const { data: periods = [] } = useWorkPeriodsQuery(id);
   const { has } = usePermissions();
+  const tariffs = new Set(periods.map((p) => p.tariff));
 
   if (isLoading) {
     return (
@@ -53,6 +57,12 @@ const DriverDetailLayout = () => {
   }
   if (has(PERMISSIONS.PAYMENTS_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/payments`, label: "Kunlik to'lovlar" });
+  }
+  if (has(PERMISSIONS.PAYMENTS_READ) && tariffs.has(TARIFF.DEPOSIT)) {
+    tabs.push({ to: `/owner/drivers/${id}/deposit`, label: "Depozit" });
+  }
+  if (has(PERMISSIONS.PAYMENTS_READ) && tariffs.has(TARIFF.CASHBACK)) {
+    tabs.push({ to: `/owner/drivers/${id}/cashback`, label: "Keshbek" });
   }
   if (has(PERMISSIONS.FINES_READ)) {
     tabs.push({ to: `/owner/drivers/${id}/fines`, label: "Jarimalar" });

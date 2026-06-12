@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Undo2 } from "lucide-react";
 
 import InputField from "@/shared/components/ui/input/InputField";
 import SelectField from "@/shared/components/ui/select/SelectField";
@@ -13,6 +12,7 @@ import { formatDateUZ } from "@/shared/utils/date.utils";
 import { useCashbackDriverQuery } from "../../hooks/useFinanceQueries";
 import { useCashbackPayout, useCashbackReverse } from "../../hooks/useFinanceMutations";
 import AccountBreakdown from "../AccountBreakdown";
+import LedgerList from "../LedgerList";
 
 const monthRange = (m) => `${formatDateUZ(m.monthStart)} – ${formatDateUZ(m.monthEnd)}`;
 
@@ -25,7 +25,7 @@ const CashbackDriverModal = ({ driver }) => {
   const totals = data?.totals || { accrued: 0, paidOut: 0, available: 0 };
   const accountDebt = data?.accountDebt || 0;
   const account = data?.account || null;
-  const transactions = data?.transactions || [];
+  const ledger = data?.ledger || [];
 
   const payout = useCashbackPayout();
   const reverse = useCashbackReverse();
@@ -33,8 +33,6 @@ const CashbackDriverModal = ({ driver }) => {
   const payable = months.filter((m) => m.available > 0);
   const [monthStart, setMonthStart] = useState("");
   const [amount, setAmount] = useState("");
-
-  const reversedIds = new Set(transactions.filter((t) => t.reverses).map((t) => String(t.reverses)));
 
   const handlePayout = (e) => {
     e.preventDefault();
@@ -128,41 +126,15 @@ const CashbackDriverModal = ({ driver }) => {
         )}
       </div>
 
-      {transactions.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-xs font-semibold text-muted-foreground">To'lovlar</p>
-          <div className="space-y-1.5">
-            {transactions.map((t) => {
-              const isReversed = reversedIds.has(String(t._id));
-              const isReversal = t.type === "reversal";
-              return (
-                <div key={t._id} className={`flex items-center justify-between gap-2 rounded-md border p-2 text-sm ${isReversal || isReversed ? "opacity-60" : ""}`}>
-                  <div className="min-w-0">
-                    <p className="font-medium">
-                      {isReversal ? "−" : ""}{formatMoney(t.amount)}
-                      <span className="ml-2 text-[11px] text-muted-foreground">
-                        {isReversal ? "Bekor qilingan" : "To'lov"}
-                      </span>
-                    </p>
-                    <p className="text-[11px] text-muted-foreground">{formatDateUZ(t.createdAt)}</p>
-                  </div>
-                  {canManage && !isReversal && !isReversed && (
-                    <button
-                      type="button"
-                      onClick={() => reverse.mutate(t._id)}
-                      disabled={reverse.isPending}
-                      className="p-1.5 text-muted-foreground hover:text-rose-600 shrink-0"
-                      title="Bekor qilish"
-                    >
-                      <Undo2 size={15} />
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      <div className="space-y-2">
+        <p className="text-xs font-semibold text-muted-foreground">Harakatlar tarixi</p>
+        <LedgerList
+          ledger={ledger}
+          canManage={canManage}
+          reversing={reverse.isPending}
+          onReverse={(e) => reverse.mutate(e.txId)}
+        />
+      </div>
     </div>
   );
 };
