@@ -3,6 +3,7 @@ import { Undo2, Plus, Trash2 } from "lucide-react";
 
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
+import Switch from "@/shared/components/ui/switch/Switch";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
@@ -13,19 +14,31 @@ import {
   usePaymentReverse,
   usePaymentReleaseAuto,
 } from "../../hooks/usePaymentMutations";
+import { useDriverAutoSettleToggle } from "../../hooks/useDriverMutations";
 import { planStatus, paidFromTransactions } from "../../utils/payment.utils";
 
 const TX_LABELS = { payment: "To'lov", reversal: "Bekor qilingan" };
 const SOURCE_LABELS = { deposit: "Depozitdan", cashback: "Keshbekdan" };
 
-const PaymentDayModal = ({ close, plan, canManage, autoSettleDaily = true }) => {
+const PaymentDayModal = ({
+  close,
+  plan,
+  canManage,
+  autoSettleDaily = true,
+  driverId,
+  showAutoToggle = false,
+}) => {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
+  // Toggle modal ichida bo'lsa - lokal holat darhol UI ni yangilaydi (mutatsiya
+  // hisobni qayta hisoblagunча). Toggle ko'rsatilmasa - prop qiymati o'zgarmaydi.
+  const [autoEnabled, setAutoEnabled] = useState(autoSettleDaily);
 
   const { data: transactions = [], isLoading } = usePlanTransactionsQuery(plan?._id);
   const create = usePaymentCreate();
   const reverse = usePaymentReverse();
   const releaseAuto = usePaymentReleaseAuto();
+  const autoToggle = useDriverAutoSettleToggle();
 
   if (!plan) return null;
 
@@ -68,6 +81,29 @@ const PaymentDayModal = ({ close, plan, canManage, autoSettleDaily = true }) => 
         <span className="text-muted-foreground">{formatDateUZ(plan.date)}</span>
         <span className={`text-xs px-2 py-0.5 rounded ${status.className}`}>{status.label}</span>
       </div>
+
+      {/* Avtomatik qoplash toggle (Moliya sahifasidagi kun modalida) - bu kun depozit/
+          keshbekdan avtomatik qoplangan tranzaksiyani o'chirish uchun avval o'chiriladi. */}
+      {showAutoToggle && canManage && driverId && (
+        <div className="flex items-start justify-between gap-3 rounded-lg border p-2.5">
+          <div className="text-xs">
+            <p className="font-medium">Avtomatik qoplash</p>
+            <p className="text-muted-foreground">
+              {autoEnabled
+                ? "Kunlik qarz depozit/keshbekdan avtomatik qoplanadi"
+                : "O'chirilgan - avtomatik qoplangan tranzaksiyani o'chirish mumkin"}
+            </p>
+          </div>
+          <Switch
+            checked={autoEnabled}
+            disabled={autoToggle.isPending}
+            onChange={(enabled) => {
+              setAutoEnabled(enabled);
+              autoToggle.mutate({ id: driverId, enabled });
+            }}
+          />
+        </div>
+      )}
 
       {plan.isRestDay && (
         <p className="text-xs text-amber-700 bg-amber-50 rounded p-2">
@@ -151,7 +187,7 @@ const PaymentDayModal = ({ close, plan, canManage, autoSettleDaily = true }) => 
                   )}
                   {/* Auto (depozit/keshbek) qoplashni o'chirish - faqat avtomatik qoplash
                       O'CHIRILGAN bo'lsa, aks holda darhol qayta yaratiladi (loop). */}
-                  {canManage && fromSource && !isReversal && !autoSettleDaily && (
+                  {canManage && fromSource && !isReversal && !autoEnabled && (
                     <button
                       type="button"
                       onClick={() => releaseAuto.mutate(plan._id)}
@@ -170,7 +206,7 @@ const PaymentDayModal = ({ close, plan, canManage, autoSettleDaily = true }) => 
         {/* Auto-qoplangan kun bor, lekin avtomatik qoplash YOQILGAN - o'chirishdan oldin
             uni o'chirish kerakligini eslatamiz. */}
         {canManage &&
-          autoSettleDaily &&
+          autoEnabled &&
           transactions.some((t) => t.source && t.source !== "driver" && t.type !== "reversal") && (
             <p className="text-[11px] text-amber-700 bg-amber-50 rounded p-2">
               Bu kun depozit/keshbekdan avtomatik qoplangan. O'chirish uchun avval yuqoridagi
