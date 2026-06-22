@@ -22,4 +22,5 @@ export const driversAPI = {
     http.patch(ENDPOINTS.drivers.byId(id), buildFormData(body, photoFile), {
       headers: { "Content-Type": "multipart/form-data" },
     }),
+  setAutoSettle: (id, enabled) => http.patch(ENDPOINTS.drivers.autoSettle(id), { enabled }),
 };

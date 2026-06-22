@@ -9,4 +9,5 @@ export const paymentsAPI = {
     http.get(ENDPOINTS.payments.transactions, { params: { dailyPlanId } }),
   createPayment: (body) => http.post(ENDPOINTS.payments.transactions, body),
   reverse: (id, body) => http.post(ENDPOINTS.payments.reverse(id), body),
+  releaseAuto: (planId) => http.post(ENDPOINTS.payments.releaseAuto(planId)),
 };

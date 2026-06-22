@@ -41,6 +41,7 @@ export const ENDPOINTS = Object.freeze({
   drivers: {
     base: "/drivers",
     byId: (id) => `/drivers/${id}`,
+    autoSettle: (id) => `/drivers/${id}/auto-settle`,
     documents: (id) => `/drivers/${id}/documents`,
     documentById: (id, docId) => `/drivers/${id}/documents/${docId}`,
   },
@@ -73,6 +74,7 @@ export const ENDPOINTS = Object.freeze({
   payments: {
     plans: "/payments/plans",
     planById: (id) => `/payments/plans/${id}`,
+    releaseAuto: (id) => `/payments/plans/${id}/release-auto`,
     transactions: "/payments/transactions",
     reverse: (id) => `/payments/transactions/${id}/reverse`,
   },
