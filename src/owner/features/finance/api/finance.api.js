@@ -6,6 +6,7 @@ const E = ENDPOINTS.finance;
 export const financeAPI = {
   overview: (params) => http.get(E.overview, { params }),
   dailyPayments: (params) => http.get(E.dailyPayments, { params }),
+  dailyPaymentsByDate: (params) => http.get(E.dailyPaymentsByDate, { params }),
 
   cashbacks: () => http.get(E.cashbacks),
   cashbackDriver: (driverId) => http.get(E.cashbackDriver(driverId)),

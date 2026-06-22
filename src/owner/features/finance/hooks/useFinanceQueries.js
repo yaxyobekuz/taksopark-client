@@ -15,6 +15,13 @@ export const useDailyPaymentsQuery = (params) =>
     queryFn: () => financeAPI.dailyPayments(params).then((r) => r.data.data),
   });
 
+export const useDailyPaymentsByDateQuery = (date) =>
+  useQuery({
+    queryKey: qk.finance.dailyPaymentsByDate(date),
+    queryFn: () => financeAPI.dailyPaymentsByDate({ date }).then((r) => r.data.data),
+    enabled: !!date,
+  });
+
 export const useCashbacksQuery = () =>
   useQuery({
     queryKey: qk.finance.cashbacks(),

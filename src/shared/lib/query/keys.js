@@ -60,6 +60,7 @@ export const qk = Object.freeze({
     all: () => ["finance"],
     overview: (params) => ["finance", "overview", params],
     dailyPayments: (params) => ["finance", "dailyPayments", params],
+    dailyPaymentsByDate: (date) => ["finance", "dailyPaymentsByDate", date],
     cashbacks: () => ["finance", "cashbacks"],
     cashbackDriver: (id) => ["finance", "cashbacks", id],
     deposits: () => ["finance", "deposits"],

@@ -81,6 +81,7 @@ export const ENDPOINTS = Object.freeze({
   finance: {
     overview: "/finance/overview",
     dailyPayments: "/finance/daily-payments",
+    dailyPaymentsByDate: "/finance/daily-payments/by-date",
     cashbacks: "/finance/cashbacks",
     cashbackDriver: (id) => `/finance/cashbacks/${id}`,
     cashbackPayout: "/finance/cashbacks/payout",
