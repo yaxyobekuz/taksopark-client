@@ -12,7 +12,6 @@ import { formatDateUZ } from "@/shared/utils/date.utils";
 
 import { useCashbackDriverQuery } from "../../hooks/useFinanceQueries";
 import { useCashbackPayout, useCashbackReverse } from "../../hooks/useFinanceMutations";
-import AccountBreakdown from "../AccountBreakdown";
 import LedgerList from "../LedgerList";
 
 const monthRange = (m) => `${formatDateUZ(m.monthStart)} – ${formatDateUZ(m.monthEnd)}`;
@@ -25,7 +24,6 @@ const CashbackDriverModal = ({ driver }) => {
   const months = data?.months || [];
   const totals = data?.totals || { accrued: 0, paidOut: 0, available: 0 };
   const accountDebt = data?.accountDebt || 0;
-  const account = data?.account || null;
   const ledger = data?.ledger || [];
 
   const payout = useCashbackPayout();
@@ -51,27 +49,25 @@ const CashbackDriverModal = ({ driver }) => {
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-2 text-center">
         <div className="rounded-lg border p-2">
-          <p className="text-[11px] text-muted-foreground">Hisoblangan</p>
+          <p className="text-[11px] text-muted-foreground">Hisoblangan keshbek</p>
           <p className="text-sm font-semibold">{formatMoney(totals.accrued)}</p>
         </div>
         <div className="rounded-lg border p-2">
-          <p className="text-[11px] text-muted-foreground">To'langan</p>
+          <p className="text-[11px] text-muted-foreground">Berilgan keshbek</p>
           <p className="text-sm font-semibold">{formatMoney(totals.paidOut)}</p>
         </div>
         <div className="rounded-lg border p-2">
-          <p className="text-[11px] text-muted-foreground">To'lash mumkin</p>
+          <p className="text-[11px] text-muted-foreground">Berilishi kerak</p>
           <p className="text-sm font-semibold">{formatMoney(totals.available)}</p>
         </div>
       </div>
 
       {accountDebt > 0 && (
         <p className="text-xs text-amber-700 bg-amber-50 rounded p-2">
-          Haydovchining qarzi bor ({formatMoney(accountDebt)}) - keshbek avval qarzni
-          qoplaydi, shuning uchun to'lash mumkin bo'lgan summa cheklangan.
+          Haydovchining umumiy qarzi bor ({formatMoney(accountDebt)}) - keshbek avval qarzni
+          qoplaydi, shuning uchun Berilishi kerak cheklangan.
         </p>
       )}
-
-      <AccountBreakdown account={account} />
 
       {canManage && payable.length > 0 && (
         <form onSubmit={handlePayout} className="space-y-2 border-t pt-3">
@@ -128,7 +124,7 @@ const CashbackDriverModal = ({ driver }) => {
         </div>
       </Card>
 
-      <Card title="Harakatlar tarixi">
+      <Card title="Keshbek harakatlari">
         <div className="mt-3">
           <LedgerList
             ledger={ledger}
