@@ -35,3 +35,19 @@ export const useDriverUpdate = () => {
     onError,
   });
 };
+
+// Kunlik to'lovni depozit/keshbekdan avtomatik qoplashni yoqish/o'chirish.
+export const useDriverAutoSettleToggle = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, enabled }) =>
+      driversAPI.setAutoSettle(id, enabled).then((r) => r.data.data),
+    onSuccess: (_data, { enabled }) => {
+      qc.invalidateQueries({ queryKey: qk.drivers.all() });
+      qc.invalidateQueries({ queryKey: qk.payments.all() });
+      qc.invalidateQueries({ queryKey: qk.finance.all() });
+      toast.success(enabled ? "Avtomatik qoplash yoqildi" : "Avtomatik qoplash o'chirildi");
+    },
+    onError,
+  });
+};

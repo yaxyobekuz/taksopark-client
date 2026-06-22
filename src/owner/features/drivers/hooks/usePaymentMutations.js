@@ -39,3 +39,17 @@ export const usePaymentReverse = () => {
     onError,
   });
 };
+
+// Plandagi avtomatik (depozit/keshbek) qoplashni bekor qilish - pul manbaga qaytadi.
+export const usePaymentReleaseAuto = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (planId) => paymentsAPI.releaseAuto(planId).then((r) => r.data.data),
+    onSuccess: (plan) => {
+      invalidate(qc, plan?._id);
+      qc.invalidateQueries({ queryKey: qk.drivers.all() });
+      toast.success("Avtomatik qoplash bekor qilindi");
+    },
+    onError,
+  });
+};
