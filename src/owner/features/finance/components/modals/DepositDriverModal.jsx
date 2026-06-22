@@ -10,7 +10,6 @@ import { formatMoney } from "@/shared/utils/formatMoney";
 
 import { useDepositDriverQuery } from "../../hooks/useFinanceQueries";
 import { useDepositMovement, useDepositReverse } from "../../hooks/useFinanceMutations";
-import AccountBreakdown from "../AccountBreakdown";
 import LedgerList from "../LedgerList";
 
 const DepositDriverModal = ({ driver }) => {
@@ -19,8 +18,8 @@ const DepositDriverModal = ({ driver }) => {
 
   const { data, isLoading } = useDepositDriverQuery(driver?._id);
   const balance = data?.balance || 0;
-  const debt = data?.debt || 0;
-  const account = data?.account || null;
+  const totalIn = data?.totalIn || 0;
+  const totalOut = data?.totalOut || 0;
   const ledger = data?.ledger || [];
 
   const movement = useDepositMovement();
@@ -44,18 +43,20 @@ const DepositDriverModal = ({ driver }) => {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-2">
-        <div className="rounded-lg border p-3 text-center">
-          <p className="text-[11px] text-muted-foreground">Depozit balansi</p>
-          <p className="text-lg font-semibold">{formatMoney(balance)}</p>
+      <div className="grid grid-cols-3 gap-2 text-center">
+        <div className="rounded-lg border p-2">
+          <p className="text-[11px] text-muted-foreground">Jami kirim</p>
+          <p className="text-sm font-semibold text-green-700">{formatMoney(totalIn)}</p>
         </div>
-        <div className="rounded-lg border p-3 text-center">
-          <p className="text-[11px] text-muted-foreground">Qarz</p>
-          <p className="text-lg font-semibold">{formatMoney(debt)}</p>
+        <div className="rounded-lg border p-2">
+          <p className="text-[11px] text-muted-foreground">Jami chiqim</p>
+          <p className="text-sm font-semibold text-rose-700">{formatMoney(totalOut)}</p>
+        </div>
+        <div className="rounded-lg border p-2">
+          <p className="text-[11px] text-muted-foreground">Depozit balansi</p>
+          <p className="text-sm font-semibold">{formatMoney(balance)}</p>
         </div>
       </div>
-
-      <AccountBreakdown account={account} />
 
       {canManage && (
         <form onSubmit={handleSubmit} className="space-y-2 border-t pt-3">
@@ -92,7 +93,7 @@ const DepositDriverModal = ({ driver }) => {
         </form>
       )}
 
-      <Card title="Harakatlar tarixi">
+      <Card title="Depozit harakatlari">
         <div className="mt-3">
           <LedgerList
             ledger={ledger}
