@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Undo2, Plus } from "lucide-react";
+import { Undo2, Plus, Trash2 } from "lucide-react";
 
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
@@ -8,19 +8,24 @@ import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 
 import { usePlanTransactionsQuery } from "../../hooks/usePaymentsQuery";
-import { usePaymentCreate, usePaymentReverse } from "../../hooks/usePaymentMutations";
+import {
+  usePaymentCreate,
+  usePaymentReverse,
+  usePaymentReleaseAuto,
+} from "../../hooks/usePaymentMutations";
 import { planStatus, paidFromTransactions } from "../../utils/payment.utils";
 
 const TX_LABELS = { payment: "To'lov", reversal: "Bekor qilingan" };
 const SOURCE_LABELS = { deposit: "Depozitdan", cashback: "Keshbekdan" };
 
-const PaymentDayModal = ({ close, plan, canManage }) => {
+const PaymentDayModal = ({ close, plan, canManage, autoSettleDaily = true }) => {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
 
   const { data: transactions = [], isLoading } = usePlanTransactionsQuery(plan?._id);
   const create = usePaymentCreate();
   const reverse = usePaymentReverse();
+  const releaseAuto = usePaymentReleaseAuto();
 
   if (!plan) return null;
 
@@ -144,11 +149,34 @@ const PaymentDayModal = ({ close, plan, canManage }) => {
                       <Undo2 size={15} />
                     </button>
                   )}
+                  {/* Auto (depozit/keshbek) qoplashni o'chirish - faqat avtomatik qoplash
+                      O'CHIRILGAN bo'lsa, aks holda darhol qayta yaratiladi (loop). */}
+                  {canManage && fromSource && !isReversal && !autoSettleDaily && (
+                    <button
+                      type="button"
+                      onClick={() => releaseAuto.mutate(plan._id)}
+                      disabled={releaseAuto.isPending}
+                      className="p-1.5 text-muted-foreground hover:text-rose-600 shrink-0"
+                      title="Avtomatik qoplashni o'chirish (pul manbaga qaytadi)"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  )}
                 </div>
               );
             })}
           </div>
         )}
+        {/* Auto-qoplangan kun bor, lekin avtomatik qoplash YOQILGAN - o'chirishdan oldin
+            uni o'chirish kerakligini eslatamiz. */}
+        {canManage &&
+          autoSettleDaily &&
+          transactions.some((t) => t.source && t.source !== "driver" && t.type !== "reversal") && (
+            <p className="text-[11px] text-amber-700 bg-amber-50 rounded p-2">
+              Bu kun depozit/keshbekdan avtomatik qoplangan. O'chirish uchun avval yuqoridagi
+              "Avtomatik qoplash" ni o'chiring.
+            </p>
+          )}
       </div>
 
       <Button type="button" variant="outline" className="w-full" onClick={() => close()}>

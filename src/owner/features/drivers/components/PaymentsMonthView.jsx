@@ -6,6 +6,7 @@ import useModal from "@/shared/hooks/useModal";
 import usePermissions from "@/shared/hooks/usePermissions";
 
 import SelectField from "@/shared/components/ui/select/SelectField";
+import Switch from "@/shared/components/ui/switch/Switch";
 import StatCard from "@/shared/components/ui/card/StatCard";
 import ModalWrapper from "@/shared/components/ui/modal/ModalWrapper";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
@@ -18,6 +19,7 @@ import { months as MONTHS } from "@/shared/utils/date.utils";
 import { formatMoney } from "@/shared/utils/formatMoney";
 
 import { usePaymentsMonthQuery } from "../hooks/usePaymentsQuery";
+import { useDriverAutoSettleToggle } from "../hooks/useDriverMutations";
 import {
   useRestdayCreate,
   useRestdayDelete,
@@ -67,6 +69,9 @@ const PaymentsMonthView = ({ driverId, driver }) => {
   const restDelete = useRestdayDelete();
   const togglePending = restCreate.isPending || restDelete.isPending;
 
+  const autoToggle = useDriverAutoSettleToggle();
+  const autoSettleDaily = driver?.autoSettleDaily !== false;
+
   // Dam olish kuni o'zgarsa kunlik planlar qayta hisoblanadi - to'lov ko'rinishini ham yangilaymiz.
   const refreshPayments = () => {
     qc.invalidateQueries({ queryKey: qk.payments.all() });
@@ -114,6 +119,24 @@ const PaymentsMonthView = ({ driverId, driver }) => {
             options={monthOptions}
           />
         </div>
+
+        {canManage && (
+          <div className="ml-auto flex items-start gap-3 rounded-lg border bg-white p-2.5">
+            <div className="text-xs">
+              <p className="font-medium">Avtomatik qoplash</p>
+              <p className="text-muted-foreground max-w-[15rem]">
+                {autoSettleDaily
+                  ? "Kunlik qarz depozit/keshbekdan avtomatik qoplanadi"
+                  : "O'chirilgan - kunlardagi auto-qoplashni bekor qilib davrlarni tahrirlash mumkin"}
+              </p>
+            </div>
+            <Switch
+              checked={autoSettleDaily}
+              disabled={autoToggle.isPending}
+              onChange={(enabled) => autoToggle.mutate({ id: driverId, enabled })}
+            />
+          </div>
+        )}
       </div>
 
       {isLoading ? (
@@ -135,7 +158,7 @@ const PaymentsMonthView = ({ driverId, driver }) => {
             return (
               <div
                 key={p._id}
-                onClick={() => openModal(MODAL.PAYMENT_DAY, { plan: p, canManage })}
+                onClick={() => openModal(MODAL.PAYMENT_DAY, { plan: p, canManage, autoSettleDaily })}
                 className="flex flex-col rounded-lg border bg-white p-3 text-left transition-colors hover:border-primary/40 cursor-pointer"
               >
                 <div className="flex items-baseline justify-between">
