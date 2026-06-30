@@ -76,7 +76,7 @@ export const ENDPOINTS = Object.freeze({
     planById: (id) => `/payments/plans/${id}`,
     releaseAuto: (id) => `/payments/plans/${id}/release-auto`,
     transactions: "/payments/transactions",
-    reverse: (id) => `/payments/transactions/${id}/reverse`,
+    transactionById: (id) => `/payments/transactions/${id}`,
   },
   finance: {
     overview: "/finance/overview",
@@ -85,10 +85,10 @@ export const ENDPOINTS = Object.freeze({
     cashbacks: "/finance/cashbacks",
     cashbackDriver: (id) => `/finance/cashbacks/${id}`,
     cashbackPayout: "/finance/cashbacks/payout",
-    cashbackReverse: (id) => `/finance/cashbacks/transactions/${id}/reverse`,
+    cashbackTxById: (id) => `/finance/cashbacks/transactions/${id}`,
     deposits: "/finance/deposits",
     depositDriver: (id) => `/finance/deposits/${id}`,
     depositMovement: "/finance/deposits/movement",
-    depositReverse: (id) => `/finance/deposits/transactions/${id}/reverse`,
+    depositTxById: (id) => `/finance/deposits/transactions/${id}`,
   },
 });
