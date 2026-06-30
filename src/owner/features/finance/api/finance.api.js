@@ -11,10 +11,10 @@ export const financeAPI = {
   cashbacks: () => http.get(E.cashbacks),
   cashbackDriver: (driverId) => http.get(E.cashbackDriver(driverId)),
   cashbackPayout: (body) => http.post(E.cashbackPayout, body),
-  cashbackReverse: (id) => http.post(E.cashbackReverse(id)),
+  cashbackDelete: (id) => http.delete(E.cashbackTxById(id)),
 
   deposits: () => http.get(E.deposits),
   depositDriver: (driverId) => http.get(E.depositDriver(driverId)),
   depositMovement: (body) => http.post(E.depositMovement, body),
-  depositReverse: (id) => http.post(E.depositReverse(id)),
+  depositDelete: (id) => http.delete(E.depositTxById(id)),
 };

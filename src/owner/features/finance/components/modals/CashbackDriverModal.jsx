@@ -11,7 +11,7 @@ import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 
 import { useCashbackDriverQuery } from "../../hooks/useFinanceQueries";
-import { useCashbackPayout, useCashbackReverse } from "../../hooks/useFinanceMutations";
+import { useCashbackPayout, useCashbackDelete } from "../../hooks/useFinanceMutations";
 import LedgerList from "../LedgerList";
 
 const monthRange = (m) => `${formatDateUZ(m.monthStart)} – ${formatDateUZ(m.monthEnd)}`;
@@ -26,7 +26,7 @@ const CashbackDriverModal = ({ driver }) => {
   const ledger = data?.ledger || [];
 
   const payout = useCashbackPayout();
-  const reverse = useCashbackReverse();
+  const del = useCashbackDelete();
 
   const payable = months.filter((m) => m.available > 0);
   const [monthStart, setMonthStart] = useState("");
@@ -121,8 +121,8 @@ const CashbackDriverModal = ({ driver }) => {
           <LedgerList
             ledger={ledger}
             canManage={canManage}
-            reversing={reverse.isPending}
-            onReverse={(e) => reverse.mutate(e.txId)}
+            deleting={del.isPending}
+            onDelete={(e) => del.mutate(e.txId)}
           />
         </div>
       </Card>

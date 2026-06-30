@@ -1,11 +1,11 @@
-import { Undo2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import EmptyState from "@/shared/components/ui/feedback/EmptyState";
 import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 
 // Balansga ta'sir qilgan barcha harakatlar (statement) - sana, izoh, summa va
-// yugurib boruvchi balans bilan. reversible yozuvlarda bekor qilish tugmasi.
-const LedgerList = ({ ledger = [], canManage, onReverse, reversing }) => {
+// yugurib boruvchi balans bilan. deletable yozuvlarda o'chirish tugmasi (hard delete).
+const LedgerList = ({ ledger = [], canManage, onDelete, deleting }) => {
   if (!ledger.length) return <EmptyState title="Harakat yo'q" />;
 
   return (
@@ -34,15 +34,15 @@ const LedgerList = ({ ledger = [], canManage, onReverse, reversing }) => {
                   balans: {formatMoney(e.balance)}
                 </p>
               </div>
-              {canManage && e.reversible && e.txId && (
+              {canManage && e.deletable && e.txId && (
                 <button
                   type="button"
-                  onClick={() => onReverse(e)}
-                  disabled={reversing}
+                  onClick={() => onDelete(e)}
+                  disabled={deleting}
                   className="p-1.5 text-muted-foreground hover:text-rose-600"
-                  title="Bekor qilish"
+                  title="O'chirish"
                 >
-                  <Undo2 size={15} />
+                  <Trash2 size={15} />
                 </button>
               )}
             </div>

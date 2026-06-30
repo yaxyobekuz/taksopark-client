@@ -9,7 +9,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { formatMoney } from "@/shared/utils/formatMoney";
 
 import { useDepositDriverQuery } from "../../hooks/useFinanceQueries";
-import { useDepositMovement, useDepositReverse } from "../../hooks/useFinanceMutations";
+import { useDepositMovement, useDepositDelete } from "../../hooks/useFinanceMutations";
 import LedgerList from "../LedgerList";
 
 const DepositDriverModal = ({ driver }) => {
@@ -23,7 +23,7 @@ const DepositDriverModal = ({ driver }) => {
   const ledger = data?.ledger || [];
 
   const movement = useDepositMovement();
-  const reverse = useDepositReverse();
+  const del = useDepositDelete();
 
   const [type, setType] = useState("in");
   const [amount, setAmount] = useState("");
@@ -98,8 +98,8 @@ const DepositDriverModal = ({ driver }) => {
           <LedgerList
             ledger={ledger}
             canManage={canManage}
-            reversing={reverse.isPending}
-            onReverse={(e) => reverse.mutate(e.txId)}
+            deleting={del.isPending}
+            onDelete={(e) => del.mutate(e.txId)}
           />
         </div>
       </Card>

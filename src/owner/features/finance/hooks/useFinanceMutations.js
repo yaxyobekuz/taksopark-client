@@ -21,13 +21,15 @@ export const useCashbackPayout = () => {
   });
 };
 
-export const useCashbackReverse = () => {
+export const useCashbackDelete = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id) => financeAPI.cashbackReverse(id).then((r) => r.data.data),
+    mutationFn: (id) => financeAPI.cashbackDelete(id).then((r) => r.data.data),
     onSuccess: () => {
       invalidateFinance(qc);
-      toast.success("Tranzaksiya bekor qilindi");
+      qc.invalidateQueries({ queryKey: qk.payments.all() });
+      qc.invalidateQueries({ queryKey: qk.drivers.all() });
+      toast.success("Tranzaksiya o'chirildi");
     },
     onError,
   });
@@ -45,13 +47,15 @@ export const useDepositMovement = () => {
   });
 };
 
-export const useDepositReverse = () => {
+export const useDepositDelete = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id) => financeAPI.depositReverse(id).then((r) => r.data.data),
+    mutationFn: (id) => financeAPI.depositDelete(id).then((r) => r.data.data),
     onSuccess: () => {
       invalidateFinance(qc);
-      toast.success("Tranzaksiya bekor qilindi");
+      qc.invalidateQueries({ queryKey: qk.payments.all() });
+      qc.invalidateQueries({ queryKey: qk.drivers.all() });
+      toast.success("Tranzaksiya o'chirildi");
     },
     onError,
   });
