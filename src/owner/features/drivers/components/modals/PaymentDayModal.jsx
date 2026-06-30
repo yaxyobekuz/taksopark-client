@@ -169,11 +169,16 @@ const PaymentDayModal = ({
                   </div>
                   {/* Hard delete: qo'lda to'lov to'g'ridan-to'g'ri o'chadi; avtomatik
                       (depozit/keshbek) qoplash juftligi bilan o'chib pul manbaga qaytadi
-                      (server faqat avtomatik qoplash O'CHIRILGAN bo'lsa ruxsat beradi). */}
+                      VA haydovchining avto-qoplashi o'chadi (loop bo'lmasin). */}
                   {canManage && (
                     <button
                       type="button"
-                      onClick={() => del.mutate(t._id)}
+                      onClick={() =>
+                        del.mutate(
+                          t._id,
+                          fromSource ? { onSuccess: () => setAutoEnabled(false) } : undefined,
+                        )
+                      }
                       disabled={del.isPending}
                       className="p-1.5 text-muted-foreground hover:text-rose-600 shrink-0"
                       title="O'chirish"
@@ -186,14 +191,14 @@ const PaymentDayModal = ({
             })}
           </div>
         )}
-        {/* Auto-qoplangan kun bor, lekin avtomatik qoplash YOQILGAN - o'chirishdan oldin
-            uni o'chirish kerakligini eslatamiz (aks holda darhol qayta qoplanadi). */}
+        {/* Auto-qoplangan kun bor: o'chirilsa pul manbaga qaytadi va avtomatik qoplash
+            o'chadi (qulaylik - alohida toggle shart emas). */}
         {canManage &&
           autoEnabled &&
           transactions.some((t) => t.source && t.source !== "driver" && t.type !== "reversal") && (
-            <p className="text-[11px] text-amber-700 bg-amber-50 rounded p-2">
-              Bu kun depozit/keshbekdan avtomatik qoplangan. O'chirish uchun avval yuqoridagi
-              "Avtomatik qoplash" ni o'chiring.
+            <p className="text-[11px] text-muted-foreground bg-gray-50 rounded p-2">
+              Bu kun depozit/keshbekdan avtomatik qoplangan. O'chirsangiz pul manbaga qaytadi
+              va shu haydovchi uchun avtomatik qoplash o'chadi.
             </p>
           )}
       </div>
