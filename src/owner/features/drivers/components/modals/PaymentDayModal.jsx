@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Undo2, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 import InputField from "@/shared/components/ui/input/InputField";
 import Button from "@/shared/components/ui/button/Button";
@@ -9,11 +9,7 @@ import { formatMoney } from "@/shared/utils/formatMoney";
 import { formatDateUZ } from "@/shared/utils/date.utils";
 
 import { usePlanTransactionsQuery } from "../../hooks/usePaymentsQuery";
-import {
-  usePaymentCreate,
-  usePaymentReverse,
-  usePaymentReleaseAuto,
-} from "../../hooks/usePaymentMutations";
+import { usePaymentCreate, usePaymentDelete } from "../../hooks/usePaymentMutations";
 import { useDriverAutoSettleToggle } from "../../hooks/useDriverMutations";
 import { planStatus, paidFromTransactions } from "../../utils/payment.utils";
 
@@ -36,8 +32,7 @@ const PaymentDayModal = ({
 
   const { data: transactions = [], isLoading } = usePlanTransactionsQuery(plan?._id);
   const create = usePaymentCreate();
-  const reverse = usePaymentReverse();
-  const releaseAuto = usePaymentReleaseAuto();
+  const del = usePaymentDelete();
   const autoToggle = useDriverAutoSettleToggle();
 
   if (!plan) return null;
@@ -47,7 +42,6 @@ const PaymentDayModal = ({
   const debt = Math.max(0, (plan.planAmount || 0) - paid);
   const status = planStatus({ ...plan, paidAmount: paid, debt });
 
-  const reversedIds = new Set(transactions.filter((t) => t.reverses).map((t) => String(t.reverses)));
   const canPay = canManage && !plan.isRestDay && !plan.priceMissing;
 
   const handlePay = (e) => {
@@ -151,14 +145,13 @@ const PaymentDayModal = ({
         ) : (
           <div className="space-y-1.5">
             {transactions.map((t) => {
-              const isReversed = reversedIds.has(String(t._id));
               const isReversal = t.type === "reversal";
               const fromSource = t.source && t.source !== "driver";
               return (
                 <div
                   key={t._id}
                   className={`flex items-center justify-between gap-2 rounded-md border p-2 text-sm ${
-                    isReversal || isReversed ? "opacity-60" : ""
+                    isReversal ? "opacity-60" : ""
                   }`}
                 >
                   <div className="min-w-0">
@@ -174,26 +167,16 @@ const PaymentDayModal = ({
                       {t.note ? ` · ${t.note}` : ""}
                     </p>
                   </div>
-                  {canManage && !isReversal && !isReversed && !fromSource && (
+                  {/* Hard delete: qo'lda to'lov to'g'ridan-to'g'ri o'chadi; avtomatik
+                      (depozit/keshbek) qoplash juftligi bilan o'chib pul manbaga qaytadi
+                      (server faqat avtomatik qoplash O'CHIRILGAN bo'lsa ruxsat beradi). */}
+                  {canManage && (
                     <button
                       type="button"
-                      onClick={() => reverse.mutate({ id: t._id })}
-                      disabled={reverse.isPending}
+                      onClick={() => del.mutate(t._id)}
+                      disabled={del.isPending}
                       className="p-1.5 text-muted-foreground hover:text-rose-600 shrink-0"
-                      title="Bekor qilish"
-                    >
-                      <Undo2 size={15} />
-                    </button>
-                  )}
-                  {/* Auto (depozit/keshbek) qoplashni o'chirish - faqat avtomatik qoplash
-                      O'CHIRILGAN bo'lsa, aks holda darhol qayta yaratiladi (loop). */}
-                  {canManage && fromSource && !isReversal && !autoEnabled && (
-                    <button
-                      type="button"
-                      onClick={() => releaseAuto.mutate(plan._id)}
-                      disabled={releaseAuto.isPending}
-                      className="p-1.5 text-muted-foreground hover:text-rose-600 shrink-0"
-                      title="Avtomatik qoplashni o'chirish (pul manbaga qaytadi)"
+                      title="O'chirish"
                     >
                       <Trash2 size={15} />
                     </button>
@@ -204,7 +187,7 @@ const PaymentDayModal = ({
           </div>
         )}
         {/* Auto-qoplangan kun bor, lekin avtomatik qoplash YOQILGAN - o'chirishdan oldin
-            uni o'chirish kerakligini eslatamiz. */}
+            uni o'chirish kerakligini eslatamiz (aks holda darhol qayta qoplanadi). */}
         {canManage &&
           autoEnabled &&
           transactions.some((t) => t.source && t.source !== "driver" && t.type !== "reversal") && (

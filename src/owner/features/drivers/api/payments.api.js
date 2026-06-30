@@ -8,6 +8,6 @@ export const paymentsAPI = {
   planTransactions: (dailyPlanId) =>
     http.get(ENDPOINTS.payments.transactions, { params: { dailyPlanId } }),
   createPayment: (body) => http.post(ENDPOINTS.payments.transactions, body),
-  reverse: (id, body) => http.post(ENDPOINTS.payments.reverse(id), body),
+  remove: (id) => http.delete(ENDPOINTS.payments.transactionById(id)),
   releaseAuto: (planId) => http.post(ENDPOINTS.payments.releaseAuto(planId)),
 };

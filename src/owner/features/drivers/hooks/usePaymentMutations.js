@@ -28,13 +28,14 @@ export const usePaymentCreate = () => {
   });
 };
 
-export const usePaymentReverse = () => {
+export const usePaymentDelete = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, note }) => paymentsAPI.reverse(id, { note }).then((r) => r.data.data),
+    mutationFn: (id) => paymentsAPI.remove(id).then((r) => r.data.data),
     onSuccess: (plan) => {
       invalidate(qc, plan?._id);
-      toast.success("Tranzaksiya bekor qilindi");
+      qc.invalidateQueries({ queryKey: qk.drivers.all() });
+      toast.success("Tranzaksiya o'chirildi");
     },
     onError,
   });
